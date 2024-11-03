@@ -1,0 +1,17 @@
+{
+    "age":                  73,
+    "workclass":             9,
+    "fnlwgt":            21648,
+    "education":            16,
+    "education.num":        16,
+    "marital.status":        2,
+    "occupation":           15,
+    "relationship":          6,
+    "race":                  5,
+    "sex":                   2,
+    "capital.gain":        119,
+    "capital.loss":         92,
+    "hours.per.week":       94,
+    "native.country":       42,
+    "income":                2
+}

@@ -1,0 +1,15 @@
+name: mbi
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.13
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - jupyter
+  - pip
+  - pip:
+    - fairness-checker
+    - git+https://github.com/ryan112358/private-pgm.git
