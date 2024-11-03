@@ -13,3 +13,5 @@ dependencies:
   - pip:
     - fairness-checker
     - git+https://github.com/ryan112358/private-pgm.git
+    - jax
+    - jaxlib
