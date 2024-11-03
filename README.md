@@ -1,2 +1,3 @@
 * `adult_process.ipynb` processes `data/adult_og.csv` to give `data/adult_processed_small.csv` and `data/adult_processed.csv`.
 * `adult_mst.ipynb` shows the MST based on MI
+* `adult_RF.ipynb` searches hyperparameters and finetunes a random forest
