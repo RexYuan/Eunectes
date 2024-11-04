@@ -1,0 +1,12 @@
+{
+    "age":                    65,
+    "sex":                     2,
+    "decile_score":           11,
+    "priors_count":           39,
+    "race":                    6,
+    "days_in_jail":          386,
+    "c_days_from_compas":    657,
+    "is_violent_recid":        2,
+    "v_decile_score":         11,
+    "is_recid":                3
+}
