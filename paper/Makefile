@@ -1,4 +1,4 @@
-paper.pdf: paper.tex references.bib
+all: paper.tex references.bib
 	pdflatex paper
 	bibtex paper
 	pdflatex paper
@@ -6,3 +6,5 @@ paper.pdf: paper.tex references.bib
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.out *.toc paper.pdf *.cut
+
+.PHONY: all clean
