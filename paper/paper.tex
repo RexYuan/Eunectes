@@ -111,6 +111,7 @@
 
 \usepackage{mathtools}
 \usepackage{multirow}
+\usepackage{subcaption}
 
 \graphicspath{{images/}}
 \DeclareGraphicsExtensions{.pdf}
@@ -246,7 +247,7 @@ A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \se
 
 For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ to denote the ground truth of an outcome, let $\hat{Y}$ to denote the predicated result of an outcome, let $S$ denote protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
 
-Let $C \subseteq \mathcal{A}$. Let $\Omega_C = \Pi_{i \in C} \Omega_i$. The \emph{marginal}\cite{barak2007privacy,mckenna2021winning} on $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function. Let $M_C(\db)$ be the function that computes the marginal on $C$, i.e., $\mu = M_C(\db)$.
+Let $C \subseteq \mathcal{A}$. Let $\Omega_C = \Pi_{i \in C} \Omega_i$. The \emph{marginal}\cite{barak2007privacy,mckenna2021winning} on $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function. Let $M_C(\db)$ be the function that computes the marginal on $C$, i.e., $\mu = M_C(\db)$. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
 A \emph{randomized mechanism} is a randomized algorithm $M$ that takes a database $\db$ and, after, introducing noise, outputs some results in set $R$.
 
@@ -361,6 +362,45 @@ The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})
 
 \subsection{Differentially Private Synthetic Data}
 
+We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by Ryan McKenna\cite{Ullman2022,McKenna2022,McKenna_privatePGM,mckenna2021winning,mckenna2019graphical}.
+
+The competition considers marginals of the synthetic data. The idea of marginal-based synthetic data generation is to create a model whose marginals of samples are similar to the marginals of the original data. For example, suppose we have an original database and it's 2-way marginal on sex(Male,Female) and race(White,Black) is as shown in Table~\ref{tab:marginal-example}.
+
+\begin{table}[h]
+\caption{Example marginals.}
+\label{tab:marginal-example}
+\centering
+\begin{subtable}[t]{0.45\linewidth}
+\centering
+\caption{Marginal of original data.}
+\begin{tabular}{cc}
+  \toprule
+  Attributes & Count \\
+  \midrule
+  Male,White & 24 \\
+  Female,White & 33 \\
+  Male,Black & 13 \\
+  Female,Black & 47 \\
+  \bottomrule
+\end{tabular}
+\end{subtable}
+\hspace{0.05\linewidth}
+\begin{subtable}[t]{0.45\linewidth}
+\centering
+\caption{Marginal of synthetic data.}
+\begin{tabular}{cc}
+  \toprule
+  Attributes & Count \\
+  \midrule
+  Male,White & 22 \\
+  Female,White & 35 \\
+  Male,Black & 10 \\
+  Female,Black & 46 \\
+  \bottomrule
+\end{tabular}
+\end{subtable}
+\end{table}
+
 \subsection{Fairness Checker}
 
 \subsection{Implementation}
@@ -380,8 +420,6 @@ The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})
 \subsection{Impossibility}
 
 \section{Conclusion}
-
-Some examples.  A paginated journal article \cite{Abril07}
 
 % \begin{table}
 %   \caption{Frequency of Special Characters}
