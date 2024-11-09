@@ -109,6 +109,26 @@
 %% the next command will enable that style.
 %%\citestyle{acmauthoryear}
 
+\usepackage{mathtools}
+
+\graphicspath{{images/}}
+\DeclareGraphicsExtensions{.pdf}
+
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\tuple}{(}{)}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\renewcommand{\implies}{\rightarrow}
+\newcommand{\db}{\mathcal{D}}
+\newcommand{\model}{\mathcal{M}}
+\newcommand{\priv}{R}
+\newcommand{\pos}{\hat{P}}
+\newcommand{\posm}{\hat{P}_\mathcal{M}}
+\newcommand{\tru}{T}
+\newcommand{\leg}{L}
+\newcommand{\sco}{\hat{S}}
+\newcommand{\scom}{\hat{S}_\mathcal{M}}
+\newcommand{\calib}{C}
+\newcommand{\prob}[1]{\text{Pr}[#1]}
 
 %%
 %% end of the preamble, start of the body of the document source.
@@ -213,9 +233,53 @@
 
 \subsection{Preliminaries}
 
+A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The attributes of $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
+
+Let $C \subseteq \mathcal{A}$. Let $\Omega_C = \Pi_{i \in C} \Omega_i$. The \emph{marginal}\cite{barak2007privacy,mckenna2021winning} on $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function. Let $M_C(\db)$ be the function that computes the marginal on $C$, i.e., $\mu = M_C(\db)$.
+
+A \emph{randomized mechanism} is a randomized algorithm $M$ that takes a database $\db$ and, after, introducing noise, outputs some results in set $R$.
+
+The $p$-norm is denoted by $L_p$ and the $p$-norm of a vector $x$ is denoted by $\Vert x \Vert_p$.
+
+The normal distribution or Gaussian distribution with mean $\mu$ and standard deviation $\sigma$ is denoted by $\mathcal{N}(\mu, \sigma^2)$.
+
+The Kullback–Leibler divergence between probability distributions $P$ and $Q$ is denoted by $D_{KL}(P \Vert Q)$. The generalization of it, R\'enyi divergence\cite{van2014renyi}, of order $\alpha$ is denoted by $D_\alpha(P \Vert Q)$.
+
 \subsection{Fairness Measures}
 
 \subsection{Differential Privacy}
+
+\begin{definition}[Sensitivity\cite{dwork2014algorithmic}]\label{def:sensitivity}
+Let $f$ be a function that takes a database $\db$ and outputs a vector $\mathbb{R}^p$. The $L_2$ sensitivity of $f$ is for all databases $\db_1,\db_2$ that differ in exactly one row:
+\[
+\Delta^2_f = max_{\db_1,\db_2} \Vert f(\db_1) - f(\db_2) \Vert_p
+\]
+\end{definition}
+
+\begin{definition}[Gaussian Mechanism\cite{dwork2014algorithmic}]\label{def:gm}
+Let $f$ be a function that takes a database $\db$ and outputs a vector $\mathbb{R}^p$. The Gaussian Mechanism $M$ adds Gaussian noise with scale $\sigma$ to each of the $p$ outputs:
+\[
+M(\db) = f(\db) + \mathcal{N}(0, \sigma^2 \mathbb{I})
+\]
+\end{definition}
+
+\begin{definition}[Differential Privacy (DP) \cite{dwork2006calibrating,dwork2014algorithmic,mckenna2021winning}]\label{def:rdp}
+A randomized mechanism $M$ satisfies $(\epsilon,\delta)$-DP if, for all databases $\db_1,\db_2$ that differ in exactly one row and for all subsets $S$ of $R$, we have
+\[
+\prob{M(\db_1) \in S} \leq e^\epsilon \prob{M(\db_2) \in S} + \delta
+\]
+\end{definition}
+
+\begin{definition}[R\'enyi Differential Privacy (RDP)]\label{def:rdp}
+A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ and $\gamma \geq 1$ if, for all databases $\db_1,\db_2$ that differ in exactly one row, we have
+\[
+D_\alpha(M(\db_1) \Vert M(\db_2)) \leq \gamma
+\]
+\end{definition}
+
+\begin{theorem}[RDP of the Gaussian Mechanism\cite{feldman2018privacy,mironov2017renyi}]
+The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP.
+\end{theorem}
 
 \subsection{Synthetic Data}
 
@@ -274,14 +338,23 @@ Some examples.  A paginated journal article \cite{Abril07}
 %   \end{tabular}
 % \end{table*}
 
-% \begin{figure}[h]
-%   \centering
-%   \includegraphics[width=\linewidth]{sample-franklin}
-%   \caption{1907 Franklin Model D roadster. Photograph by Harris \&
-%     Ewing, Inc. [Public domain], via Wikimedia
-%     Commons. (\url{https://goo.gl/VLCRBB}).}
-%   \Description{A woman and a girl in white dresses sit in an open car.}
-% \end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{compas_mst}
+  \caption{1907 Franklin Model D roadster. Photograph by Harris \&
+    Ewing, Inc. [Public domain], via Wikimedia
+    Commons. (\url{https://goo.gl/VLCRBB}).}
+  \Description{A woman and a girl in white dresses sit in an open car.}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{adult_mst}
+  \caption{1907 Franklin Model D roadster. Photograph by Harris \&
+    Ewing, Inc. [Public domain], via Wikimedia
+    Commons. (\url{https://goo.gl/VLCRBB}).}
+  \Description{A woman and a girl in white dresses sit in an open car.}
+\end{figure}
 
 %%
 %% The acknowledgments section is defined using the "acks" environment
