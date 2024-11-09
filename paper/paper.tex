@@ -110,6 +110,7 @@
 %%\citestyle{acmauthoryear}
 
 \usepackage{mathtools}
+\usepackage{multirow}
 
 \graphicspath{{images/}}
 \DeclareGraphicsExtensions{.pdf}
@@ -229,11 +230,21 @@
 
 \section{Related Work}
 
+\clearpage
+
 \section{Auditing Framework}
+
+Our framework considers a scenario with three parties-data provider, model maker, and 3rd party auditor. The data provider has access to real data; for example, a census bureau. The model maker have AI models; for example, an AI company. The 3rd party auditor takes the data from data provider and AI models from model makers and perform fairness audits on them; for example, an investigative journalist.
+
+In our original framework\cite{yuan2024ensuring}, after obtaining real data from data provider, the 3rd party auditor holds onto the real data for performing fairness audits. However, this may introduce privacy concerns such as security breach of the auditor.
+
+Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrival of the real data, and then holds onto the synthetic data and discards the real data, preventing further privacy breaches.
 
 \subsection{Preliminaries}
 
 A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The attributes of $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
+
+For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ to denote the ground truth of an outcome, let $\hat{Y}$ to denote the predicated result of an outcome, let $S$ denote protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
 
 Let $C \subseteq \mathcal{A}$. Let $\Omega_C = \Pi_{i \in C} \Omega_i$. The \emph{marginal}\cite{barak2007privacy,mckenna2021winning} on $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function. Let $M_C(\db)$ be the function that computes the marginal on $C$, i.e., $\mu = M_C(\db)$.
 
@@ -246,6 +257,71 @@ The normal distribution or Gaussian distribution with mean $\mu$ and standard de
 The Kullback–Leibler divergence between probability distributions $P$ and $Q$ is denoted by $D_{KL}(P \Vert Q)$. The generalization of it, R\'enyi divergence\cite{van2014renyi}, of order $\alpha$ is denoted by $D_\alpha(P \Vert Q)$.
 
 \subsection{Fairness Measures}
+
+We consider in this work various fairness measures listed in Table~\ref{tab:measures}. They can be broadly categorized into independence, separation, and sufficiency.
+
+\begin{definition}[Independence\cite{barocas2023fairness}]\label{def:independence}
+$(S, \hat{Y})$ satisfy independence if and only if $S \bot \hat{Y}$; that is
+\[
+P[\hat{Y} = 1 | S = 1] = P[\hat{Y} = 1 | S \neq 1]
+\]
+A relaxation of independence on a threshold is
+\[
+\abs{P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]} \leq \epsilon
+\]
+\end{definition}
+
+\begin{definition}[Separation\cite{barocas2023fairness}]\label{def:separation}
+$(S, Y, \hat{Y})$ satisfy separation if and only if $S \bot \hat{Y} | Y$; that is
+\begin{align*}
+P[\hat{Y} = 1 | S = 1, Y = 1] & = P[\hat{Y} = 1 | S \neq 1, Y = 1] \\
+P[\hat{Y} = 1 | S = 1, Y = 0] & = P[\hat{Y} = 1 | S \neq 1, Y = 0]
+\end{align*}
+A relaxation of independence on a threshold is
+\begin{align*}
+\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} & \leq \epsilon \\
+\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} & \leq \epsilon
+\end{align*}
+\end{definition}
+
+\begin{definition}[Sufficiency\cite{barocas2023fairness}]\label{def:separation}
+$(S, Y, \hat{Y})$ satisfy sufficiency if and only if $S \bot Y | \hat{Y}$; that is
+\begin{align*}
+P[Y = 1 | S = 1, \hat{Y} = 1] & = P[Y = 1 | S \neq 1, \hat{Y} = 1] \\
+P[Y = 1 | S = 1, \hat{Y} = 0] & = P[Y = 1 | S \neq 1, \hat{Y} = 0]
+\end{align*}
+A relaxation of independence on a threshold is
+\begin{align*}
+\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} & \leq \epsilon \\
+\abs{P[Y = 1 | S = 1, \hat{Y} = 0] - P[Y = 1 | S \neq 1, \hat{Y} = 0]} & \leq \epsilon
+\end{align*}
+\end{definition}
+
+\begin{table*}[h]
+\caption{Fairness measures.}
+\label{tab:measures}
+\begin{tabular}{llc} % 'l' specifies left alignment for the first column
+\toprule
+\textbf{Category} & \textbf{Fairness Measure} & \textbf{Definition} \\
+\midrule
+\multirow{4}{*}{Independence} & Disparate Impact & $\frac{P[\hat{Y} = 1 | S \neq 1]}{P[\hat{Y} = 1 | S = 1]} \geq 1 - \epsilon$ \\
+& Demographic Parity & $\abs{P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]} \leq \epsilon$ \\
+& Conditional Statistical Parity & $\abs{P[\hat{Y} = 1 | S = 1, L = l] - P[\hat{Y} = 1 | S \neq 1, L = l]} \leq \epsilon$ \\
+& Mean Difference & $\abs{E[\hat{Y}|S = 1] - E[\hat{Y}|S \neq 1]} \leq \epsilon$ \\
+\multirow{4}{*}{Separation} & \multirow{2}{*}{Equalized Odds} & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
+& & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
+& Equal Opportunity & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
+& Predictive Equality & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
+\multirow{4}{*}{Sufficiency} & \multirow{2}{*}{Conditional Use Accuracy Equality} & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
+& & $\abs{P[Y = 0 | S = 1, \hat{Y} = 0] - P[Y = 0 | S \neq 1, \hat{Y} = 0]} \leq \epsilon$ \\
+& Predictive Parity & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
+& Equal Calibration & $\abs{P[Y = 1 | S = 1, \hat{V} = v] - P[Y = 1 | S \neq 1, \hat{V} = v]} \leq \epsilon$ \\
+\multirow{3}{*}{N/A} & Overall Accuracy Equality & $\abs{P[Y = \hat{Y} | S = 1] - P[Y = \hat{Y} | S \neq 1]} \leq \epsilon$ \\
+& Positive Balance & $\abs{E[\hat{V} | Y = 1, S = 1] - E[\hat{V} | Y = 1, S \neq 1]} \leq \epsilon$ \\
+& Negative Balance & $\abs{E[\hat{V} | Y = 0, S = 1] - E[\hat{V} | Y = 0, S \neq 1]} \leq \epsilon$ \\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 \subsection{Differential Privacy}
 
@@ -281,11 +357,9 @@ D_\alpha(M(\db_1) \Vert M(\db_2)) \leq \gamma
 The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP.
 \end{theorem}
 
-\subsection{Synthetic Data}
-
 \section{Methodology}
 
-\subsection{Differential Private Synthetic Data}
+\subsection{Differentially Private Synthetic Data}
 
 \subsection{Fairness Checker}
 
