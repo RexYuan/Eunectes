@@ -360,50 +360,62 @@ The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})
 
 \section{Methodology}
 
+We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by Ryan McKenna\cite{Ullman2022,McKenna2022,McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
+
+The research is implemented in Python Jupyter notebooks and is publicly available.
+
 \subsection{Differentially Private Synthetic Data}
 
-We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by Ryan McKenna\cite{Ullman2022,McKenna2022,McKenna_privatePGM,mckenna2021winning,mckenna2019graphical}.
-
-The competition considers marginals of the synthetic data. The idea of marginal-based synthetic data generation is to create a model whose marginals of samples are similar to the marginals of the original data. For example, suppose we have an original database and it's 2-way marginal on sex(Male,Female) and race(White,Black) is as shown in Table~\ref{tab:marginal-example}.
+The NIST competition considers marginals of the synthetic data. The idea of marginal-based synthetic data generation is to create a model whose marginals of samples are similar to the marginals of the original data. For example, suppose we have an original database with attributes including sex(Male,Female) and race(White,Black) and its 2-way marginal on them is as shown in Table~\ref{tab:marginal-example}. The marginal of the synthetic data is supposed to be similar to that of the original database.
 
 \begin{table}[h]
-\caption{Example marginals.}
-\label{tab:marginal-example}
-\centering
-\begin{subtable}[t]{0.45\linewidth}
-\centering
-\caption{Marginal of original data.}
-\begin{tabular}{cc}
-  \toprule
-  Attributes & Count \\
-  \midrule
-  Male,White & 24 \\
-  Female,White & 33 \\
-  Male,Black & 13 \\
-  Female,Black & 47 \\
-  \bottomrule
-\end{tabular}
-\end{subtable}
-\hspace{0.05\linewidth}
-\begin{subtable}[t]{0.45\linewidth}
-\centering
-\caption{Marginal of synthetic data.}
-\begin{tabular}{cc}
-  \toprule
-  Attributes & Count \\
-  \midrule
-  Male,White & 22 \\
-  Female,White & 35 \\
-  Male,Black & 10 \\
-  Female,Black & 46 \\
-  \bottomrule
-\end{tabular}
-\end{subtable}
-\end{table}
+  \caption{Example marginals.}
+  \label{tab:marginal-example}
+  \centering
+  \begin{subtable}[t]{0.45\linewidth}
+  \centering
+  \caption{Marginal of original data.}
+  \begin{tabular}{cc}
+    \toprule
+    Attributes & Count \\
+    \midrule
+    Male,White & 24 \\
+    Female,White & 33 \\
+    Male,Black & 13 \\
+    Female,Black & 47 \\
+    \bottomrule
+  \end{tabular}
+  \end{subtable}
+  \hspace{0.05\linewidth}
+  \begin{subtable}[t]{0.45\linewidth}
+  \centering
+  \caption{Marginal of synthetic data.}
+  \begin{tabular}{cc}
+    \toprule
+    Attributes & Count \\
+    \midrule
+    Male,White & 22 \\
+    Female,White & 35 \\
+    Male,Black & 10 \\
+    Female,Black & 46 \\
+    \bottomrule
+  \end{tabular}
+  \end{subtable}
+  \end{table}
+
+The synthesis framework is three-fold; namely, select-measure-generate. We first select the important marginals to preserve, measure them by adding differential private noise, and then generate synthetic data. Underneath the hood, the tool employs a Markov random field(MRF) and the select step corresponds to marking cliques in a MRF.
+
+For the select step, we followed the techniques used by Ryan McKenna in the competition by calculating the mutual information(MI) of the given database and then create a maximum spanning tree(MST) with edge weights being the MIs. We further added edges according to a fraction of the upper bounds of each MI by calculating the Shannon entropies.
+
+For the measure and generate step, we simply followed the examples provided in the tool's repository. We added Gaussian noise to the marginals. we spent half of the privacy budget $\epsilon = 1$ on all 1-way marginals and the other on the MRF cliques. And then we generate synthetic data of size similar to the original database. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
 \subsection{Fairness Checker}
 
-\subsection{Implementation}
+We used the fairness checker from \cite{yuan2024ensuring}. We set the privileged predicate $\priv$ to male and the positive predicate $\pos$ to the positive prediction of each of the corresponding dataset.
+
+\subsection{Test Models}
+
+We extracted various models from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
 \section{Results}
 
