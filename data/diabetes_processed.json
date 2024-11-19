@@ -1,0 +1,11 @@
+{
+    "gender":                    3,
+    "age":                     102,
+    "hypertension":              2,
+    "heart_disease":             2,
+    "smoking_history":           6,
+    "bmi":                    4247,
+    "HbA1c_level":              18,
+    "blood_glucose_level":      18,
+    "diabetes":                  2
+}
