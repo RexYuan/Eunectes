@@ -120,7 +120,8 @@
 \DeclarePairedDelimiter{\tuple}{(}{)}
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \renewcommand{\implies}{\rightarrow}
-\newcommand{\db}{\mathcal{D}}
+\newcommand{\db}{D}
+\newcommand{\dbs}{\mathcal{D}}
 \newcommand{\model}{\mathcal{M}}
 \newcommand{\priv}{R}
 \newcommand{\pos}{\hat{P}}
@@ -233,75 +234,89 @@
 
 \clearpage
 
-\section{Auditing Framework}
+\section{Preliminaries}
 
-Our framework considers a scenario with three parties-data provider, model maker, and 3rd party auditor. The data provider has access to real data; for example, a census bureau. The model maker have AI models; for example, an AI company. The 3rd party auditor takes the data from data provider and AI models from model makers and perform fairness audits on them; for example, an investigative journalist.
-
-In our original framework\cite{yuan2024ensuring}, after obtaining real data from data provider, the 3rd party auditor holds onto the real data for performing fairness audits. However, this may introduce privacy concerns such as security breach of the auditor.
-
-Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrival of the real data, and then holds onto the synthetic data and discards the real data, preventing further privacy breaches.
-
-\subsection{Preliminaries}
-
-A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The attributes of $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
-
-For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ to denote the ground truth of an outcome, let $\hat{Y}$ to denote the predicated result of an outcome, let $S$ denote protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
-
-Let $C \subseteq \mathcal{A}$. Let $\Omega_C = \Pi_{i \in C} \Omega_i$. The \emph{marginal}\cite{barak2007privacy,mckenna2021winning} on $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function. Let $M_C(\db)$ be the function that computes the marginal on $C$, i.e., $\mu = M_C(\db)$. We call marginals of $|C| = n$ attributes $n$-way marginals.
-
-A \emph{randomized mechanism} is a randomized algorithm $M$ that takes a database $\db$ and, after, introducing noise, outputs some results in set $R$.
-
-The $p$-norm is denoted by $L_p$ and the $p$-norm of a vector $x$ is denoted by $\Vert x \Vert_p$.
-
-The normal distribution or Gaussian distribution with mean $\mu$ and standard deviation $\sigma$ is denoted by $\mathcal{N}(\mu, \sigma^2)$.
-
-The Kullback–Leibler divergence between probability distributions $P$ and $Q$ is denoted by $D_{KL}(P \Vert Q)$. The generalization of it, R\'enyi divergence\cite{van2014renyi}, of order $\alpha$ is denoted by $D_\alpha(P \Vert Q)$.
+A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The set of all databases is denoted $\dbs$. The attributes of a $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
 
 \subsection{Fairness Measures}
 
-We consider in this work various fairness measures listed in Table~\ref{tab:measures}. They can be broadly categorized into independence, separation, and sufficiency.
+For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ to denote the ground truth of an outcome, let $\hat{Y}$ to denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
 
-\begin{definition}[Independence\cite{barocas2023fairness}]\label{def:independence}
-$(S, \hat{Y})$ satisfy independence if and only if $S \bot \hat{Y}$; that is
-\[
-P[\hat{Y} = 1 | S = 1] = P[\hat{Y} = 1 | S \neq 1]
-\]
-A relaxation of independence on a threshold is
-\[
-\abs{P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]} \leq \epsilon
-\]
-\end{definition}
+Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}.
 
-\begin{definition}[Separation\cite{barocas2023fairness}]\label{def:separation}
-$(S, Y, \hat{Y})$ satisfy separation if and only if $S \bot \hat{Y} | Y$; that is
+\begin{table}[h]
+\caption{Fairness categories.}
+\label{tab:categories}
+\begin{tabular}{cc}
+\toprule
+\textbf{Category} & \textbf{Definition} \\
+\midrule
+Independence & $S \bot \hat{Y}$ \\
+Separation & $S \bot \hat{Y} | Y$ \\
+Sufficiency & $S \bot Y | \hat{Y}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These categories can be expanded into forms of probability. For example, the definition of separation is expanded to
 \begin{align*}
 P[\hat{Y} = 1 | S = 1, Y = 1] & = P[\hat{Y} = 1 | S \neq 1, Y = 1] \\
 P[\hat{Y} = 1 | S = 1, Y = 0] & = P[\hat{Y} = 1 | S \neq 1, Y = 0]
 \end{align*}
-A relaxation of independence on a threshold is
+The definition can be relaxed. Its relaxation, for some parameter $\epsilon$, is
 \begin{align*}
 \abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} & \leq \epsilon \\
 \abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} & \leq \epsilon
 \end{align*}
-\end{definition}
+which is also the definition of a fairness measure called equalized odds.
 
-\begin{definition}[Sufficiency\cite{barocas2023fairness}]\label{def:separation}
-$(S, Y, \hat{Y})$ satisfy sufficiency if and only if $S \bot Y | \hat{Y}$; that is
-\begin{align*}
-P[Y = 1 | S = 1, \hat{Y} = 1] & = P[Y = 1 | S \neq 1, \hat{Y} = 1] \\
-P[Y = 1 | S = 1, \hat{Y} = 0] & = P[Y = 1 | S \neq 1, \hat{Y} = 0]
-\end{align*}
-A relaxation of independence on a threshold is
-\begin{align*}
-\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} & \leq \epsilon \\
-\abs{P[Y = 1 | S = 1, \hat{Y} = 0] - P[Y = 1 | S \neq 1, \hat{Y} = 0]} & \leq \epsilon
-\end{align*}
-\end{definition}
+We consider in this work various fairness measures listed in Table~\ref{tab:measures}.
+
+% \begin{definition}[Independence\cite{barocas2023fairness}]\label{def:independence}
+% $(S, \hat{Y})$ satisfy independence if and only if $S \bot \hat{Y}$; that is
+% \[
+% P[\hat{Y} = 1 | S = 1] = P[\hat{Y} = 1 | S \neq 1]
+% \]
+% A relaxation of independence on a threshold is
+% \[
+% \abs{P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]} \leq \epsilon
+% \]
+% \end{definition}
+
+% \begin{definition}[Separation\cite{barocas2023fairness}]\label{def:separation}
+% $(S, Y, \hat{Y})$ satisfy separation if and only if $S \bot \hat{Y} | Y$; that is
+% \begin{align*}
+% P[\hat{Y} = 1 | S = 1, Y = 1] & = P[\hat{Y} = 1 | S \neq 1, Y = 1] \\
+% P[\hat{Y} = 1 | S = 1, Y = 0] & = P[\hat{Y} = 1 | S \neq 1, Y = 0]
+% \end{align*}
+% A relaxation of independence on a threshold is
+% \begin{align*}
+% \abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} & \leq \epsilon \\
+% \abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} & \leq \epsilon
+% \end{align*}
+% \end{definition}
+
+% \begin{definition}[Sufficiency\cite{barocas2023fairness}]\label{def:separation}
+% $(S, Y, \hat{Y})$ satisfy sufficiency if and only if $S \bot Y | \hat{Y}$; that is
+% \begin{align*}
+% P[Y = 1 | S = 1, \hat{Y} = 1] & = P[Y = 1 | S \neq 1, \hat{Y} = 1] \\
+% P[Y = 1 | S = 1, \hat{Y} = 0] & = P[Y = 1 | S \neq 1, \hat{Y} = 0]
+% \end{align*}
+% A relaxation of independence on a threshold is
+% \begin{align*}
+% \abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} & \leq \epsilon \\
+% \abs{P[Y = 1 | S = 1, \hat{Y} = 0] - P[Y = 1 | S \neq 1, \hat{Y} = 0]} & \leq \epsilon
+% \end{align*}
+% \end{definition}
+
+% The $p$-norm is denoted by $L_p$ and the $p$-norm of a vector $x$ is denoted by $\Vert x \Vert_p$.
+
+% The normal distribution or Gaussian distribution with mean $\mu$ and standard deviation $\sigma$ is denoted by $\mathcal{N}(\mu, \sigma^2)$.
 
 \begin{table*}[h]
 \caption{Fairness measures.}
 \label{tab:measures}
-\begin{tabular}{llc} % 'l' specifies left alignment for the first column
+\begin{tabular}{llc}
 \toprule
 \textbf{Category} & \textbf{Fairness Measure} & \textbf{Definition} \\
 \midrule
@@ -326,24 +341,26 @@ A relaxation of independence on a threshold is
 
 \subsection{Differential Privacy}
 
-\begin{definition}[Sensitivity\cite{dwork2014algorithmic}]\label{def:sensitivity}
-Let $f$ be a function that takes a database $\db$ and outputs a vector $\mathbb{R}^p$. The $L_2$ sensitivity of $f$ is for all databases $\db_1,\db_2$ that differ in exactly one row:
-\[
-\Delta^2_f = max_{\db_1,\db_2} \Vert f(\db_1) - f(\db_2) \Vert_p
-\]
-\end{definition}
+% \begin{definition}[Sensitivity\cite{dwork2014algorithmic}]\label{def:sensitivity}
+% Let $f$ be a function that takes a database $\db$ and outputs a vector $\mathbb{R}^p$. The $L_2$ sensitivity of $f$ is for all databases $\db_1,\db_2$ that differ in exactly one row:
+% \[
+% \Delta^2_f = max_{\db_1,\db_2} \Vert f(\db_1) - f(\db_2) \Vert_p
+% \]
+% \end{definition}
+
+% \begin{definition}[Differential Privacy (DP) \cite{dwork2006calibrating,dwork2014algorithmic,mckenna2021winning}]\label{def:rdp}
+% A randomized mechanism $M$ satisfies $(\epsilon,\delta)$-DP if, for all databases $\db_1,\db_2$ that differ in exactly one row and for all subsets $S$ of $R$, we have
+% \[
+% \prob{M(\db_1) \in S} \leq e^\epsilon \prob{M(\db_2) \in S} + \delta
+% \]
+% \end{definition}
+
+A \emph{randomized mechanism} is a randomized algorithm $M : \dbs \implies R$ that takes a database and, after introducing noise, outputs some results.
 
 \begin{definition}[Gaussian Mechanism\cite{dwork2014algorithmic}]\label{def:gm}
-Let $f$ be a function that takes a database $\db$ and outputs a vector $\mathbb{R}^p$. The Gaussian Mechanism $M$ adds Gaussian noise with scale $\sigma$ to each of the $p$ outputs:
+Let $f : \dbs \implies \mathbb{R}^p$ be a function that takes a database and outputs a vector. The Gaussian Mechanism $M$ adds i.i.d. Gaussian noise with scale $\sigma$ to each of the $p$ outputs:
 \[
 M(\db) = f(\db) + \mathcal{N}(0, \sigma^2 \mathbb{I})
-\]
-\end{definition}
-
-\begin{definition}[Differential Privacy (DP) \cite{dwork2006calibrating,dwork2014algorithmic,mckenna2021winning}]\label{def:rdp}
-A randomized mechanism $M$ satisfies $(\epsilon,\delta)$-DP if, for all databases $\db_1,\db_2$ that differ in exactly one row and for all subsets $S$ of $R$, we have
-\[
-\prob{M(\db_1) \in S} \leq e^\epsilon \prob{M(\db_2) \in S} + \delta
 \]
 \end{definition}
 
@@ -352,60 +369,95 @@ A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ a
 \[
 D_\alpha(M(\db_1) \Vert M(\db_2)) \leq \gamma
 \]
+where $D_\alpha$ is the R\'enyi divergence\cite{van2014renyi} of order $\alpha$.
 \end{definition}
 
 \begin{theorem}[RDP of the Gaussian Mechanism\cite{feldman2018privacy,mironov2017renyi}]
 The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP.
 \end{theorem}
 
-\section{Methodology}
+\subsection{Differentially Private Synthetic Data}
+
+Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \Pi_{i \in C} \Omega_i$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function; that is, it is the vector of the count of each possible element.
+
+Let $M_C(\db)$ be the function that computes the marginal of $C$ on $\db$, i.e., $\mu = M_C(\db)$. We call marginals of $|C| = n$ attributes $n$-way marginals.
+
+The task of differentially private synthetic data is, given a database $\db$, adding some noise such that it satisfies differential privacy guarantee and outputting another database $\db'$, such that the $L_1$ errors between some selected marginals $C_1,C_2,...$ of $\db$ and $\db'$ is small; that is, their marginals $(M_{C_1}(\db),M_{C_1}(\db')),(M_{C_2}(\db),M_{C_2}(\db')),...$ are similar.
+
+For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
+
+\begin{table}[h]
+\caption{Example marginals.}
+\label{tab:marginal-example}
+\centering
+\begin{subtable}[t]{0.45\linewidth}
+\centering
+\caption{Marginal of original data.}
+\begin{tabular}{cc}
+\toprule
+Attributes & Count \\
+\midrule
+Male,White & 24 \\
+Female,White & 33 \\
+Male,Black & 13 \\
+Female,Black & 47 \\
+\bottomrule
+\end{tabular}
+\end{subtable}
+\hspace{0.05\linewidth}
+\begin{subtable}[t]{0.45\linewidth}
+\centering
+\caption{Marginal of synthetic data.}
+\begin{tabular}{cc}
+\toprule
+Attributes & Count \\
+\midrule
+Male,White & 22 \\
+Female,White & 35 \\
+Male,Black & 10 \\
+Female,Black & 46 \\
+\bottomrule
+\end{tabular}
+\end{subtable}
+\end{table}
+
+\section{Auditing Framework}
+
+Our auditing framework is tripartite. It consists of three parties: the data provider, the model maker, and the third-party auditor.
+
+The data provider is responsible for supplying the raw datasets which should originate from trustworthy sources, such as government agencies like a census bureau.
+
+The model maker develops AI models. These are AI companies or research labs specialized in training and optimizing AI models.
+
+The third-party auditor acts as an evaluator, using our framework to audit the AI models for fairness issues by combining both the datasets and the models. These may be investigative journalists or regulatory bodies.
+
+In the framework of our previous work\cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits.
+
+However, this practice introduces security concerns. It creates a vulnerability to data security threats. A breach at the auditor's end could result in compromises of individuals' privacy.
+
+Moreover, the storage of the datasets also raises privacy concerns. Holding large amounts of sensitive data for an extended period opens the door to the risk of misuse. The auditor may misuse the data for unauthorized purposes.
+
+Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing further privacy breaches.
+
+\subsection{Methodology}
 
 We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by Ryan McKenna\cite{Ullman2022,McKenna2022,McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
-The research is implemented in Python Jupyter notebooks and is publicly available.
+% This research is implemented in Python Jupyter notebooks and is publicly available.
 
-\subsection{Differentially Private Synthetic Data}
+The synthesis framework is three-fold; namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding differentially private noise, and then generate synthetic data.
 
-The NIST competition considers marginals of the synthetic data. The idea of marginal-based synthetic data generation is to create a model whose marginals of samples are similar to the marginals of the original data. For example, suppose we have an original database with attributes including sex(Male,Female) and race(White,Black) and its 2-way marginal on them is as shown in Table~\ref{tab:marginal-example}. The marginal of the synthetic data is supposed to be similar to that of the original database.
+Underneath the hood, the tool employs a Markov random field (MRF) and the select step corresponds to marking cliques in an MRF. By default, all $1$-way marginals are selected to preserve the quantity of each attribute element.
 
-\begin{table}[h]
-  \caption{Example marginals.}
-  \label{tab:marginal-example}
-  \centering
-  \begin{subtable}[t]{0.45\linewidth}
-  \centering
-  \caption{Marginal of original data.}
-  \begin{tabular}{cc}
-    \toprule
-    Attributes & Count \\
-    \midrule
-    Male,White & 24 \\
-    Female,White & 33 \\
-    Male,Black & 13 \\
-    Female,Black & 47 \\
-    \bottomrule
-  \end{tabular}
-  \end{subtable}
-  \hspace{0.05\linewidth}
-  \begin{subtable}[t]{0.45\linewidth}
-  \centering
-  \caption{Marginal of synthetic data.}
-  \begin{tabular}{cc}
-    \toprule
-    Attributes & Count \\
-    \midrule
-    Male,White & 22 \\
-    Female,White & 35 \\
-    Male,Black & 10 \\
-    Female,Black & 46 \\
-    \bottomrule
-  \end{tabular}
-  \end{subtable}
-  \end{table}
+We can further preserve correlations by adding $n$-way marginals. For example, if we want to preserve the relationship between sex and race, we may add the clique containing sex and race.
 
-The synthesis framework is three-fold; namely, select-measure-generate. We first select the important marginals to preserve, measure them by adding differential private noise, and then generate synthetic data. Underneath the hood, the tool employs a Markov random field(MRF) and the select step corresponds to marking cliques in a MRF.
+In a perfect world where all correlation information is to be preserved, we may wish to make a completely connected graph. However, this was found to be intractable as the complexity of the problem would skyrocket.
 
-For the select step, we followed the techniques used by Ryan McKenna in the competition by calculating the mutual information(MI) of the given database and then create a maximum spanning tree(MST) with edge weights being the MIs. We further added edges according to a fraction of the upper bounds of each MI by calculating the Shannon entropies.
+To circumvent the complexity explosion, instead, Ryan McKenna devised a technique where the mutual information(MI) of the all database attribute pairs are calculated and then a maximum spanning tree(MST) algorithm was run with edge weights being the MIs to obtain a skeleton MST MRF.
+
+For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset.
+
+For the select step, we followed the techniques used by . We further added edges according to a fraction of the upper bounds of each MI by calculating the Shannon entropies.
 
 For the measure and generate step, we simply followed the examples provided in the tool's repository. We added Gaussian noise to the marginals. we spent half of the privacy budget $\epsilon = 1$ on all 1-way marginals and the other on the MRF cliques. And then we generate synthetic data of size similar to the original database. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
