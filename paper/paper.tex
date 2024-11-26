@@ -473,9 +473,9 @@ By comparing these measures between the synthetic and original datasets, we aim 
 
 The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected as described in the previous section, and the synthetic data generator model is fitted to the original data according to the marginals. Then the generator is run multiple times to obtain multiple sets of synthetic data.
 
-Next, AI models are extracted from various real life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
+Next, several AI models are extracted from various real life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
-AI models and both the original dataset and the synthetic datasets are fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, all applicable fairness measures are computed using the checker for both the original dataset and the rounds of synthetic datasets.
+Several AI models and both the original dataset and the rounds of synthetic datasets are fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, all applicable fairness measures are computed using the checker for both the original and the synthetic.
 
 Finally, we analyze the discrepancies between the fairness properties of the original and the synthetic by calculating the difference and the ratio of their perspective fairness measure values. The sum of the difference and the average of the ratio serve as a summary of the analysis.
 
@@ -483,9 +483,81 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
 
 \subsection{Adult Income Dataset}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{adult_mst}
+\caption{Markov random field for marginals of the adult dataset.}
+\Description{Markov random field for marginals of the adult dataset.}
+\end{figure}
+
+\begin{table}[h]
+\caption{Fairness measures experiment results.}
+\label{tab:categories}
+\begin{tabular}{p{0.3\linewidth}cccc}
+\toprule
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Ratio} \\
+\midrule
+Demographic Parity  & 0.172 & 0.104 & 0.067 & 1.651 \\
+Accuracy Eqaulity   & 0.047 & 0.117 & 0.069 & 0.404 \\
+Equalized Odds 1    & 0.057 & 0.079 & 0.021 & 0.723 \\
+Equalized Odds 2    & 0.166 & 0.122 & 0.044 & 1.365 \\
+Accuracy Equality 1 & 0.100 & 0.132 & 0.031 & 0.759 \\
+Accuracy Equality 2 & 0.119 & 0.146 & 0.027 & 0.814 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{COMPAS Dataset}
 
-\subsection{One More Dataset}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{compas_mst}
+\caption{Markov random field for marginals of the COMPAS dataset.}
+\Description{Markov random field for marginals of the COMPAS dataset.}
+\end{figure}
+
+\begin{table}[h]
+\caption{Fairness measures experiment results.}
+\label{tab:categories}
+\begin{tabular}{p{0.3\linewidth}cccc}
+\toprule
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Ratio} \\
+\midrule
+Demographic Parity     & 0.131 & 0.098 & 0.032 & 1.329 \\
+Accuracy Eqaulity      & 0.007 & 0.013 & 0.005 & 0.575 \\
+Equalized Odds 1       & 0.024 & 0.099 & 0.074 & 0.249 \\
+Equalized Odds 2       & 0.017 & 0.097 & 0.079 & 0.182 \\
+Accuracy Equality 1 & 0.170 & 0.082 & 0.088 & 2.082 \\
+Accuracy Equality 2 & 0.169 & 0.027 & 0.141 & 6.058 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Diabetes Dataset}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{diabetes_mst}
+\caption{Markov random field for marginals of the diabetes dataset.}
+\Description{Markov random field for marginals of the COMPAS dataset.}
+\end{figure}
+
+\begin{table}[h]
+\caption{Fairness measures experiment results.}
+\label{tab:categories}
+\begin{tabular}{p{0.3\linewidth}cccc}
+\toprule
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Ratio} \\
+\midrule
+Demographic Parity  & 0.013 & 0.015 & 0.002 & 0.867 \\
+Accuracy Eqaulity   & 0.007 & 0.009 & 0.002 & 0.782 \\
+Equalized Odds 1    & 0.000 & 0.003 & 0.003 & 0.000 \\
+Equalized Odds 2    & 0.008 & 0.106 & 0.097 & 0.081 \\
+Accuracy Equality 1 & 0.013 & 0.097 & 0.084 & 0.136 \\
+Accuracy Equality 2 & 0.021 & 0.020 & 0.001 & 1.068 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Discussion}
 
@@ -495,52 +567,9 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
 
 \section{Conclusion}
 
-% \begin{table}
-%   \caption{Frequency of Special Characters}
-%   \label{tab:freq}
-%   \begin{tabular}{ccl}
-%     \toprule
-%     Non-English or Math&Frequency&Comments\\
-%     \midrule
-%     \O & 1 in 1,000& For Swedish names\\
-%     $\pi$ & 1 in 5& Common in math\\
-%     \$ & 4 in 5 & Used in business\\
-%     $\Psi^2_1$ & 1 in 40,000& Unexplained usage\\
-%   \bottomrule
-% \end{tabular}
-% \end{table}
 
-% \begin{table*}
-%   \caption{Some Typical Commands}
-%   \label{tab:commands}
-%   \begin{tabular}{ccl}
-%     \toprule
-%     Command &A Number & Comments\\
-%     \midrule
-%     \texttt{{\char'134}author} & 100& Author \\
-%     \texttt{{\char'134}table}& 300 & For tables\\
-%     \texttt{{\char'134}table*}& 400& For wider tables\\
-%     \bottomrule
-%   \end{tabular}
-% \end{table*}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{compas_mst}
-  \caption{1907 Franklin Model D roadster. Photograph by Harris \&
-    Ewing, Inc. [Public domain], via Wikimedia
-    Commons. (\url{https://goo.gl/VLCRBB}).}
-  \Description{A woman and a girl in white dresses sit in an open car.}
-\end{figure}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{adult_mst}
-  \caption{1907 Franklin Model D roadster. Photograph by Harris \&
-    Ewing, Inc. [Public domain], via Wikimedia
-    Commons. (\url{https://goo.gl/VLCRBB}).}
-  \Description{A woman and a girl in white dresses sit in an open car.}
-\end{figure}
 
 %%
 %% The acknowledgments section is defined using the "acks" environment
