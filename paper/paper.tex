@@ -439,35 +439,37 @@ Moreover, the storage of the datasets also raises privacy concerns. Holding larg
 
 Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing further privacy breaches.
 
-\subsection{Methodology}
+\section{Methodology}
 
 We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by Ryan McKenna\cite{Ullman2022,McKenna2022,McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
-% This research is implemented in Python Jupyter notebooks and is publicly available.
+This research is implemented in Python Jupyter notebooks and is publicly available.
+
+\subsection{Data Synthesis}
 
 The synthesis framework is three-fold; namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding differentially private noise, and then generate synthetic data.
 
-Underneath the hood, the tool employs a Markov random field (MRF) and the select step corresponds to marking cliques in an MRF. By default, all $1$-way marginals are selected to preserve the quantity of each attribute element.
+Underneath the hood, the tool employs a Markov random field (MRF). The select step corresponds to marking cliques in an MRF, and the generate step corresponds to sampling from the fitted MRF.
 
-We can further preserve correlations by adding $n$-way marginals. For example, if we want to preserve the relationship between sex and race, we may add the clique containing sex and race.
+By default, all $1$-way marginals are selected to preserve the quantity of each attribute element. We can further preserve correlations by adding $n$-way marginals. For example, if we want to preserve the relationship between sex and race, we may add the clique (sex,race).
 
 In a perfect world where all correlation information is to be preserved, we may wish to make a completely connected graph. However, this was found to be intractable as the complexity of the problem would skyrocket.
 
 To circumvent the complexity explosion, instead, Ryan McKenna devised a technique where the mutual information(MI) of the all database attribute pairs are calculated and then a maximum spanning tree(MST) algorithm was run with edge weights being the MIs to obtain a skeleton MST MRF.
 
-For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset.
+For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset. For example, he manually added the clique (sex,city,income). In addition, he would add some edges based on some heuristics tailored to that particular dataset.
 
-For the select step, we followed the techniques used by . We further added edges according to a fraction of the upper bounds of each MI by calculating the Shannon entropies.
+We came up with an alternative heuristic for a general purpose workflow. Since MIs are bounded by the minimum of the pair's respective Shannon entropies, we add additional edges according to a fraction of this upper bounds.
 
-For the measure and generate step, we simply followed the examples provided in the tool's repository. We added Gaussian noise to the marginals. we spent half of the privacy budget $\epsilon = 1$ on all 1-way marginals and the other on the MRF cliques. And then we generate synthetic data of size similar to the original database. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
+For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget are spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the MRF. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
-\subsection{Fairness Checker}
+\subsection{Fairness Checking}
 
-We used the fairness checker from \cite{yuan2024ensuring}. We set the privileged predicate $\priv$ to male and the positive predicate $\pos$ to the positive prediction of each of the corresponding dataset.
+% We used the fairness checker from \cite{yuan2024ensuring}. We set the privileged predicate $\priv$ to male and the positive predicate $\pos$ to the positive prediction of each of the corresponding dataset.
 
 \subsection{Test Models}
 
-We extracted various models from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
+% We extracted various models from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
 \section{Results}
 
