@@ -457,7 +457,7 @@ In a perfect world where all correlation information is to be preserved, we may 
 
 To circumvent the complexity explosion, instead, Ryan McKenna devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree algorithm was run with edge weights being the mutual information to obtain a skeleton spanning-tree-shaped Markov random field.
 
-For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset. For example, he manually added the clique (sex,city,income). In addition, he would add some edges based on some heuristics tailored to that particular dataset.
+For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset. For example, he manually added the clique (sex,city,income). In addition, he would add some edges based on some sophisticated heuristics tailored to that particular dataset.
 
 We developed an alternative heuristic for a general-purpose workflow. From the definition of mutual information, we can obtain that they are bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
@@ -465,11 +465,19 @@ For the measure step, we followed the examples provided in the tool's repository
 
 \subsection{Fairness Checking}
 
-After synthesizing datasets, we used the fairness checker from \cite{yuan2024ensuring} to compute their fairness measures. To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset.
+After synthesizing datasets, we used the fairness checker from \cite{yuan2024ensuring} to compute their fairness measures. To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset. We used various datasets with fairness concerns mentioned in \cite{pessach2022review}.
 
-\subsection{Test Models}
+The fairness checker evaluates datasets based on multiple fairness metrics, such as demographic parity and equalized odds. These metrics are computed on some sensitive attributes, predicted outcomes, and ground truths. Examples of sensitive attributes are race and sex. Examples of predicted outcomes and ground truths are loan approval and criminal recidivism.
 
-% We extracted various models from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
+By comparing these measures between the synthetic and original datasets, we aim to ensure that the synthetic data preserves the fairness properties of the original data. The comparison process is three-fold. It goes as follows.
+
+The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected as described in the previous section, and the synthetic data generator model is fitted to the original data according to the marginals. Then the generator is run multiple times to obtain multiple sets of synthetic data.
+
+Next, AI models are extracted from various real life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
+
+AI models and both the original dataset and the synthetic datasets are fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, all applicable fairness measures are computed using the checker for both the original dataset and the rounds of synthetic datasets.
+
+Finally, we analyze the discrepancies between the fairness properties of the original and the synthetic by calculating the difference and the ratio of their perspective fairness measure values. The sum of the difference and the average of the ratio serve as a summary of the analysis.
 
 \section{Results}
 
