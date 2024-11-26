@@ -449,23 +449,23 @@ This research is implemented in Python Jupyter notebooks and is publicly availab
 
 The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding differentially private noise, and then generate synthetic data.
 
-Underneath the hood, the tool employs a Markov random field (MRF). The select step corresponds to marking cliques in an MRF, and the generate step corresponds to sampling from the fitted MRF.
+Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to sampling from the fitted Markov random field.
 
 By default, all $1$-way marginals are selected to preserve the quantity of each attribute element. We can further preserve correlations by adding $n$-way marginals. For example, if we want to preserve the relationship between sex and race, we may add the clique (sex,race).
 
 In a perfect world where all correlation information is to be preserved, we may wish to make a completely connected graph. However, this was found to be intractable as the complexity of the problem would skyrocket.
 
-To circumvent the complexity explosion, instead, Ryan McKenna devised a technique where the mutual information(MI) of all the database attribute pairs is calculated, and then a maximum spanning tree(MST) algorithm was run with edge weights being the MIs to obtain a skeleton MST MRF.
+To circumvent the complexity explosion, instead, Ryan McKenna devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree algorithm was run with edge weights being the mutual information to obtain a skeleton spanning-tree-shaped Markov random field.
 
 For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset. For example, he manually added the clique (sex,city,income). In addition, he would add some edges based on some heuristics tailored to that particular dataset.
 
-We developed an alternative heuristic for a general-purpose workflow. Since MIs are bounded by the minimum of the pair's respective Shannon entropies, we add additional edges according to a fraction of these upper bounds.
+We developed an alternative heuristic for a general-purpose workflow. From the definition of mutual information, we can obtain that they are bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
-For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the MRF. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
+For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
 \subsection{Fairness Checking}
 
-% We used the fairness checker from \cite{yuan2024ensuring}. We set the privileged predicate $\priv$ to male and the positive predicate $\pos$ to the positive prediction of each of the corresponding dataset.
+After synthesizing datasets, we used the fairness checker from \cite{yuan2024ensuring} to compute their fairness measures. To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset.
 
 \subsection{Test Models}
 
