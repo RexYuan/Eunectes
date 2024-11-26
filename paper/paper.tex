@@ -447,7 +447,7 @@ This research is implemented in Python Jupyter notebooks and is publicly availab
 
 \subsection{Data Synthesis}
 
-The synthesis framework is three-fold; namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding differentially private noise, and then generate synthetic data.
+The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding differentially private noise, and then generate synthetic data.
 
 Underneath the hood, the tool employs a Markov random field (MRF). The select step corresponds to marking cliques in an MRF, and the generate step corresponds to sampling from the fitted MRF.
 
@@ -455,13 +455,13 @@ By default, all $1$-way marginals are selected to preserve the quantity of each 
 
 In a perfect world where all correlation information is to be preserved, we may wish to make a completely connected graph. However, this was found to be intractable as the complexity of the problem would skyrocket.
 
-To circumvent the complexity explosion, instead, Ryan McKenna devised a technique where the mutual information(MI) of the all database attribute pairs are calculated and then a maximum spanning tree(MST) algorithm was run with edge weights being the MIs to obtain a skeleton MST MRF.
+To circumvent the complexity explosion, instead, Ryan McKenna devised a technique where the mutual information(MI) of all the database attribute pairs is calculated, and then a maximum spanning tree(MST) algorithm was run with edge weights being the MIs to obtain a skeleton MST MRF.
 
 For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset. For example, he manually added the clique (sex,city,income). In addition, he would add some edges based on some heuristics tailored to that particular dataset.
 
-We came up with an alternative heuristic for a general purpose workflow. Since MIs are bounded by the minimum of the pair's respective Shannon entropies, we add additional edges according to a fraction of this upper bounds.
+We developed an alternative heuristic for a general-purpose workflow. Since MIs are bounded by the minimum of the pair's respective Shannon entropies, we add additional edges according to a fraction of these upper bounds.
 
-For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget are spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the MRF. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
+For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the MRF. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
 \subsection{Fairness Checking}
 
