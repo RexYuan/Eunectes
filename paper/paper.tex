@@ -481,18 +481,29 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
 
 \section{Results}
 
+We looked at several publicly available datasets, such as adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The adult dataset comes from the 1994 census in the United States. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system. The diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal.
+
 \subsection{Adult Income Dataset}
+
+For the adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
+
+Marginals based on this graph are then passed to the synthetic data generator for model fitting.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{adult_mst}
 \caption{Markov random field for marginals of the adult dataset.}
+\label{fig:adult_mst}
 \Description{Markov random field for marginals of the adult dataset.}
 \end{figure}
 
+After generating ten rounds of synthetic data and passing them to the checker, their fairness measure values are averaged. Then, we compare them against the values of the original data. The results are shown in Table~\ref{tab:adult_score}.
+
+We observed that across all examined fairness measures, their difference all fall below 0.1. The sum of their differences is 0.259 and the average of their ratios is 0.952, which we consider quite satisfactory.
+
 \begin{table}[h]
-\caption{Fairness measures experiment results of the adult dataset. Sum of difference is 0.259. Average of ratio is 0.952.}
-\label{tab:categories}
+\caption{Fairness measures experiment results of the adult dataset. Sum of differences is 0.259. Average of ratios is 0.952.}
+\label{tab:adult_score}
 \begin{tabular}{ccccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Diff} & \textbf{Ratio} \\
@@ -509,16 +520,25 @@ Accuracy Equality 2 & 0.119 & 0.146 & 0.027 & 0.814 \\
 
 \subsection{COMPAS Dataset}
 
+For the COMPAS dataset, the initial spanning tree has a long tail, which is not surprising because, upon closer inspection, they all are related to the original COMPAS risk scores. The heuristic edge addition did not change the graph significantly. It only introduced one 3-clique triangle. The resulting graph is shown in Figure~\ref{fig:compas_mst}.
+
+Marginals of this graph are then too passed to the synthetic data generator for fitting.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{compas_mst}
 \caption{Markov random field for marginals of the COMPAS dataset.}
+\label{fig:compas_mst}
 \Description{Markov random field for marginals of the COMPAS dataset.}
 \end{figure}
 
+We ran the same workflow as adult dataset for the COMPAS dataset. The comparison results are shown in Table~\ref{tab:compas_score}.
+
+The results showed an increase in error on the sufficiency measure values. In particular, one of the measures has an error ratio as high as 6. The sum of their differences is 0.419, and the average of their ratios is 1.745, which is worse than the adult dataset.
+
 \begin{table}[h]
-\caption{Fairness measures experiment results of the COMPAS dataset. Sum of difference is 0.419. Average of ratio is 1.745.}
-\label{tab:categories}
+\caption{Fairness measures experiment results of the COMPAS dataset. Sum of differences is 0.419. Average of ratios is 1.745.}
+\label{tab:compas_score}
 \begin{tabular}{ccccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Diff} & \textbf{Ratio} \\
@@ -535,16 +555,25 @@ Accuracy Equality 2    & 0.169 & 0.027 & 0.141 & 6.058 \\
 
 \subsection{Diabetes Dataset}
 
+The tree grown from the diabetes dataset did not appear to have any particular characteristics. The root of the tree is placed in the BMI value, which reasonably captures most information. The heuristic edge addition process introduced some 3-clique triangles. The resulting graph is shown in Figure~\ref{fig:diabetes_mst}.
+
+The same process is conducted to fit the synthetic data generator model.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{diabetes_mst}
 \caption{Markov random field for marginals of the diabetes dataset.}
+\label{fig:diabetes_mst}
 \Description{Markov random field for marginals of the COMPAS dataset.}
 \end{figure}
 
+The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
+
+There was also an increase of error on some sufficiency measure values. The sum of their differences is 0.189 and the average of their ratios is 0.489. However, this comparison may be skewed because one of the fairness measures in the original data was calculated to be zero, thus making the average ratio seem lower than otherwise.
+
 \begin{table}[h]
-\caption{Fairness measures experiment results of the COMPAS dataset. Sum of difference is 0.189. Average of ratio is 0.489.}
-\label{tab:categories}
+\caption{Fairness measures experiment results of the COMPAS dataset. Sum of differences is 0.189. Average of ratios is 0.489.}
+\label{tab:diabetes_score}
 \begin{tabular}{ccccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Diff} & \textbf{Ratio} \\
