@@ -45,7 +45,7 @@
 %% for your publication.
 %%
 %%
-% \documentclass[manuscript,screen,review]{acmart}
+% \documentclass[manuscript,screen,review,anonymous]{acmart}
 \documentclass[acmsmall,sigconf]{acmart}
 
 %%
@@ -491,11 +491,11 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
 \end{figure}
 
 \begin{table}[h]
-\caption{Fairness measures experiment results.}
+\caption{Fairness measures experiment results of the adult dataset. Sum of difference is 0.259. Average of ratio is 0.952.}
 \label{tab:categories}
-\begin{tabular}{p{0.3\linewidth}cccc}
+\begin{tabular}{ccccc}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Ratio} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Diff} & \textbf{Ratio} \\
 \midrule
 Demographic Parity  & 0.172 & 0.104 & 0.067 & 1.651 \\
 Accuracy Eqaulity   & 0.047 & 0.117 & 0.069 & 0.404 \\
@@ -517,18 +517,18 @@ Accuracy Equality 2 & 0.119 & 0.146 & 0.027 & 0.814 \\
 \end{figure}
 
 \begin{table}[h]
-\caption{Fairness measures experiment results.}
+\caption{Fairness measures experiment results of the COMPAS dataset. Sum of difference is 0.419. Average of ratio is 1.745.}
 \label{tab:categories}
-\begin{tabular}{p{0.3\linewidth}cccc}
+\begin{tabular}{ccccc}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Ratio} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Diff} & \textbf{Ratio} \\
 \midrule
 Demographic Parity     & 0.131 & 0.098 & 0.032 & 1.329 \\
 Accuracy Eqaulity      & 0.007 & 0.013 & 0.005 & 0.575 \\
 Equalized Odds 1       & 0.024 & 0.099 & 0.074 & 0.249 \\
 Equalized Odds 2       & 0.017 & 0.097 & 0.079 & 0.182 \\
-Accuracy Equality 1 & 0.170 & 0.082 & 0.088 & 2.082 \\
-Accuracy Equality 2 & 0.169 & 0.027 & 0.141 & 6.058 \\
+Accuracy Equality 1    & 0.170 & 0.082 & 0.088 & 2.082 \\
+Accuracy Equality 2    & 0.169 & 0.027 & 0.141 & 6.058 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -543,11 +543,11 @@ Accuracy Equality 2 & 0.169 & 0.027 & 0.141 & 6.058 \\
 \end{figure}
 
 \begin{table}[h]
-\caption{Fairness measures experiment results.}
+\caption{Fairness measures experiment results of the COMPAS dataset. Sum of difference is 0.189. Average of ratio is 0.489.}
 \label{tab:categories}
-\begin{tabular}{p{0.3\linewidth}cccc}
+\begin{tabular}{ccccc}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Ratio} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Diff} & \textbf{Ratio} \\
 \midrule
 Demographic Parity  & 0.013 & 0.015 & 0.002 & 0.867 \\
 Accuracy Eqaulity   & 0.007 & 0.009 & 0.002 & 0.782 \\
