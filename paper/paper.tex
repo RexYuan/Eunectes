@@ -382,7 +382,7 @@ Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \Pi_{i 
 
 Let $M_C(\db)$ be the function that computes the marginal of $C$ on $\db$, i.e., $\mu = M_C(\db)$. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
-The task of differentially private synthetic data is, given a database $\db$, adding some noise such that it satisfies differential privacy guarantee and outputting another database $\db'$, such that the $L_1$ errors between some selected marginals $C_1,C_2,...$ of $\db$ and $\db'$ is small; that is, their marginals $(M_{C_1}(\db),M_{C_1}(\db')),(M_{C_2}(\db),M_{C_2}(\db')),...$ are similar.
+The task of differentially private synthetic data\cite{NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise such that it satisfies differential privacy guarantee and outputting another database $\db'$, such that the $L_1$ errors between some selected marginals $C_1,C_2,...$ of $\db$ and $\db'$ is small; that is, their marginals $(M_{C_1}(\db),M_{C_1}(\db')),(M_{C_2}(\db),M_{C_2}(\db')),...$ are similar.
 
 For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
 
