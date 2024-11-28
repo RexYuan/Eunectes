@@ -45,8 +45,8 @@
 %% for your publication.
 %%
 %%
-% \documentclass[manuscript,screen,review,anonymous]{acmart}
-\documentclass[acmsmall,sigconf]{acmart}
+\documentclass[manuscript,screen,review,anonymous]{acmart}
+% \documentclass[acmsmall,sigconf]{acmart}
 
 %%
 %% \BibTeX command to typeset BibTeX logo in the docs
@@ -66,7 +66,7 @@
 
 % %% These commands are for a PROCEEDINGS abstract or paper.
 % \acmConference[Conference acronym 'XX]{Make sure to enter the correct
-%   conference title from your rights confirmation emai}{June 03--05,
+%   conference title from your rights confirmation emai}{June 0--05,
 %   2018}{Woodstock, NY}
 % %%
 % %%  Uncomment \acmBooktitle if the title of the proceedings is different
@@ -238,11 +238,17 @@
 
 A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The set of all databases is denoted $\dbs$. The attributes of a $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
 
+TODO: cart prod, shannon, mi, mrf definition
+
+
+
 \subsection{Fairness Measures}
 
 For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ to denote the ground truth of an outcome, let $\hat{Y}$ to denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
 
 Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}.
+
+TODO: bot is independence
 
 \begin{table}[h]
 \caption{Fairness categories.}
@@ -339,7 +345,7 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 \end{tabular}
 \end{table*}
 
-\subsection{Differential Privacy}
+\subsection{R\'enyi Differential Privacy}
 
 % \begin{definition}[Sensitivity\cite{dwork2014algorithmic}]\label{def:sensitivity}
 % Let $f$ be a function that takes a database $\db$ and outputs a vector $\mathbb{R}^p$. The $L_2$ sensitivity of $f$ is for all databases $\db_1,\db_2$ that differ in exactly one row:
@@ -370,19 +376,29 @@ A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ a
 D_\alpha(M(\db_1) \Vert M(\db_2)) \leq \gamma
 \]
 where $D_\alpha$ is the R\'enyi divergence\cite{van2014renyi} of order $\alpha$.
+
+TODO: formula def
+
+
 \end{definition}
 
 \begin{theorem}[RDP of the Gaussian Mechanism\cite{feldman2018privacy,mironov2017renyi}]
 The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP.
+
+TODO: sensitivity
 \end{theorem}
 
 \subsection{Differentially Private Synthetic Data}
 
 Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \Pi_{i \in C} \Omega_i$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function; that is, it is the vector of the count of each possible element.
 
+% TODO: x_c def
+
 Let $M_C(\db)$ be the function that computes the marginal of $C$ on $\db$, i.e., $\mu = M_C(\db)$. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
 The task of differentially private synthetic data\cite{NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise such that it satisfies differential privacy guarantee and outputting another database $\db'$, such that the $L_1$ errors between some selected marginals $C_1,C_2,...$ of $\db$ and $\db'$ is small; that is, their marginals $(M_{C_1}(\db),M_{C_1}(\db')),(M_{C_2}(\db),M_{C_2}(\db')),...$ are similar.
+
+TODO: add noise to marginal not database
 
 For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
 
@@ -421,7 +437,7 @@ Female,Black & 46 \\
 \end{subtable}
 \end{table}
 
-\section{Auditing Framework}
+\section{Motivation}
 
 Our auditing framework is tripartite. It consists of three parties: the data provider, the model maker, and the third-party auditor.
 
@@ -429,17 +445,23 @@ The data provider is responsible for supplying the raw datasets which should ori
 
 The model maker develops AI models. These are AI companies or research labs specialized in training and optimizing AI models.
 
-The third-party auditor acts as an evaluator, using our framework to audit the AI models for fairness issues by combining both the datasets and the models. These may be investigative journalists or regulatory bodies.
+The third-party auditor acts as an evaluator, using our tool to audit the AI models for fairness issues by combining both the datasets and the models. These may be investigative journalists or regulatory bodies.
 
 In the framework of our previous work\cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits.
 
 However, this practice introduces security concerns. It creates a vulnerability to data security threats. A breach at the auditor's end could result in compromises of individuals' privacy.
+
+TODO:
+security => unauthorized access. bulwark database
+privacy => authorized access, no info leak
 
 Moreover, the storage of the datasets also raises privacy concerns. Holding large amounts of sensitive data for an extended period opens the door to the risk of misuse. The auditor may misuse the data for unauthorized purposes.
 
 Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing further privacy breaches.
 
 \section{Methodology}
+
+TODO: remove all names of ryan meckenna. use references
 
 We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by Ryan McKenna\cite{Ullman2022,McKenna2022,McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
@@ -459,6 +481,8 @@ To circumvent the complexity explosion, instead, Ryan McKenna devised a techniqu
 
 For the competition, Ryan McKenna further manually added certain cliques based on his investigation of the competition dataset. For example, he manually added the clique (sex,city,income). In addition, he would add some edges based on some sophisticated heuristics tailored to that particular dataset.
 
+TODO: spell it out that his methods is not general purposes
+
 We developed an alternative heuristic for a general-purpose workflow. From the definition of mutual information, we can obtain that they are bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
 For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
@@ -473,6 +497,8 @@ By comparing these measures between the synthetic and original datasets, we aim 
 
 The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected as described in the previous section, and the synthetic data generator model is fitted to the original data according to the marginals. Then the generator is run multiple times to obtain multiple sets of synthetic data.
 
+TODO: section experiment vs Methodology. move results to experiment
+
 Next, several AI models are extracted from various real life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
 Several AI models and both the original dataset and the rounds of synthetic datasets are fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, all applicable fairness measures are computed using the checker for both the original and the synthetic.
@@ -480,6 +506,8 @@ Several AI models and both the original dataset and the rounds of synthetic data
 Finally, we analyze the discrepancies between the fairness properties of the original and the synthetic by calculating the difference and the ratio of their perspective fairness measure values. The sum of the difference and the average of the ratio serve as a summary of the analysis.
 
 \section{Results}
+
+TODO: dataset sizes
 
 We looked at several publicly available datasets, such as adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The adult dataset comes from the 1994 census in the United States. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system. The diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal.
 
@@ -588,7 +616,9 @@ Accuracy Equality 2 & 0.021 & 0.020 & 0.001 & 1.068 \\
 \end{tabular}
 \end{table}
 
-\section{Discussion}
+TODO: only compare diff. remove ratios. use avg of diff.
+
+\section{Evaluation}
 
 \subsection{Accuracy}
 
