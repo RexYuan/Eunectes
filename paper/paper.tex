@@ -237,6 +237,7 @@
 \clearpage
 
 \section{Preliminaries}
+\label{sec:prelim}
 
 Let $\prod_i x_i$ denotes the Cartesian product of $x_i$s.
 
@@ -244,7 +245,7 @@ A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \se
 
 Let $X \in \mathcal{X}$ be a discrete random variable and $p(x) := \prob{X = x}$. Its \emph{marginal Shannon entropy} is $\entropy{X} := -\sum_{x \in \mathcal{X}} p(x) \text{log} p(x)$. It quantifies the level of uncertainty of $X$. Let $Y \in \mathcal{Y}$ be another discrete random variable. Their \emph{joint Shannon entropy} is $\entropy{X,Y} := -\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p(x, y) \text{log} p(x, y)$.
 
-Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$. By definition, the joint entropy is greater than the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
+Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$. By definition\cite{entropy_lecture_notes}, the joint entropy is greater than the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
 
 
 TODO: mrf definition
@@ -253,9 +254,7 @@ TODO: mrf definition
 
 For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ to denote the ground truth of an outcome, let $\hat{Y}$ to denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
 
-Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}.
-
-TODO: bot is independence
+Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}. $X \bot Y | Z$ denotes the conditional independence between $X$ and $Y$ conditioning on $Z$.
 
 \begin{table}[h]
 \caption{Fairness categories.}
@@ -470,7 +469,7 @@ Thus, we introduce a new framework where the auditor generates synthetic data ba
 
 We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
-This research is implemented in Python Jupyter notebooks and is publicly available.
+This research is conducted in Python Jupyter notebooks and is publicly available.
 
 \subsection{Data Synthesis}
 
@@ -486,7 +485,7 @@ To circumvent the complexity explosion, instead, \cite{McKenna_privatePGM,mckenn
 
 For the competition, \cite{McKenna_privatePGM,mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
 
-We hence developed an alternative heuristic for the general-purpose workflow. From the definition of mutual information, we can obtain that they are bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
+We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
 For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
@@ -508,7 +507,7 @@ Several AI models and both the original dataset and the rounds of synthetic data
 
 Finally, we analyze the discrepancies between the fairness properties of the original and the synthetic by calculating the difference and the ratio of their perspective fairness measure values. The sum of the difference and the average of the ratio serve as a summary of the analysis.
 
-\section{Results}
+\section{Experiments}
 
 TODO: dataset sizes
 
