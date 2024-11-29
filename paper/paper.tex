@@ -468,8 +468,6 @@ Thus, we introduce a new framework where the auditor generates synthetic data ba
 
 \section{Methodology}
 
-TODO: remove all names of ryan meckenna. use references
-
 We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
 This research is implemented in Python Jupyter notebooks and is publicly available.
@@ -486,7 +484,7 @@ In a perfect world where all correlation information is to be preserved, we may 
 
 To circumvent the complexity explosion, instead, \cite{McKenna_privatePGM,mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree algorithm was run with edge weights being the mutual information to obtain a skeleton spanning-tree-shaped Markov random field.
 
-For the competition, \cite{McKenna_privatePGM,mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, he manually added the clique (sex,city,income). In addition, he would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
+For the competition, \cite{McKenna_privatePGM,mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
 
 We hence developed an alternative heuristic for the general-purpose workflow. From the definition of mutual information, we can obtain that they are bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
