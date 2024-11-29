@@ -381,20 +381,22 @@ A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ a
 \[
 D_\alpha(M(\db_1) \Vert M(\db_2)) \leq \gamma
 \]
-where $D_\alpha$ is the R\'enyi divergence\cite{van2014renyi} of order $\alpha$.
-
-TODO: formula def
-
-
+where $D_\alpha(P \Vert Q)$ is the R\'enyi divergence\cite{van2014renyi,van2010renyi,li2016renyi} of order $\alpha$ between discrete probability distributions $P$ and $Q$, defined on $\mathcal{X}$:
+\[
+D_\alpha(P \Vert Q) := \frac{1}{\alpha - 1} \text{log} \sum_{x \in \mathcal{X}} {P(x)}^\alpha {Q(x)}^{1-\alpha}
+\]
 \end{definition}
 
 \begin{theorem}[RDP of the Gaussian Mechanism\cite{feldman2018privacy,mironov2017renyi}]
-The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP.
+The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP, where $\Delta_f$ denotes the sensitivity\cite{dwork2014algorithmic} of $f$.
 
-TODO: sensitivity
+TODO: define sensitivity?
+
 \end{theorem}
 
 \subsection{Differentially Private Synthetic Data}
+
+TODO: indicator thing
 
 Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function; that is, it is the vector of the count of each possible element.
 
@@ -402,9 +404,7 @@ Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{
 
 Let $M_C(\db)$ be the function that computes the marginal of $C$ on $\db$, i.e., $\mu = M_C(\db)$. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
-The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise such that it satisfies differential privacy guarantee and outputting another database $\db'$, such that the $L_1$ errors between some selected marginals $C_1,C_2,...$ of $\db$ and $\db'$ is small; that is, their marginals $(M_{C_1}(\db),M_{C_1}(\db')),(M_{C_2}(\db),M_{C_2}(\db')),...$ are similar.
-
-TODO: add noise to marginal not database
+The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to some marginals of $\db$ such that it satisfies some differential privacy guarantees and outputting another database $\db'$, such that the $L_1$ errors between some marginals $C_i$s of $\db$ and $\db'$ is small; that is, their marginals $M_{C_i}(\db),M_{C_i}(\db')$ are similar.
 
 For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
 
