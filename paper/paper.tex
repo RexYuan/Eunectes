@@ -353,13 +353,6 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 
 \subsection{R\'enyi Differential Privacy}
 
-% \begin{definition}[Sensitivity\cite{dwork2014algorithmic}]\label{def:sensitivity}
-% Let $f$ be a function that takes a database $\db$ and outputs a vector $\mathbb{R}^p$. The $L_2$ sensitivity of $f$ is for all databases $\db_1,\db_2$ that differ in exactly one row:
-% \[
-% \Delta^2_f = max_{\db_1,\db_2} \Vert f(\db_1) - f(\db_2) \Vert_p
-% \]
-% \end{definition}
-
 % \begin{definition}[Differential Privacy (DP) \cite{dwork2006calibrating,dwork2014algorithmic,mckenna2021winning}]\label{def:rdp}
 % A randomized mechanism $M$ satisfies $(\epsilon,\delta)$-DP if, for all databases $\db_1,\db_2$ that differ in exactly one row and for all subsets $S$ of $R$, we have
 % \[
@@ -369,15 +362,17 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 
 A \emph{randomized mechanism} is a randomized algorithm $M : \dbs \implies R$ that takes a database and, after introducing noise, outputs some results.
 
+Let $\db_1,\db_2$ be two databases. They are \emph{neighbors}, denoted $\db_1 \sim \db_2$, if they differ in exactly one row.
+
 \begin{definition}[Gaussian Mechanism\cite{dwork2014algorithmic}]\label{def:gm}
-Let $f : \dbs \implies \mathbb{R}^p$ be a function that takes a database and outputs a vector. The Gaussian Mechanism $M$ adds i.i.d. Gaussian noise with scale $\sigma$ to each of the $p$ outputs:
+Let $f : \dbs \implies \mathbb{R}^p$ be a function that takes a database and outputs a vector. The Gaussian Mechanism $M$ adds i.i.d. Gaussian noise with scale $\sigma$ to each of the $p$ outputs
 \[
 M(\db) = f(\db) + \mathcal{N}(0, \sigma^2 \mathbb{I})
 \]
 \end{definition}
 
 \begin{definition}[R\'enyi Differential Privacy (RDP)]\label{def:rdp}
-A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ and $\gamma \geq 1$ if, for all databases $\db_1,\db_2$ that differ in exactly one row, we have
+A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ and $\gamma \geq 1$ if, for all databases $\db_1 \sim \db_2$, we have
 \[
 D_\alpha(M(\db_1) \Vert M(\db_2)) \leq \gamma
 \]
@@ -388,23 +383,17 @@ D_\alpha(P \Vert Q) := \frac{1}{\alpha - 1} \text{log} \sum_{x \in \mathcal{X}} 
 \end{definition}
 
 \begin{theorem}[RDP of the Gaussian Mechanism\cite{feldman2018privacy,mironov2017renyi}]
-The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP, where $\Delta_f$ denotes the sensitivity\cite{dwork2014algorithmic} of $f$.
-
-TODO: define sensitivity?
-
+The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP, where $\Delta_f$ denotes the sensitivity\cite{dwork2014algorithmic} of $f$, which is defined as the maximum $L^2$-norm difference in the output of $f$
+\[
+\Delta_f := \text{max}_{\db_1 \sim \db_2} \Vert f(\db_1) - f(\db_2) \Vert_2
+\]
 \end{theorem}
 
 \subsection{Differentially Private Synthetic Data}
 
-TODO: indicator thing
+Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. Let $x$ be a row and $x_C$ denote the restriction of $x$ to $C$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ on database $\db$ is a lookup table $\mu_{\db} : \Omega_C \implies \mathbb{N}_0$ such that each entry is a count $\mu_{\db}(t) = \Sigma_{x \in \db} \delta_{t,{x_C}}$ where $\delta$ is the Kronecker function; that is, it is the vector of the counts of each possible domain element. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
-Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ is a vector $\mu \in \mathbb{R}^{\abs{\Omega_C}}$, indexed by domain element $t \in \Omega_C$, such that each entry is a count $\mu_t = \Sigma_{x \in \db} \vmathbb{1} [x_C = t]$ where $\vmathbb{1}$ is the indicator function; that is, it is the vector of the count of each possible element.
-
-% TODO: x_c def
-
-Let $M_C(\db)$ be the function that computes the marginal of $C$ on $\db$, i.e., $\mu = M_C(\db)$. We call marginals of $|C| = n$ attributes $n$-way marginals.
-
-The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to some marginals of $\db$ such that it satisfies some differential privacy guarantees and outputting another database $\db'$, such that the $L_1$ errors between some marginals $C_i$s of $\db$ and $\db'$ is small; that is, their marginals $M_{C_i}(\db),M_{C_i}(\db')$ are similar.
+The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some differential privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
 
 For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
 
