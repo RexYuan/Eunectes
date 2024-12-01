@@ -373,7 +373,6 @@ Female,Black & 47 \\
 \bottomrule
 \end{tabular}
 \end{subtable}
-\hspace{0.05\linewidth}
 \begin{subtable}[t]{0.45\linewidth}
 \centering
 \caption{Marginal of synthetic data.}
@@ -519,6 +518,45 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
       \caption{Markov random field for marginals of the experimented datasets.}
       \label{fig:msts}
 \end{figure}
+
+% \begin{table}[h]
+% \caption{Example marginals.}
+% \label{tab:marginal-example}
+% \centering
+% \begin{subtable}[t]{0.3\linewidth}
+%   \caption{Fairness measures experiment results of the adult dataset. Average of differences is 0.0431.}
+%   \label{tab:adult_score}
+%   \begin{tabular}{ccccc}
+%   \toprule
+%   \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
+%   \midrule
+%   Demographic Parity  & 0.172 & 0.104 & 0.067 \\
+%   Accuracy Eqaulity   & 0.047 & 0.117 & 0.069 \\
+%   Equalized Odds 1    & 0.057 & 0.079 & 0.021 \\
+%   Equalized Odds 2    & 0.166 & 0.122 & 0.044 \\
+%   Accuracy Equality 1 & 0.100 & 0.132 & 0.031 \\
+%   Accuracy Equality 2 & 0.119 & 0.146 & 0.027 \\
+%   \bottomrule
+%   \end{tabular}
+% \end{subtable}
+% \begin{subtable}[t]{0.3\linewidth}
+%   \centering
+%   \caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is 0.031.}
+%   \label{tab:diabetes_score}
+%   \begin{tabular}{cccc}
+%   \toprule
+%   \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
+%   \midrule
+%   Demographic Parity  & 0.013 & 0.015 & 0.002 \\
+%   Accuracy Eqaulity   & 0.007 & 0.009 & 0.002 \\
+%   Equalized Odds 1    & 0.000 & 0.003 & 0.003 \\
+%   Equalized Odds 2    & 0.008 & 0.106 & 0.097 \\
+%   Accuracy Equality 1 & 0.013 & 0.097 & 0.084 \\
+%   Accuracy Equality 2 & 0.021 & 0.020 & 0.001 \\
+%   \bottomrule
+%   \end{tabular}
+% \end{subtable}
+% \end{table}
 
 \subsection{Adult Income Dataset}
 
