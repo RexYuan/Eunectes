@@ -287,7 +287,24 @@
 
 \section{Related Work}
 
-\clearpage
+Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}.
+
+The auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{yuan2024ensuring,saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}.
+
+% differential privacy
+
+Differential Privacy has risen to become the standard of privacy protection in many data analyses\cite{jiang2021applications}. It offers a formal framework for quantifying privacy guarantees when releasing information derived from sensitive data\cite{dwork2006calibrating,dwork2014algorithmic}.
+
+Different flavors of Differential Privacy have been proposed over the years\cite{desfontaines2019sok}, such as Gaussian Differential Privacy\cite{dong2022gaussian}, Pufferfish Differential Privacy\cite{kifer2012rigorous}, Bayesian Differential Privacy\cite{triastcyn2020bayesian}, and R\'enyi Differential Privacy\cite{mironov2017renyi}.
+
+% synthetic data
+
+The generation of synthetic data under differential privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for Differentially Private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years.
+
+While useful, there are some ethical concerns with the generation of synthetic data ...
+
+% TODO: cite
+
 
 \section{Preliminaries}
 \label{sec:prelim}
@@ -305,6 +322,8 @@ Let $\set{X_i}$ be a set of discrete random variables indexed by a graph $G = (V
 \subsection{Fairness Measures}
 
 For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ denote the ground truth of an outcome, let $\hat{Y}$ denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
+
+% TODO: should we exclude nonbinary prediction?
 
 Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}. $X \bot Y | Z$ denotes the conditional independence between $X$ and $Y$ conditioning on $Z$.
 
@@ -402,9 +421,9 @@ The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})
 
 \subsection{Differentially Private Synthetic Data}
 
-Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. Let $x$ be a row and $x_C$ denote the restriction of $x$ to $C$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ on database $\db$ is a lookup table $\mu_{\db} : \Omega_C \implies \mathbb{N}_0$ such that each entry is a count $\mu_{\db}(t) = \Sigma_{x \in \db} \delta_{t,{x_C}}$ where $\delta$ is the Kronecker function; that is, it is the vector of the counts of each possible domain element. We call marginals of $|C| = n$ attributes $n$-way marginals.
+Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. Let $x$ be a row and $x_C$ denote the restriction of $x$ to $C$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ on database $\db$ is a lookup table $\mu_{\db} : \Omega_C \implies \mathbb{N}_0$ such that each entry is a count $\mu_{\db}(t) = \Sigma_{x \in \db} \delta_{t,{x_C}}$ where $\delta$ is the Kronecker function; that is, it is a table of the counts of each possible combination of domain elements. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
-The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some differential privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
+The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some Differential Privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
 
 For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
 
@@ -469,7 +488,7 @@ This research is conducted in Python Jupyter notebooks and is publicly available
 
 \subsection{Data Synthesis}
 
-The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding differentially private noise, and then generate synthetic data.
+The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding Differential Privacy noise, and then generate synthetic data.
 
 Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to inference from the fitted Markov random field.
 
@@ -489,7 +508,7 @@ For the measure step, we followed the examples provided in the tool's repository
 
 After synthesizing the dataset, we used the fairness checker from \cite{yuan2024ensuring} to compute the fairness measures of any incoming AI model.
 
-The fairness checker is an open-sourced public domain Python package that computes various fairness measures, such as those mentioned in Table~\ref{measures}.
+The fairness checker is an open-sourced public domain Python package that computes various fairness measures, such as those mentioned in Table~\ref{tab:measures}.
 
 The checker is designed to be user-friendly and agnostic to the underlying AI model. It is also designed to be easily extensible to accommodate new fairness measures.
 
