@@ -591,8 +591,6 @@ For the COMPAS dataset, the initial spanning tree has a long tail, which is not 
 
 Marginals of this graph are then too passed to the synthetic data generator for fitting.
 
-
-
 We ran the same workflow as adult dataset for the COMPAS dataset. The comparison results are shown in Table~\ref{tab:compas_score}.
 
 The results showed an increase in error on the sufficiency measure values. In particular, one of the measures has an error difference as high as 0.141. The average of their differences is 0.069, which is worse than the adult dataset.
@@ -625,7 +623,7 @@ The same workflow was done as on previous datasets. The comparison results are s
 There was also an increase of error on some sufficiency measure values. The average of their differences is 0.031.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is 0.031.}
+\caption{Fairness measures experiment results of the diabetes dataset. Average of differences is 0.031.}
 \label{tab:diabetes_score}
 \begin{tabular}{cccc}
 \toprule
@@ -645,12 +643,35 @@ Accuracy Equality 2 & 0.021 & 0.020 & 0.001 \\
 
 \subsection{Accuracy}
 
+Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
+
+In particular, for the adult dataset, the average difference was 0.0431, suggesting a close match between the synthetic and the original data in terms of fairness measures. For the diabetes dataset, the average difference was 0.031, which is even lower. Even in the case of the COMPAS dataset, which had a higher value, it was still within an acceptable range at 0.069.
+
+This demonstrated that synthetic data can accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results consistent with those on the original data.
+
 \subsection{Impossibility}
 
+Let the standalone symbols denote the case of being equal to one and the overlined symbols denote the case of being equal to zero. For example, $S$ denotes the case of $S = 1$ and $\overline{S}$ denotes the case of $S = 0$.
+
+independence
+\[
+P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
+= \frac{P[\hat{Y} \cap S]}{P[\overline{S}]} - \frac{P[\hat{Y} \cap \overline{S}]}{P[\overline{S}]}
+\]
+
+separation
+\[
+P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
+= \frac{P[\hat{Y} \cap S \cap Y]}{P[\overline{S} \cap Y]} - \frac{P[\hat{Y} \cap \overline{S} \cap Y]}{P[\overline{S} \cap Y]}
+\]
+
+sufficiency
+\[
+P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
+= \frac{P[Y \cap S \cap \hat{Y}]}{P[\overline{S} \cap \hat{Y}]} - \frac{P[Y \cap \overline{S} \cap \hat{Y}]}{P[\overline{S} \cap \hat{Y}]}
+\]
+
 \section{Conclusion}
-
-
-
 
 
 %%
