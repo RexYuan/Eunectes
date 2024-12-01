@@ -409,6 +409,7 @@ As for privacy, on the other hand, it introduces risks of information leakage. S
 Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing all further data breaches. The third-party retains the ability to audit all incoming future models as needed.
 
 \section{Methodology}
+\label{sec:method}
 
 We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
@@ -458,7 +459,7 @@ The fairness checker evaluates datasets based on multiple fairness metrics, such
 
 By comparing these measures between the synthetic and original datasets, we aim to ensure that the synthetic data preserves the fairness properties of the original data. The comparison process is three-fold. It goes as follows.
 
-The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected as described in the previous section, and the synthetic data generator model is fitted to the original data according to the marginals. Then the generator is run multiple times to obtain multiple sets of synthetic data.
+The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected as described in the Section~\ref{sec:method}, and the synthetic data generator model is fitted to the original data according to the marginals. Then the generator is run multiple times to obtain multiple sets of synthetic data.
 
 Next, several AI models are extracted from various real-life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
@@ -466,19 +467,64 @@ Several AI models and both the original dataset and the rounds of synthetic data
 
 Finally, we analyze the discrepancies between the fairness properties of the original and the synthetic by calculating the difference of their perspective fairness measure values. The average of the differences serves as a summary of the analysis.
 
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=\linewidth]{adult_mst}
+%   \caption{Markov random field for marginals of the adult dataset.}
+%   \label{fig:adult_mst}
+%   \Description{Markov random field for marginals of the adult dataset.}
+% \end{figure}
+
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=\linewidth]{compas_mst}
+%   \caption{Markov random field for marginals of the COMPAS dataset.}
+%   \label{fig:compas_mst}
+%   \Description{Markov random field for marginals of the COMPAS dataset.}
+% \end{figure}
+
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=\linewidth]{diabetes_mst}
+%   \caption{Markov random field for marginals of the diabetes dataset.}
+%   \label{fig:diabetes_mst}
+%   \Description{Markov random field for marginals of the COMPAS dataset.}
+% \end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{adult_mst}
+      \caption{Markov random field for marginals of the adult dataset.}
+      \label{fig:adult_mst}
+      \Description{Markov random field for marginals of the adult dataset.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{compas_mst}
+      \caption{Markov random field for marginals of the COMPAS dataset.}
+      \label{fig:compas_mst}
+      \Description{Markov random field for marginals of the COMPAS dataset.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{diabetes_mst}
+      \caption{Markov random field for marginals of the diabetes dataset.}
+      \label{fig:diabetes_mst}
+      \Description{Markov random field for marginals of the COMPAS dataset.}
+  \end{subfigure}
+      \caption{Markov random field for marginals of the experimented datasets.}
+      \label{fig:msts}
+\end{figure}
+
 \subsection{Adult Income Dataset}
 
 For the adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
 
 Marginals based on this graph are then passed to the synthetic data generator for model fitting.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\linewidth]{adult_mst}
-\caption{Markov random field for marginals of the adult dataset.}
-\label{fig:adult_mst}
-\Description{Markov random field for marginals of the adult dataset.}
-\end{figure}
 
 After generating ten rounds of synthetic data and passing them to the checker, their fairness measure values are averaged. Then, we compare them against the values of the original data. The results are shown in Table~\ref{tab:adult_score}.
 
@@ -507,13 +553,7 @@ For the COMPAS dataset, the initial spanning tree has a long tail, which is not 
 
 Marginals of this graph are then too passed to the synthetic data generator for fitting.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=\linewidth]{compas_mst}
-\caption{Markov random field for marginals of the COMPAS dataset.}
-\label{fig:compas_mst}
-\Description{Markov random field for marginals of the COMPAS dataset.}
-\end{figure}
+
 
 We ran the same workflow as adult dataset for the COMPAS dataset. The comparison results are shown in Table~\ref{tab:compas_score}.
 
@@ -541,14 +581,6 @@ Accuracy Equality 2    & 0.169 & 0.027 & 0.141 \\
 The tree grown from the diabetes dataset did not appear to have any particular characteristics. The root of the tree is placed in the BMI value, which reasonably captures most information. The heuristic edge addition process introduced some 3-clique triangles. The resulting graph is shown in Figure~\ref{fig:diabetes_mst}.
 
 The same process is conducted to fit the synthetic data generator model.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\linewidth]{diabetes_mst}
-\caption{Markov random field for marginals of the diabetes dataset.}
-\label{fig:diabetes_mst}
-\Description{Markov random field for marginals of the COMPAS dataset.}
-\end{figure}
 
 The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
 
