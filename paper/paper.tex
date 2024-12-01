@@ -247,12 +247,11 @@ Let $X \in \mathcal{X}$ be a discrete random variable and $p(x) := \prob{X = x}$
 
 Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$. By definition\cite{entropy_lecture_notes}, the joint entropy is greater than the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
 
-
-TODO: mrf definition
+Let $\set{X_i}$ be a set of discrete random variables indexed by a graph $G = (V,E)$, where $V$ represents the random variables $X_i$s and $E$ represents dependencies between these random variables. A \emph{Markov random field} is a probability distribution over $X_i$s, such that each random variable $X_i$, given its neighborhood in $G$, is conditionally independent of all other variables. Since edges represent dependencies, cliques in a Markov random field represent groups of variables that are all mutually dependent. As a machine learning model, there has been much development in the fitting and inference of Markov random fields\cite{murphy2023probabilistic}.
 
 \subsection{Fairness Measures}
 
-For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ to denote the ground truth of an outcome, let $\hat{Y}$ to denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
+For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ denote the ground truth of an outcome, let $\hat{Y}$ denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
 
 Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}. $X \bot Y | Z$ denotes the conditional independence between $X$ and $Y$ conditioning on $Z$.
 
@@ -283,47 +282,6 @@ The definition can be relaxed. Its relaxation, for some parameter $\epsilon$, is
 which is also the definition of a fairness measure called equalized odds.
 
 We consider in this work various fairness measures listed in Table~\ref{tab:measures}.
-
-% \begin{definition}[Independence\cite{barocas2023fairness}]\label{def:independence}
-% $(S, \hat{Y})$ satisfy independence if and only if $S \bot \hat{Y}$; that is
-% \[
-% P[\hat{Y} = 1 | S = 1] = P[\hat{Y} = 1 | S \neq 1]
-% \]
-% A relaxation of independence on a threshold is
-% \[
-% \abs{P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]} \leq \epsilon
-% \]
-% \end{definition}
-
-% \begin{definition}[Separation\cite{barocas2023fairness}]\label{def:separation}
-% $(S, Y, \hat{Y})$ satisfy separation if and only if $S \bot \hat{Y} | Y$; that is
-% \begin{align*}
-% P[\hat{Y} = 1 | S = 1, Y = 1] & = P[\hat{Y} = 1 | S \neq 1, Y = 1] \\
-% P[\hat{Y} = 1 | S = 1, Y = 0] & = P[\hat{Y} = 1 | S \neq 1, Y = 0]
-% \end{align*}
-% A relaxation of independence on a threshold is
-% \begin{align*}
-% \abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} & \leq \epsilon \\
-% \abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} & \leq \epsilon
-% \end{align*}
-% \end{definition}
-
-% \begin{definition}[Sufficiency\cite{barocas2023fairness}]\label{def:separation}
-% $(S, Y, \hat{Y})$ satisfy sufficiency if and only if $S \bot Y | \hat{Y}$; that is
-% \begin{align*}
-% P[Y = 1 | S = 1, \hat{Y} = 1] & = P[Y = 1 | S \neq 1, \hat{Y} = 1] \\
-% P[Y = 1 | S = 1, \hat{Y} = 0] & = P[Y = 1 | S \neq 1, \hat{Y} = 0]
-% \end{align*}
-% A relaxation of independence on a threshold is
-% \begin{align*}
-% \abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} & \leq \epsilon \\
-% \abs{P[Y = 1 | S = 1, \hat{Y} = 0] - P[Y = 1 | S \neq 1, \hat{Y} = 0]} & \leq \epsilon
-% \end{align*}
-% \end{definition}
-
-% The $p$-norm is denoted by $L_p$ and the $p$-norm of a vector $x$ is denoted by $\Vert x \Vert_p$.
-
-% The normal distribution or Gaussian distribution with mean $\mu$ and standard deviation $\sigma$ is denoted by $\mathcal{N}(\mu, \sigma^2)$.
 
 \begin{table*}[h]
 \caption{Fairness measures.}
@@ -464,7 +422,7 @@ This research is conducted in Python Jupyter notebooks and is publicly available
 
 The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding differentially private noise, and then generate synthetic data.
 
-Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to sampling from the fitted Markov random field.
+Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to inference from the fitted Markov random field.
 
 By default, all $1$-way marginals are selected to preserve the quantity of each attribute element. We can further preserve correlations by adding $n$-way marginals. For example, if we want to preserve the relationship between sex and race, we may add the clique (sex,race).
 
