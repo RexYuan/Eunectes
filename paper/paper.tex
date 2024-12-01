@@ -400,17 +400,13 @@ The model maker develops AI models. These are AI companies or research labs spec
 
 The third-party auditor acts as an evaluator, using our tool to audit the AI models for fairness issues by combining both the datasets and the models. These may be investigative journalists or regulatory bodies.
 
-In the framework of our previous work\cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits.
+In the framework of our previous work\cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits. However, this practice raises both security and privacy concerns.
 
-However, this practice introduces security concerns. It creates a vulnerability to data security threats. A breach at the auditor's end could result in compromises of individuals' privacy.
+For security, it creates a point of vulnerability of unauthorized access, and the auditor is now a target of data security attacks. The auditor may not have the necessary resources to defend against these threats. A breach at the auditor's end could result in compromises of individuals' sensitive information.
 
-TODO:
-security => unauthorized access. bulwark database
-privacy => authorized access, no info leak
+As for privacy, on the other hand, it introduces risks of information leakage. Storage of real data may inadvertently reveal sensitive information by data inference attacks. Indefinite retention exacerbates this issue because the longer the data is stored, the higher the chance of unwanted information disclosure.
 
-Moreover, the storage of the datasets also raises privacy concerns. Holding large amounts of sensitive data for an extended period opens the door to the risk of misuse. The auditor may misuse the data for unauthorized purposes.
-
-Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing further privacy breaches. The third-party thus retains the ability to audit all incoming future models as needed.
+Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing all further data breaches. The third-party retains the ability to audit all incoming future models as needed.
 
 \section{Methodology}
 
