@@ -620,7 +620,7 @@ The same process is conducted to fit the synthetic data generator model.
 
 The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
 
-There was also an increase of error on some sufficiency measure values. The average of their differences is 0.031.
+The differences are all pretty low, no more than $0.01$ this time, across all measures, except for one separation measure and one sufficiency measure. The average of their differences is 0.031.
 
 \begin{table}[h]
 \caption{Fairness measures experiment results of the diabetes dataset. Average of differences is 0.031.}
@@ -651,28 +651,33 @@ This demonstrated that synthetic data can accurately reflect the fairness proper
 
 \subsection{Impossibility}
 
-Let the standalone symbols denote the case of being equal to one and the overlined symbols denote the case of being equal to zero. For example, $S$ denotes the case of $S = 1$ and $\overline{S}$ denotes the case of $S = 0$.
+The experiments also revealed some limitations of this approach. In particular, the sufficiency measure showed higher errors compared to other measures. For example, in the COMPAS dataset, the sufficiency measure had an error difference as high as 0.141, while other measures had errors below 0.1.
 
+By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
 
-TODO: this is wrong. frac is upside down
+Referring back to the definition of the fairness measures, we can see the following: separation is concerned with the form $P[\hat{Y} | S, Y] = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]}$, and sufficiency is concerned with the form $P[Y | S, \hat{Y}] = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]}$.
 
-independence
-\[
-P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
-= \frac{P[\hat{Y} \cap S]}{P[\overline{S}]} - \frac{P[\hat{Y} \cap \overline{S}]}{P[\overline{S}]}
-\]
+This explains why sufficiency measures could have higher errors compared to separation because synthetic data have less information about them. While only one variable is missing in the numerator for separation, one more variable is missing in the denominator for sufficiency.
 
-separation
-\[
-P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
-= \frac{P[\hat{Y} \cap S \cap Y]}{P[\overline{S} \cap Y]} - \frac{P[\hat{Y} \cap \overline{S} \cap Y]}{P[\overline{S} \cap Y]}
-\]
+Therefore, it is harder to approximate sufficiency measures on synthetic data. This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses.
 
-sufficiency
-\[
-P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
-= \frac{P[Y \cap S \cap \hat{Y}]}{P[\overline{S} \cap \hat{Y}]} - \frac{P[Y \cap \overline{S} \cap \hat{Y}]}{P[\overline{S} \cap \hat{Y}]}
-\]
+% independence
+% \[
+% P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
+% = \frac{P[\hat{Y} \cap S]}{P[{S}]} - \frac{P[\hat{Y} \cap \overline{S}]}{P[\overline{S}]}
+% \]
+
+% separation
+% \[
+% P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
+% = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]} - \frac{P[\hat{Y} \cap \overline{S} \cap Y]}{P[\overline{S} \cap Y]}
+% \]
+
+% sufficiency
+% \[
+% P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
+% = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]} - \frac{P[Y \cap \overline{S} \cap \hat{Y}]}{P[\overline{S} \cap \hat{Y}]}
+% \]
 
 \section{Conclusion}
 
