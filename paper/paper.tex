@@ -289,7 +289,7 @@
 
 Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify\cite{yeh2024analyzing} the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}.
 
-The auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{yuan2024ensuring,saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}.
+Auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{yuan2024ensuring,saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}.
 
 % differential privacy
 
@@ -474,7 +474,7 @@ In the framework of our previous work\cite{yuan2024ensuring}, after obtaining re
 
 For security, it creates a point of vulnerability of unauthorized access, and the auditor is now a target of data security attacks. The auditor may not have the necessary resources to defend against these threats. A breach at the auditor's end could result in compromises of individuals' sensitive information.
 
-As for privacy, on the other hand, it introduces risks of information leakage. Storage of real data may inadvertently reveal sensitive information by data inference attacks. Indefinite retention exacerbates this issue because the longer the data is stored, the higher the chance of unwanted information disclosure.
+As for privacy, on the other hand, it introduces risks of information leakage. Storage of real data may inadvertently reveal sensitive information by data inference attacks. Indefinite retention also exacerbates this issue because the longer the data is stored, the higher the chance of unwanted information disclosure.
 
 Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing all further data breaches. The third-party retains the ability to audit all incoming future models as needed.
 
@@ -487,7 +487,7 @@ This research is conducted in Python Jupyter notebooks and is publicly available
 
 \subsection{Data Synthesis}
 
-The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022}. We first select the important marginals to preserve, measure them by adding Differential Privacy noise, and then generate synthetic data.
+The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022,YouTube_Differentially_Private_Synthetic_Data}. We first select the important marginals to preserve, measure them by adding Differential Privacy noise, and then generate synthetic data.
 
 Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to inference from the fitted Markov random field.
 
@@ -495,9 +495,9 @@ By default, all $1$-way marginals are selected to preserve the quantity of each 
 
 In a perfect world where all correlation information is to be preserved, we may wish to make a completely connected graph. However, this was found to be intractable as the complexity of the problem would skyrocket.
 
-To circumvent the complexity explosion, instead, \cite{McKenna_privatePGM,mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree algorithm was run with edge weights being the mutual information to obtain a skeleton spanning-tree-shaped Markov random field.
+To circumvent the complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree algorithm was run with edge weights being the mutual information to obtain a skeleton spanning-tree-shaped Markov random field.
 
-For the competition, \cite{McKenna_privatePGM,mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
+For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
 
 We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
@@ -711,6 +711,8 @@ Accuracy Equality 2 & 0.021 & 0.020 & 0.001 \\
 \end{table}
 
 \section{Evaluation}
+
+% TODO: mention model fit time?
 
 \subsection{Accuracy}
 
