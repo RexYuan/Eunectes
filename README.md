@@ -9,5 +9,5 @@
 ## Setup
 ```
 conda env create -f environment.yml
-mkdir model tmp
+mkdir experiments/model experiments/tmp
 ```

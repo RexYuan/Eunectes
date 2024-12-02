@@ -1,5 +1,5 @@
-model/*.pkl
-tmp/*
+experiments/model/*.pkl
+experiments/tmp/*
 *.aux
 *.log
 *.nav
