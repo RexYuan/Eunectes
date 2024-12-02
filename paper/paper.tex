@@ -287,7 +287,7 @@
 
 \section{Related Work}
 
-Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}.
+Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify\cite{yeh2024analyzing} the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}.
 
 The auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{yuan2024ensuring,saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}.
 
@@ -299,17 +299,16 @@ Different flavors of Differential Privacy have been proposed over the years\cite
 
 % synthetic data
 
-The generation of synthetic data under differential privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for Differentially Private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years.
+The generation of synthetic data\cite{raghunathan2021synthetic,lu2023machine} under Differential Privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for Differentially Private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years.
 
-While useful, there are some ethical concerns with the generation of synthetic data ...
+There are also works that aim to introduce bias to synthetic data\cite{jiang2024synthetic,baumann2023bias}.
 
-% TODO: cite
-
+While helpful, there are some technical limitations\cite{stadler2022synthetic,cheng2021can,ganev2022robin,wyllie2024fairness} and ethical concerns\cite{whitney2024real} with the use of synthetic data.
 
 \section{Preliminaries}
 \label{sec:prelim}
 
-Let $\prod_i x_i$ denotes the Cartesian product of $x_i$s.
+Let $\prod_i x_i$ denote the Cartesian product of $x_i$s.
 
 A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The set of all databases is denoted $\dbs$. The attributes of a $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
 
@@ -423,7 +422,7 @@ The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})
 
 Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. Let $x$ be a row and $x_C$ denote the restriction of $x$ to $C$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ on database $\db$ is a lookup table $\mu_{\db} : \Omega_C \implies \mathbb{N}_0$ such that each entry is a count $\mu_{\db}(t) = \Sigma_{x \in \db} \delta_{t,{x_C}}$ where $\delta$ is the Kronecker function; that is, it is a table of the counts of each possible combination of domain elements. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
-The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some Differential Privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
+The task of Differentially Private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some Differential Privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
 
 For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
 
