@@ -287,6 +287,8 @@
 
 \section{Related Work}
 
+TODO: add more connections to our work
+
 Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify\cite{yeh2024analyzing} the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}.
 
 Auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{yuan2024ensuring,saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}.
@@ -301,6 +303,8 @@ Different flavors of Differential Privacy have been proposed over the years\cite
 
 The generation of synthetic data\cite{raghunathan2021synthetic,lu2023machine} under Differential Privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for Differentially Private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years.
 
+TODO: some works aim to change properties of og data. we want to preserve. so we dont consider this case
+
 There are also works that aim to introduce bias to synthetic data\cite{jiang2024synthetic,baumann2023bias}.
 
 While helpful, there are some technical limitations\cite{stadler2022synthetic,cheng2021can,ganev2022robin,wyllie2024fairness} and ethical concerns\cite{whitney2024real} with the use of synthetic data.
@@ -310,9 +314,11 @@ While helpful, there are some technical limitations\cite{stadler2022synthetic,ch
 
 Let $\prod_i x_i$ denote the Cartesian product of $x_i$s.
 
-A \emph{row} $r_i$ is a lookup table or dictionary. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The set of all databases is denoted $\dbs$. The attributes of a $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
+TODO: Let $r_i$ denote a \emph{row} $r_i$ is a function. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The set of all databases is denoted $\dbs$. The attributes of a $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
 
 Let $X \in \mathcal{X}$ be a discrete random variable and $p(x) := \prob{X = x}$. Its \emph{marginal Shannon entropy} is $\entropy{X} := -\sum_{x \in \mathcal{X}} p(x) \text{log} p(x)$. It quantifies the level of uncertainty of $X$. Let $Y \in \mathcal{Y}$ be another discrete random variable. Their \emph{joint Shannon entropy} is $\entropy{X,Y} := -\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p(x, y) \text{log} p(x, y)$.
+
+TODO: cite elements of info theory
 
 Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$. By definition\cite{entropy_lecture_notes}, the joint entropy is greater than the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
 
@@ -320,7 +326,11 @@ Let $\set{X_i}$ be a set of discrete random variables indexed by a graph $G = (V
 
 \subsection{Fairness Measures}
 
+TODO: let Y be binary
+
 For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ denote the ground truth of an outcome, let $\hat{Y}$ denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
+
+TODO: mention in results we only tested binary predictions
 
 % TODO: should we exclude nonbinary prediction?
 
@@ -411,6 +421,10 @@ D_\alpha(P \Vert Q) := \frac{1}{\alpha - 1} \text{log} \sum_{x \in \mathcal{X}} 
 \]
 \end{definition}
 
+TODO: N is multivariate normal distribution and sigma and identity function. I sub p
+
+TODO: Da needs to take distributions. change symbols. lowercase phi
+
 \begin{theorem}[RDP of the Gaussian Mechanism\cite{feldman2018privacy,mironov2017renyi}]
 The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP, where $\Delta_f$ denotes the sensitivity\cite{dwork2014algorithmic} of $f$, which is defined as the maximum $L^2$-norm difference in the output of $f$
 \[
@@ -474,7 +488,11 @@ In the framework of our previous work\cite{yuan2024ensuring}, after obtaining re
 
 For security, it creates a point of vulnerability of unauthorized access, and the auditor is now a target of data security attacks. The auditor may not have the necessary resources to defend against these threats. A breach at the auditor's end could result in compromises of individuals' sensitive information.
 
-As for privacy, on the other hand, it introduces risks of information leakage. Storage of real data may inadvertently reveal sensitive information by data inference attacks. Indefinite retention also exacerbates this issue because the longer the data is stored, the higher the chance of unwanted information disclosure.
+As for privacy, on the other hand, it introduces risks of information leakage. Releasings of real data may inadvertently reveal sensitive information by data inference attacks.
+
+TODO: ppl may infer info from auditors analyses Releasings. repeated queries
+
+Indefinite retention also exacerbates this issue because the longer the data is stored, the higher the chance of unwanted information disclosure.
 
 Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing all further data breaches. The third-party retains the ability to audit all incoming future models as needed.
 
@@ -489,7 +507,7 @@ This research is conducted in Python Jupyter notebooks and is publicly available
 
 The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022,YouTube_Differentially_Private_Synthetic_Data}. We first select the important marginals to preserve, measure them by adding Differential Privacy noise, and then generate synthetic data.
 
-Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to inference from the fitted Markov random field.
+Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to sampling by inference from the fitted Markov random field.
 
 By default, all $1$-way marginals are selected to preserve the quantity of each attribute element. We can further preserve correlations by adding $n$-way marginals. For example, if we want to preserve the relationship between sex and race, we may add the clique (sex,race).
 
@@ -497,9 +515,13 @@ In a perfect world where all correlation information is to be preserved, we may 
 
 To circumvent the complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree algorithm was run with edge weights being the mutual information to obtain a skeleton spanning-tree-shaped Markov random field.
 
+TODO: mst was obtained. delete the word algorithm
+
 For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
 
 We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
+
+TODO: use latex algorithm. pseudo code
 
 For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
@@ -712,15 +734,9 @@ Accuracy Equality 2 & 0.021 & 0.020 & 0.001 \\
 
 \section{Evaluation}
 
-% TODO: mention model fit time?
+% TODO: mention model fit time? yes. do experiments!
 
-% TODO: categorical vs numerical data?
-
-% TODO: privacy budget?
-
-% TODO: LabelEncoder?
-
-\subsection{Accuracy}
+TODO: \subsection{Positive Results}
 
 Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
@@ -728,13 +744,15 @@ In particular, for the adult dataset, the average difference was 0.0431, suggest
 
 This demonstrated that synthetic data can accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results consistent with those on the original data.
 
-\subsection{Impossibility}
+TODO: \subsection{Negative Results}
 
 The experiments also revealed some limitations of this approach. In particular, the sufficiency measure showed higher errors compared to other measures. For example, in the COMPAS dataset, the sufficiency measure had an error difference as high as 0.141, while other measures had errors below 0.1.
 
 By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
 
 Referring back to the definition of the fairness measures, we can see the following: separation is concerned with the form $P[\hat{Y} | S, Y] = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]}$, and sufficiency is concerned with the form $P[Y | S, \hat{Y}] = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]}$.
+
+TODO: expand all defs and count the nums of avail vars
 
 This explains why sufficiency measures could have higher errors compared to separation because synthetic data have less information about them. While only one variable is missing in the numerator for separation, one more variable is missing in the denominator for sufficiency.
 
