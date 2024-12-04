@@ -572,7 +572,7 @@ By comparing these measures between the synthetic and original datasets, we aim 
 
 The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected as described in the Section~\ref{sec:method}, and the synthetic data generator model is fitted to the original data according to the marginals. Then the generator is run multiple times to obtain multiple sets of synthetic data.
 
-Next, several AI models are extracted from various real-life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. For another, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
+Next, several AI models are extracted from various real-life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. Another random forest model is finetuned with over-sampling methods\cite{Jawat2024}. Also, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
 Several AI models and both the original dataset and the rounds of synthetic datasets are fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, all applicable fairness measures are computed using the checker for both the original and the synthetic.
 
@@ -678,6 +678,12 @@ Marginals based on this graph are then passed to the synthetic data generator fo
 
 After generating ten rounds of synthetic data and passing them to the checker, their fairness measure values are averaged. Then, we compare them against the values of the original data. The results are shown in Table~\ref{tab:adult_score}.
 
+% this 100 experiment is not run yet
+
+With heuristic it is 924m15s. The fit time is 17m1s without heuristic.
+
+The average of their differences is $0.0787$. Without heuristic it is $0.0775$.
+
 We observed that across all examined fairness measures, their difference all fall below 0.1. The average of their differences is 0.0431, which we consider quite satisfactory.
 
 \begin{table}[h]
@@ -721,7 +727,6 @@ The results showed an increase in error on the sufficiency measure values. In pa
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
 Demographic Parity  & 0.1310 & 0.0980 & 0.0330 \\
-Mean Difference     & 0.3282 & 0.2274 & 0.1007 \\
 Accuracy Eqaulity   & 0.0079 & 0.0129 & 0.0050 \\
 Equalized Odds 1    & 0.0249 & 0.0936 & 0.0687 \\
 Equalized Odds 2    & 0.0177 & 0.1016 & 0.0838 \\
@@ -739,7 +744,7 @@ The same process is conducted to fit the synthetic data generator model.
 
 The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
 
-% run this with 100 iter
+% this is running with 100 iter
 
 The fit time is 1m24s without heuristic. With heuristic it is 1m44s.
 
