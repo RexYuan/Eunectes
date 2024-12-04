@@ -314,25 +314,47 @@ While helpful, there are some technical limitations\cite{stadler2022synthetic,ch
 
 Let $\prod_i x_i$ denote the Cartesian product of $x_i$s.
 
-TODO: Let $r_i$ denote a \emph{row} $r_i$ is a function. A \emph{database} $\db = \set{r_1, r_2, ...}$ is a collection of rows. The set of all databases is denoted $\dbs$. The attributes of a $\db$ is $\mathcal{A} = \set{A_1, A_2, ...}$. The domain of $A_i$ is $\Omega_i$.
+An \emph{attribute} is a symbol $A$.
+The set of all attributes is $\mathcal{A}$.
+An \emph{attribute value} is a symbol $a$.
+The set of all attribute values is $\Omega$.
+An \emph{attribute value space} is a function $\sigma : \mathcal{A} \implies 2^{\Omega}$
+specifying the set of valid values that attributes can take on.
+A \emph{row} with respect to $\sigma$
+is a function $r : \mathcal{A} \implies \Omega$
+where $r(A) \in \sigma(A)$.
+The set of all rows is $\mathcal{R}$.
+A \emph{database} is a tuple $\db =
+\tuple{
+    \mathcal{A}_{\db},
+    \Omega_{\db},
+    \sigma_{\db},
+    \mathcal{R}_{\db}
+}$
+where
+$\mathcal{A}_{\db} \subseteq \mathcal{A}$
+is the set of attributes in $\db$,
+$\Omega_{\db} \subseteq \Omega$
+is the set of attribute values in $\db$,
+$\sigma_{\db} : \mathcal{A}_{\db} \implies 2^{\Omega_{\db}}$
+is the function specifying the valid values that each attribute can take on in $\db$,
+and $\mathcal{R}_{\db} \subseteq \mathcal{R}$
+is the set of rows in $\db$
+with $r_\db : \mathcal{A}_\db \implies \Omega_\db$
+for all $r_\db \in \mathcal{R}_\db$
+and $r_\db(A) \in \sigma_\db(A)$
+for all $A \in \mathcal{A}_\db$.
+The set of all databases is $\dbs$.
 
 Let $X \in \mathcal{X}$ be a discrete random variable and $p(x) := \prob{X = x}$. Its \emph{marginal Shannon entropy} is $\entropy{X} := -\sum_{x \in \mathcal{X}} p(x) \text{log} p(x)$. It quantifies the level of uncertainty of $X$. Let $Y \in \mathcal{Y}$ be another discrete random variable. Their \emph{joint Shannon entropy} is $\entropy{X,Y} := -\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p(x, y) \text{log} p(x, y)$.
 
-TODO: cite elements of info theory
+Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$. By definition\cite{427884}, the joint entropy is greater than or equal to the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
 
-Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$. By definition\cite{entropy_lecture_notes}, the joint entropy is greater than the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
-
-Let $\set{X_i}$ be a set of discrete random variables indexed by a graph $G = (V,E)$, where $V$ represents the random variables $X_i$s and $E$ represents dependencies between these random variables. A \emph{Markov random field} is a probability distribution over $X_i$s, such that each random variable $X_i$, given its neighborhood in $G$, is conditionally independent of all other variables. Since edges represent dependencies, cliques in a Markov random field represent groups of variables that are all mutually dependent. As a machine learning model, there has been much development in the fitting and inference of Markov random fields\cite{murphy2023probabilistic}.
+Let $\set{X_i}$ be a set of discrete random variables indexed by a graph $G = (V,E)$, where $V$ represents the random variables $X_i$s and $E$ represents dependencies between these random variables. A \emph{Markov random field} is a probability distribution over $X_i$s, such that each random variable $X_i$, given its neighborhood in $G$, is conditionally independent of all other variables. Since edges represent dependencies, cliques in a Markov random field represent groups of variables that are all mutually dependent. As a machine learning model, there has been much development in the fitting and inference of Markov random fields\cite{koller2009probabilistic,murphy2023probabilistic}.
 
 \subsection{Fairness Measures}
 
-TODO: let Y be binary
-
-For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ denote the ground truth of an outcome, let $\hat{Y}$ denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. For non-binary prediction, such as a score, we use $\hat{V}$.
-
-TODO: mention in results we only tested binary predictions
-
-% TODO: should we exclude nonbinary prediction?
+For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ denote the ground truth of an outcome, let $\hat{Y}$ denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. $Y, \hat{Y}, S$ are binary. For non-binary prediction, such as a score, we use $\hat{V}$.
 
 Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}. $X \bot Y | Z$ denotes the conditional independence between $X$ and $Y$ conditioning on $Z$.
 
@@ -399,31 +421,28 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 % \]
 % \end{definition}
 
-A \emph{randomized mechanism} is a randomized algorithm $M : \dbs \implies R$ that takes a database and, after introducing noise, outputs some results.
+A \emph{randomized mechanism} is a randomized algorithm $M : \dbs \implies \mathbb{R}^p$ that takes a database and, after introducing noise, outputs some results.
 
-Let $\db_1,\db_2$ be two databases. They are \emph{neighbors}, denoted $\db_1 \sim \db_2$, if they differ in exactly one row.
+Let $\db_1,\db_2$ be two databases. They are \emph{neighbors}, denoted $\db_1 \sim \db_2$, if $\abs{\mathcal{R}_{\db_1} \Delta \mathcal{R}_{\db_2}} \in \set{1,2}$ where $\Delta$ denotes symmetric difference; that is, either one database contains an extra row, or both databases have all but one row in common. In other words, they differ in exactly one row.
 
 \begin{definition}[Gaussian Mechanism\cite{dwork2014algorithmic}]\label{def:gm}
-Let $f : \dbs \implies \mathbb{R}^p$ be a function that takes a database and outputs a vector. The Gaussian Mechanism $M$ adds i.i.d. Gaussian noise with scale $\sigma$ to each of the $p$ outputs
+Let $f : \dbs \implies \mathbb{R}^p$ be a function. The Gaussian Mechanism $M$ adds independent and identically distributed Gaussian noise with mean $0$ and standard deviation $\sigma$ to each component of the $p$-dimensional vector output of $f(\db)$
 \[
-M(\db) = f(\db) + \mathcal{N}(0, \sigma^2 \mathbb{I})
+M(\db) = f(\db) + \mathcal{N}(0_p, \sigma^2 \mathbb{I}_p)
 \]
+where $\mathcal{N}$ is a multivariate normal distribution with mean vector $0_p$ and covariance matrix $\sigma^2 \mathbb{I}_p$ where $\mathbb{I}_p$ is the identity matrix.
 \end{definition}
 
 \begin{definition}[R\'enyi Differential Privacy (RDP)]\label{def:rdp}
-A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ and $\gamma \geq 1$ if, for all databases $\db_1 \sim \db_2$, we have
+Let $P_{\mathbf{X}}$ denote the probability distribution induced by the random vector $\mathbf{X}$. A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ and $\gamma \geq 1$ if, for all databases $\db_1 \sim \db_2$, we have
 \[
-D_\alpha(M(\db_1) \Vert M(\db_2)) \leq \gamma
+D_\alpha(P_{M(\db_1)} \Vert P_{M(\db_2)}) \leq \gamma
 \]
-where $D_\alpha(P \Vert Q)$ is the R\'enyi divergence\cite{van2014renyi,van2010renyi,li2016renyi} of order $\alpha$ between discrete probability distributions $P$ and $Q$, defined on $\mathcal{X}$:
+where $D_\alpha(P_1 \Vert P_2)$ is the R\'enyi divergence\cite{van2014renyi,van2010renyi,li2016renyi} of order $\alpha$ between probability distributions $P_1,P_2$ over $x$:
 \[
-D_\alpha(P \Vert Q) := \frac{1}{\alpha - 1} \text{log} \sum_{x \in \mathcal{X}} {P(x)}^\alpha {Q(x)}^{1-\alpha}
+D_\alpha(P_1 \Vert P_2) := \frac{1}{\alpha - 1} \text{log} \int {P_1(x)}^\alpha {P_2(x)}^{1-\alpha} \text{d}x
 \]
 \end{definition}
-
-TODO: N is multivariate normal distribution and sigma and identity function. I sub p
-
-TODO: Da needs to take distributions. change symbols. lowercase phi
 
 \begin{theorem}[RDP of the Gaussian Mechanism\cite{feldman2018privacy,mironov2017renyi}]
 The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})$-RDP, where $\Delta_f$ denotes the sensitivity\cite{dwork2014algorithmic} of $f$, which is defined as the maximum $L^2$-norm difference in the output of $f$
@@ -434,7 +453,7 @@ The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})
 
 \subsection{Differentially Private Synthetic Data}
 
-Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. Let $x$ be a row and $x_C$ denote the restriction of $x$ to $C$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ on database $\db$ is a lookup table $\mu_{\db} : \Omega_C \implies \mathbb{N}_0$ such that each entry is a count $\mu_{\db}(t) = \Sigma_{x \in \db} \delta_{t,{x_C}}$ where $\delta$ is the Kronecker function; that is, it is a table of the counts of each possible combination of domain elements. We call marginals of $|C| = n$ attributes $n$-way marginals.
+Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. Let $x$ be a row and $x_C$ denote the restriction of $x$ to $C$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ on database $\db$ is a function $\mu_{\db} : \Omega_C \implies \mathbb{N}_0$ such that $\mu_{\db}(t) = \Sigma_{x \in \mathcal{\db}} \delta_{t,{x_C}}$ where $\delta$ is the Kronecker function; that is, it is a lookup table of the counts of each possible combination of attribute values. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
 The task of Differentially Private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some Differential Privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
 
@@ -499,7 +518,7 @@ Thus, we introduce a new framework where the auditor generates synthetic data ba
 \section{Methodology}
 \label{sec:method}
 
-We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{McKenna_privatePGM,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
+We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{McKenna_Private-PGM_2021,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
 This research is conducted in Python Jupyter notebooks and is publicly available.
 
@@ -537,7 +556,7 @@ The checker simply iterates through the given database $\db$ and computes the re
 
 Protected groups $S$, predicted outcomes $\hat{Y}$, and ground truths $Y$ are all formulated as these predicates. These are straightforward logical boolean expressions. Specifically, they are given as Python functions that output boolean values.
 
-For example, if the sensitive attribute is sex and the protected group is female, the protected group predicate would be $S := r_i(\text{``sex''}) = \text{``Female''}$. This can be easily implemented in Python as a comparison function.
+For example, if the sensitive attribute is sex and the protected group is female, the protected group predicate would be $S := r(sex) = Female$. This can be easily implemented in Python as a comparison function.
 
 The interpretation of the resulting fairness measure values is dependent on the third-party auditors. The auditors may have different thresholds $\epsilon$ for different fairness measures or different AI models.
 
@@ -545,7 +564,7 @@ The interpretation of the resulting fairness measure values is dependent on the 
 
 To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset. We used various datasets with fairness concerns mentioned in \cite{pessach2022review}.
 
-We looked at several publicly available datasets, such as adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The adult dataset comes from the 1994 census in the United States and contains about 30000 individuals. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals.
+We looked at several publicly available datasets, such as adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The adult dataset comes from the 1994 census in the United States and contains about 30000 individuals. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. Since these datasets all have binary outcomes, we did not consider the case of non-binary outcomes in the experiments.
 
 The fairness checker evaluates datasets based on multiple fairness metrics, such as demographic parity and equalized odds. These metrics are computed on some sensitive attributes, predicted outcomes, and ground truths. Examples of sensitive attributes are race and sex. Examples of predicted outcomes and ground truths are loan approval and criminal recidivism.
 
@@ -686,21 +705,28 @@ Marginals of this graph are then too passed to the synthetic data generator for 
 
 We ran the same workflow as adult dataset for the COMPAS dataset. The comparison results are shown in Table~\ref{tab:compas_score}.
 
+% this experiment is complete
+
+With heuristic it is 27m33s. The fit time is 33s without heuristic.
+
+The average of their differences is $0.0787$. Without heuristic it is $0.0775$.
+
 The results showed an increase in error on the sufficiency measure values. In particular, one of the measures has an error difference as high as 0.141. The average of their differences is 0.069, which is worse than the adult dataset.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is 0.069.}
+\caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is 0.0787.}
 \label{tab:compas_score}
 \begin{tabular}{cccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
-Demographic Parity     & 0.131 & 0.098 & 0.032 \\
-Accuracy Eqaulity      & 0.007 & 0.013 & 0.005 \\
-Equalized Odds 1       & 0.024 & 0.099 & 0.074 \\
-Equalized Odds 2       & 0.017 & 0.097 & 0.079 \\
-Accuracy Equality 1    & 0.170 & 0.082 & 0.088 \\
-Accuracy Equality 2    & 0.169 & 0.027 & 0.141 \\
+Demographic Parity  & 0.1310 & 0.0980 & 0.0330 \\
+Mean Difference     & 0.3282 & 0.2274 & 0.1007 \\
+Accuracy Eqaulity   & 0.0079 & 0.0129 & 0.0050 \\
+Equalized Odds 1    & 0.0249 & 0.0936 & 0.0687 \\
+Equalized Odds 2    & 0.0177 & 0.1016 & 0.0838 \\
+Accuracy Equality 1 & 0.1709 & 0.0505 & 0.1203 \\
+Accuracy Equality 2 & 0.1695 & 0.0303 & 0.1392 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -713,21 +739,30 @@ The same process is conducted to fit the synthetic data generator model.
 
 The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
 
-The differences are all pretty low, no more than $0.01$ this time, across all measures, except for one separation measure and one sufficiency measure. The average of their differences is 0.031.
+% run this with 100 iter
+
+The fit time is 1m24s without heuristic. With heuristic it is 1m44s.
+
+The average of their differences is $0.0069$. Without heuristic it is $0.0083$.
+
+% The results showed that the synthetic data generally preserves the fairness properties of the original data.
+
+% The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. The average of the differences is 0.0431 for the adult dataset, 0.069 for the COMPAS dataset, and 0.031 for the diabetes dataset.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the diabetes dataset. Average of differences is 0.031.}
+\caption{Fairness measures experiment results of the diabetes dataset. Average of differences is 0.0069.}
 \label{tab:diabetes_score}
 \begin{tabular}{cccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
-Demographic Parity  & 0.013 & 0.015 & 0.002 \\
-Accuracy Eqaulity   & 0.007 & 0.009 & 0.002 \\
-Equalized Odds 1    & 0.000 & 0.003 & 0.003 \\
-Equalized Odds 2    & 0.008 & 0.106 & 0.097 \\
-Accuracy Equality 1 & 0.013 & 0.097 & 0.084 \\
-Accuracy Equality 2 & 0.021 & 0.020 & 0.001 \\
+Demographic Parity  & 0.0135 & 0.0032 & 0.0102 \\
+Mean Difference     & 0.0035 & 0.0119 & 0.0083 \\
+Accuracy Eqaulity   & 0.0077 & 0.0009 & 0.0067 \\
+Equalized Odds 1    & 0.0000 & 0.0003 & 0.0003 \\
+Equalized Odds 2    & 0.0086 & 0.0104 & 0.0017 \\
+Accuracy Equality 1 & 0.0133 & 0.0095 & 0.0038 \\
+Accuracy Equality 2 & 0.0216 & 0.0039 & 0.0177 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -736,15 +771,21 @@ Accuracy Equality 2 & 0.021 & 0.020 & 0.001 \\
 
 % TODO: mention model fit time? yes. do experiments!
 
-TODO: \subsection{Positive Results}
+\subsection{Positive Results}
+
+%  TODO: rewrite this
 
 Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
-In particular, for the adult dataset, the average difference was 0.0431, suggesting a close match between the synthetic and the original data in terms of fairness measures. For the diabetes dataset, the average difference was 0.031, which is even lower. Even in the case of the COMPAS dataset, which had a higher value, it was still within an acceptable range at 0.069.
+For the adult dataset, the average difference was 0.0431, suggesting a close match between the synthetic and the original data in terms of fairness measures. For the diabetes dataset, the average difference was 0.031, which is even lower. Even in the case of the COMPAS dataset, which had a higher value, it was still within an acceptable range at 0.069.
+
+In particular, both the independence and separation measures showed low errors across all datasets, with the differences of all of them below 0.1. On the other hand, results of accuracy equality also showed low errors, with the differences of one of them as low as 0.005.
 
 This demonstrated that synthetic data can accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results consistent with those on the original data.
 
-TODO: \subsection{Negative Results}
+\subsection{Negative Results}
+
+%  TODO: rewrite this
 
 The experiments also revealed some limitations of this approach. In particular, the sufficiency measure showed higher errors compared to other measures. For example, in the COMPAS dataset, the sufficiency measure had an error difference as high as 0.141, while other measures had errors below 0.1.
 
