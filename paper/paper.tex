@@ -112,6 +112,8 @@
 \usepackage{mathtools}
 \usepackage{multirow}
 \usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 \graphicspath{{images/}}
 \DeclareGraphicsExtensions{.pdf}
@@ -528,15 +530,28 @@ By default, all $1$-way marginals are selected to preserve the quantity of each 
 
 In a perfect world where all correlation information is to be preserved, we may wish to make a completely connected graph. However, this was found to be intractable as the complexity of the problem would skyrocket.
 
-To circumvent the complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree algorithm was run with edge weights being the mutual information to obtain a skeleton spanning-tree-shaped Markov random field.
-
-TODO: mst was obtained. delete the word algorithm
+To circumvent the complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree is obtained with edge weights being the mutual information to form a skeleton tree-shaped Markov random field.
 
 For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
 
 We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
-TODO: use latex algorithm. pseudo code
+\begin{algorithm}
+\caption{something something}
+\label{alg:heuristic}
+\begin{algorithmic}[1]
+\STATE Initialize $x \gets 0$
+\STATE Initialize $y \gets 1$
+\FOR{$i \gets 1$ to $n$}
+    \IF{$i$ is even}
+        \STATE $x \gets x + i$
+    \ELSE
+        \STATE $y \gets y \times i$
+    \ENDIF
+\ENDFOR
+\RETURN $x + y$
+\end{algorithmic}
+\end{algorithm}
 
 For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
@@ -674,49 +689,45 @@ Marginals based on this graph are then passed to the synthetic data generator fo
 
 After generating ten rounds of synthetic data and passing them to the checker, their fairness measure values are averaged. Then, we compare them against the values of the original data. The results are shown in Table~\ref{tab:adult_score}.
 
-% this 100 experiment is running
-
-The fit time is 17m1s without heuristic. With heuristic it is 924m15s.
-
-The average of their differences is $0.0787$. Without heuristic it is $0.0775$.
-
-We observed that across all examined fairness measures, their difference all fall below 0.1. The average of their differences is 0.0431, which we consider quite satisfactory.
+% We observed that across all examined fairness measures, their difference all fall below 0.1. The average of their differences is 0.0431, which we consider quite satisfactory.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the adult dataset. Average of differences is 0.0431.}
+\caption{
+    Fairness measures experiment results of the adult dataset.
+    With heuristic, average difference is $0.0787$, and fit time is 924m15s.
+    Without heuristic, average difference is $0.0775$, and fit time is 17m1s.
+}
 \label{tab:adult_score}
-\begin{tabular}{ccccc}
+\begin{tabular}{ccccccc}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Synthetic(No Heuristic)} & \textbf{Difference(No Heuristic)} \\
 \midrule
-Demographic Parity  & 0.172 & 0.104 & 0.067 \\
-Accuracy Eqaulity   & 0.047 & 0.117 & 0.069 \\
-Equalized Odds 1    & 0.057 & 0.079 & 0.021 \\
-Equalized Odds 2    & 0.166 & 0.122 & 0.044 \\
-Accuracy Equality 1 & 0.100 & 0.132 & 0.031 \\
-Accuracy Equality 2 & 0.119 & 0.146 & 0.027 \\
+Demographic Parity  & 0.1933 & 0.1079 & 0.0853 & 0.0114 & 0.1818 \\
+Accuracy Eqaulity   & 0.0250 & 0.1399 & 0.1149 & 0.0169 & 0.0080 \\
+Equalized Odds 1    & 0.0175 & 0.0870 & 0.0695 & 0.0060 & 0.0115 \\
+Equalized Odds 2    & 0.0114 & 0.0622 & 0.0508 & 0.0303 & 0.0189 \\
+Accuracy Equality 1 & 0.1941 & 0.1466 & 0.0474 & 0.0315 & 0.1626 \\
+Accuracy Equality 2 & 0.1102 & 0.1450 & 0.0348 & 0.0299 & 0.0803 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{COMPAS Dataset}
 
-For the COMPAS dataset, the initial spanning tree has a long tail, which is not surprising because, upon closer inspection, they all are related to the original COMPAS risk scores. The heuristic edge addition did not change the graph significantly. It only introduced one 3-clique triangle. The resulting graph is shown in Figure~\ref{fig:compas_mst}.
+% For the COMPAS dataset, the initial spanning tree has a long tail, which is not surprising because, upon closer inspection, they all are related to the original COMPAS risk scores. The heuristic edge addition did not change the graph significantly. It only introduced one 3-clique triangle. The resulting graph is shown in Figure~\ref{fig:compas_mst}.
 
-Marginals of this graph are then too passed to the synthetic data generator for fitting.
+% Marginals of this graph are then too passed to the synthetic data generator for fitting.
 
-We ran the same workflow as adult dataset for the COMPAS dataset. The comparison results are shown in Table~\ref{tab:compas_score}.
+% We ran the same workflow as adult dataset for the COMPAS dataset. The comparison results are shown in Table~\ref{tab:compas_score}.
 
-% this experiment is complete
-
-The fit time is 33s without heuristic. With heuristic it is 27m33s.
-
-The average of their differences is $0.0750$. Without heuristic it is $0.0727$.
-
-The results showed an increase in error on the sufficiency measure values. In particular, one of the measures has an error difference as high as 0.141. The average of their differences is 0.069, which is worse than the adult dataset.
+% The results showed an increase in error on the sufficiency measure values. In particular, one of the measures has an error difference as high as 0.141. The average of their differences is 0.069, which is worse than the adult dataset.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is $0.0750$. Average of differences without heuristic is $0.0727$}
+\caption{
+    Fairness measures experiment results of the COMPAS dataset.
+    With heuristic, average difference is $0.0750$, and fit time is 27m33s.
+    Without heuristic, average difference is $0.0727$, and fit time is 33s.
+}
 \label{tab:compas_score}
 \begin{tabular}{cccccc}
 \toprule
@@ -734,24 +745,22 @@ Accuracy Equality 2 & 0.1695 & 0.0303 & 0.1392 & 0.0256 & 0.1439 \\
 
 \subsection{Diabetes Dataset}
 
-The tree grown from the diabetes dataset did not appear to have any particular characteristics. The root of the tree is placed in the BMI value, which reasonably captures most information. The heuristic edge addition process introduced some 3-clique triangles. The resulting graph is shown in Figure~\ref{fig:diabetes_mst}.
+% The tree grown from the diabetes dataset did not appear to have any particular characteristics. The root of the tree is placed in the BMI value, which reasonably captures most information. The heuristic edge addition process introduced some 3-clique triangles. The resulting graph is shown in Figure~\ref{fig:diabetes_mst}.
 
-The same process is conducted to fit the synthetic data generator model.
+% The same process is conducted to fit the synthetic data generator model.
 
-The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
-
-% this experiment is complete
-
-The fit time is 1m24s without heuristic. With heuristic it is 1m44s.
-
-The average of their differences is $0.0067$. Without heuristic it is $0.0078$.
+% The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
 
 % The results showed that the synthetic data generally preserves the fairness properties of the original data.
 
 % The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. The average of the differences is 0.0431 for the adult dataset, 0.069 for the COMPAS dataset, and 0.031 for the diabetes dataset.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the diabetes dataset. Average of differences is $0.0067$. Average of differences without heuristic is $0.0078$}
+\caption{
+    Fairness measures experiment results of the diabetes dataset.
+    With heuristic, average difference is $0.0067$, and fit time is 1m44s.
+    Without heuristic, average difference is $0.0078$, and fit time is 1m24s.
+}
 \label{tab:diabetes_score}
 \begin{tabular}{cccccc}
 \toprule
@@ -773,31 +782,31 @@ Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
 
 \subsection{Positive Results}
 
-%  TODO: rewrite this
+% %  TODO: rewrite this
 
-Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
+% Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
-For the adult dataset, the average difference was 0.0431, suggesting a close match between the synthetic and the original data in terms of fairness measures. For the diabetes dataset, the average difference was 0.031, which is even lower. Even in the case of the COMPAS dataset, which had a higher value, it was still within an acceptable range at 0.069.
+% For the adult dataset, the average difference was 0.0431, suggesting a close match between the synthetic and the original data in terms of fairness measures. For the diabetes dataset, the average difference was 0.031, which is even lower. Even in the case of the COMPAS dataset, which had a higher value, it was still within an acceptable range at 0.069.
 
-In particular, both the independence and separation measures showed low errors across all datasets, with the differences of all of them below 0.1. On the other hand, results of accuracy equality also showed low errors, with the differences of one of them as low as 0.005.
+% In particular, both the independence and separation measures showed low errors across all datasets, with the differences of all of them below 0.1. On the other hand, results of accuracy equality also showed low errors, with the differences of one of them as low as 0.005.
 
-This demonstrated that synthetic data can accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results consistent with those on the original data.
+% This demonstrated that synthetic data can accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results consistent with those on the original data.
 
 \subsection{Negative Results}
 
 %  TODO: rewrite this
 
-The experiments also revealed some limitations of this approach. In particular, the sufficiency measure showed higher errors compared to other measures. For example, in the COMPAS dataset, the sufficiency measure had an error difference as high as 0.141, while other measures had errors below 0.1.
+% The experiments also revealed some limitations of this approach. In particular, the sufficiency measure showed higher errors compared to other measures. For example, in the COMPAS dataset, the sufficiency measure had an error difference as high as 0.141, while other measures had errors below 0.1.
 
-By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
+% By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
 
-Referring back to the definition of the fairness measures, we can see the following: separation is concerned with the form $P[\hat{Y} | S, Y] = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]}$, and sufficiency is concerned with the form $P[Y | S, \hat{Y}] = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]}$.
+% Referring back to the definition of the fairness measures, we can see the following: separation is concerned with the form $P[\hat{Y} | S, Y] = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]}$, and sufficiency is concerned with the form $P[Y | S, \hat{Y}] = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]}$.
 
-TODO: expand all defs and count the nums of avail vars
+% TODO: expand all defs and count the nums of avail vars
 
-This explains why sufficiency measures could have higher errors compared to separation because synthetic data have less information about them. While only one variable is missing in the numerator for separation, one more variable is missing in the denominator for sufficiency.
+% This explains why sufficiency measures could have higher errors compared to separation because synthetic data have less information about them. While only one variable is missing in the numerator for separation, one more variable is missing in the denominator for sufficiency.
 
-Therefore, it is harder to approximate sufficiency measures on synthetic data. This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses.
+% Therefore, it is harder to approximate sufficiency measures on synthetic data. This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses.
 
 % independence
 % \[
