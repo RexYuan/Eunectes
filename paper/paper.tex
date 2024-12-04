@@ -339,7 +339,7 @@ is the set of attribute values in $\db$,
 $\sigma_{\db} : \mathcal{A}_{\db} \implies 2^{\Omega_{\db}}$
 is the function specifying the valid values that each attribute can take on in $\db$,
 and $\mathcal{R}_{\db} \subseteq \mathcal{R}$
-is the set of rows in $\db$
+is the set of rows with respect to $\sigma_{\db}$ in $\db$
 with $r_\db : \mathcal{A}_\db \implies \Omega_\db$
 for all $r_\db \in \mathcal{R}_\db$
 and $r_\db(A) \in \sigma_\db(A)$
@@ -507,11 +507,7 @@ In the framework of our previous work\cite{yuan2024ensuring}, after obtaining re
 
 For security, it creates a point of vulnerability of unauthorized access, and the auditor is now a target of data security attacks. The auditor may not have the necessary resources to defend against these threats. A breach at the auditor's end could result in compromises of individuals' sensitive information.
 
-As for privacy, on the other hand, it introduces risks of information leakage. Releasings of real data may inadvertently reveal sensitive information by data inference attacks.
-
-TODO: ppl may infer info from auditors analyses Releasings. repeated queries
-
-Indefinite retention also exacerbates this issue because the longer the data is stored, the higher the chance of unwanted information disclosure.
+As for privacy, on the other hand, it introduces risks of information leakage. Releasings of analyses on real data may inadvertently reveal sensitive information by data inference attacks. Attackers can exploit patterns in data outputs or combine outputs with external data to infer sensitive information.
 
 Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing all further data breaches. The third-party retains the ability to audit all incoming future models as needed.
 
@@ -678,9 +674,9 @@ Marginals based on this graph are then passed to the synthetic data generator fo
 
 After generating ten rounds of synthetic data and passing them to the checker, their fairness measure values are averaged. Then, we compare them against the values of the original data. The results are shown in Table~\ref{tab:adult_score}.
 
-% this 100 experiment is not run yet
+% this 100 experiment is running
 
-With heuristic it is 924m15s. The fit time is 17m1s without heuristic.
+The fit time is 17m1s without heuristic. With heuristic it is 924m15s.
 
 The average of their differences is $0.0787$. Without heuristic it is $0.0775$.
 
@@ -713,25 +709,25 @@ We ran the same workflow as adult dataset for the COMPAS dataset. The comparison
 
 % this experiment is complete
 
-With heuristic it is 27m33s. The fit time is 33s without heuristic.
+The fit time is 33s without heuristic. With heuristic it is 27m33s.
 
-The average of their differences is $0.0787$. Without heuristic it is $0.0775$.
+The average of their differences is $0.0750$. Without heuristic it is $0.0727$.
 
 The results showed an increase in error on the sufficiency measure values. In particular, one of the measures has an error difference as high as 0.141. The average of their differences is 0.069, which is worse than the adult dataset.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is 0.0787.}
+\caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is $0.0750$. Average of differences without heuristic is $0.0727$}
 \label{tab:compas_score}
-\begin{tabular}{cccc}
+\begin{tabular}{cccccc}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Synthetic(No Heuristic)} & \textbf{Difference(No Heuristic)} \\
 \midrule
-Demographic Parity  & 0.1310 & 0.0980 & 0.0330 \\
-Accuracy Eqaulity   & 0.0079 & 0.0129 & 0.0050 \\
-Equalized Odds 1    & 0.0249 & 0.0936 & 0.0687 \\
-Equalized Odds 2    & 0.0177 & 0.1016 & 0.0838 \\
-Accuracy Equality 1 & 0.1709 & 0.0505 & 0.1203 \\
-Accuracy Equality 2 & 0.1695 & 0.0303 & 0.1392 \\
+Demographic Parity  & 0.1310 & 0.0980 & 0.0330 & 0.0809 & 0.0501 \\
+Accuracy Eqaulity   & 0.0079 & 0.0129 & 0.0050 & 0.0146 & 0.0067 \\
+Equalized Odds 1    & 0.0249 & 0.0936 & 0.0687 & 0.0802 & 0.0553 \\
+Equalized Odds 2    & 0.0177 & 0.1016 & 0.0838 & 0.0825 & 0.0648 \\
+Accuracy Equality 1 & 0.1709 & 0.0505 & 0.1203 & 0.0551 & 0.1157 \\
+Accuracy Equality 2 & 0.1695 & 0.0303 & 0.1392 & 0.0256 & 0.1439 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -744,30 +740,29 @@ The same process is conducted to fit the synthetic data generator model.
 
 The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
 
-% this is running with 100 iter
+% this experiment is complete
 
 The fit time is 1m24s without heuristic. With heuristic it is 1m44s.
 
-The average of their differences is $0.0069$. Without heuristic it is $0.0083$.
+The average of their differences is $0.0067$. Without heuristic it is $0.0078$.
 
 % The results showed that the synthetic data generally preserves the fairness properties of the original data.
 
 % The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. The average of the differences is 0.0431 for the adult dataset, 0.069 for the COMPAS dataset, and 0.031 for the diabetes dataset.
 
 \begin{table}[h]
-\caption{Fairness measures experiment results of the diabetes dataset. Average of differences is 0.0069.}
+\caption{Fairness measures experiment results of the diabetes dataset. Average of differences is $0.0067$. Average of differences without heuristic is $0.0078$}
 \label{tab:diabetes_score}
-\begin{tabular}{cccc}
+\begin{tabular}{cccccc}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Synthetic(No Heuristic)} & \textbf{Difference(No Heuristic)} \\
 \midrule
-Demographic Parity  & 0.0135 & 0.0032 & 0.0102 \\
-Mean Difference     & 0.0035 & 0.0119 & 0.0083 \\
-Accuracy Eqaulity   & 0.0077 & 0.0009 & 0.0067 \\
-Equalized Odds 1    & 0.0000 & 0.0003 & 0.0003 \\
-Equalized Odds 2    & 0.0086 & 0.0104 & 0.0017 \\
-Accuracy Equality 1 & 0.0133 & 0.0095 & 0.0038 \\
-Accuracy Equality 2 & 0.0216 & 0.0039 & 0.0177 \\
+Demographic Parity  & 0.0135 & 0.0038 & 0.0096 & 0.0015 & 0.0119 \\
+Accuracy Eqaulity   & 0.0077 & 0.0011 & 0.0065 & 0.0011 & 0.0065 \\
+Equalized Odds 1    & 0.0000 & 0.0006 & 0.0006 & 0.0010 & 0.0010 \\
+Equalized Odds 2    & 0.0086 & 0.0106 & 0.0020 & 0.0094 & 0.0008 \\
+Accuracy Equality 1 & 0.0133 & 0.0090 & 0.0042 & 0.0059 & 0.0074 \\
+Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
 \bottomrule
 \end{tabular}
 \end{table}
