@@ -94,7 +94,7 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-  abstract
+Ensuring fairness in AI systems is crucial, but auditing these systems often requires sensitive data, which raises security and privacy concerns. To address this, we introduce a framework that utilizes Differentially Private synthetic data for fairness evaluations. This approach allows auditors to assess AI systems without exposing sensitive information. Through experiments on datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. Our results ...
 \end{abstract}
 
 % %%
@@ -464,7 +464,7 @@ The interpretation of the resulting fairness measure values is dependent on the 
 
 To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset. We used various datasets with fairness concerns mentioned in \cite{pessach2022review}.
 
-We looked at several publicly available datasets, such as adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The adult dataset comes from the 1994 census in the United States and contains about 30000 individuals. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. Since these datasets all have binary outcomes, we did not consider the case of non-binary outcomes in the experiments.
+We looked at several publicly available datasets, such as Adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The Adult dataset comes from the 1994 census in the United States and contains about 30000 individuals. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The Diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. Since these datasets all have binary outcomes, we did not consider the case of non-binary outcomes in the experiments.
 
 The fairness checker evaluates datasets based on multiple fairness metrics, such as demographic parity and equalized odds. These metrics are computed on some sensitive attributes, predicted outcomes, and ground truths. Examples of sensitive attributes are race and sex. Examples of predicted outcomes and ground truths are loan approval and criminal recidivism.
 
@@ -507,9 +507,9 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
   \begin{subfigure}[b]{0.3\textwidth}
       \centering
       \includegraphics[width=\textwidth]{adult_mst}
-      \caption{Markov random field for marginals of the adult dataset.}
+      \caption{Markov random field for marginals of the Adult dataset.}
       \label{fig:adult_mst}
-      \Description{Markov random field for marginals of the adult dataset.}
+      \Description{Markov random field for marginals of the Adult dataset.}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.3\textwidth}
@@ -523,7 +523,7 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
   \begin{subfigure}[b]{0.3\textwidth}
       \centering
       \includegraphics[width=\textwidth]{diabetes_mst}
-      \caption{Markov random field for marginals of the diabetes dataset.}
+      \caption{Markov random field for marginals of the Diabetes dataset.}
       \label{fig:diabetes_mst}
       \Description{Markov random field for marginals of the COMPAS dataset.}
   \end{subfigure}
@@ -533,7 +533,7 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
 
 \subsection{Adult Income Dataset}
 
-For the adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
+For the Adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
 
 Marginals based on this graph are then passed to the synthetic data generator for model fitting.
 
@@ -543,7 +543,7 @@ After generating ten rounds of synthetic data and passing them to the checker, t
 
 \begin{table}[h]
 \caption{
-    Fairness measures experiment results of the adult dataset.
+    Fairness measures experiment results of the Adult dataset.
     With heuristic, average difference is $0.0787$, and fit time is 924m15s.
     Without heuristic, average difference is $0.0775$, and fit time is 17m1s.
 }
@@ -607,7 +607,7 @@ Accuracy Equality 2 & 0.1695 & 0.0303 & 0.1392 & 0.0256 & 0.1439 \\
 
 \begin{table}[h]
 \caption{
-    Fairness measures experiment results of the diabetes dataset.
+    Fairness measures experiment results of the Diabetes dataset.
     With heuristic, average difference is $0.0067$, and fit time is 1m44s.
     Without heuristic, average difference is $0.0078$, and fit time is 1m24s.
 }
