@@ -287,15 +287,19 @@
 
 \section{Introduction}
 
-% fairness in machine learning
-
-% auditing fairness
+Fairness in machine learning has become an important topic as AI systems become widely used. Biased AI systems could result in amplified unfairness. Ensuring fairness in AI systems is crucial to prevent these biases from being exacerbated by AI systems. One approach is to audit the fairness of existing AI systems. Quantitative fairness auditing is a process of evaluating the fairness of AI systems with a range of fairness metrics. Many metrics have been proposed to help evaluate the fairness of AI systems.
 
 % data privacy
 
-% synthetic data
+To conduct audits, auditors may rely on access to real datasets containing sensitive information, raising significant security and privacy concerns. This reliance invites data security attacks on auditors, making them targets of unauthorized access. Analysis on real data runs the risk of data inference attacks, where confidential information may be deduced from seemingly harmless or aggregated data. Various technologies have been developed to mitigate these risks, such as Differential Privacy, where the idea is that whether or not any individual is in a dataset has a limited impact.
 
 % differentially private synthetic data for fairness auditing
+
+We propose a novel auditing framework that leverages Differentially Private synthetic data to evaluate the fairness of AI systems. Our framework lets the auditors assess the fairness of AI systems without exposing sensitive information. Differentially Private synthetic data is a technique that generates synthetic data from real data that preserves some statistical properties of the real data while ensuring Differential Privacy. This technology enables auditing without exposing sensitive information. However, synthetic data also introduces new challenges. Whether or not it accurately preserves the fairness properties of the real data is a critical question.
+
+% contribution
+
+Our work examines the capabilities of existing Differentially Private synthetic data generation technologies in preserving fairness properties. Through empirical experiments on multiple real datasets, we aim to determine the effectiveness of Differentially Private synthetic data in this respect.
 
 \section{Related Work}
 
