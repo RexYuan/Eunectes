@@ -289,27 +289,25 @@
 
 \section{Related Work}
 
-TODO: add more connections to our work
+% fairness
 
-Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify\cite{yeh2024analyzing} the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}.
+Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify\cite{yeh2024analyzing} the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}. We consider these fairness measures in this work.
 
-Auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{yuan2024ensuring,saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}.
+Auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}. We use a tool produced from our previous work\cite{yuan2024ensuring}.
 
 % differential privacy
 
-Differential Privacy has risen to become the standard of privacy protection in many data analyses\cite{jiang2021applications}. It offers a formal framework for quantifying privacy guarantees when releasing information derived from sensitive data\cite{dwork2006calibrating,dwork2014algorithmic}.
+Differential Privacy has risen to become the standard of privacy protection in many data analyses\cite{jiang2021applications}. It offers a formal framework for quantifying privacy guarantees when releasing information derived from sensitive data\cite{dwork2006calibrating,dwork2014algorithmic}. We use Differential Privacy in this work to protect the privacy of individuals in the data in our auditing framework.
 
-Different flavors of Differential Privacy have been proposed over the years\cite{desfontaines2019sok}, such as Gaussian Differential Privacy\cite{dong2022gaussian}, Pufferfish Differential Privacy\cite{kifer2012rigorous}, Bayesian Differential Privacy\cite{triastcyn2020bayesian}, and R\'enyi Differential Privacy\cite{mironov2017renyi}.
+Different flavors of Differential Privacy have been proposed over the years\cite{desfontaines2019sok}, such as Gaussian Differential Privacy\cite{dong2022gaussian}, Pufferfish Differential Privacy\cite{kifer2012rigorous}, Bayesian Differential Privacy\cite{triastcyn2020bayesian}, and R\'enyi Differential Privacy\cite{mironov2017renyi}. We consider R\'enyi Differential Privacy specifically in this work.
 
 % synthetic data
 
-The generation of synthetic data\cite{raghunathan2021synthetic,lu2023machine} under Differential Privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for Differentially Private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years.
+The generation of synthetic data\cite{raghunathan2021synthetic,lu2023machine} under Differential Privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for Differentially Private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years. We use the technique that won the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{mckenna2021winning}.
 
-TODO: some works aim to change properties of og data. we want to preserve. so we dont consider this case
+There have also been some works that aim to alter the properties of synthetic data, such as introducing bias to them\cite{jiang2024synthetic,baumann2023bias}. In this work, we aim to preserve the properties of the original data. Thus, we do not consider these works.
 
-There are also works that aim to introduce bias to synthetic data\cite{jiang2024synthetic,baumann2023bias}.
-
-While helpful, there are some technical limitations\cite{stadler2022synthetic,cheng2021can,ganev2022robin,wyllie2024fairness} and ethical concerns\cite{whitney2024real} with the use of synthetic data.
+While helpful, there are some technical limitations\cite{stadler2022synthetic,cheng2021can,ganev2022robin,wyllie2024fairness} and ethical concerns\cite{whitney2024real} with the use of synthetic data. Synthetic data may not always preserve properties of real data. This may cause inaccuracies in downstream tasks such as fairness evaluation. Our work examines these limitations.
 
 \section{Preliminaries}
 \label{sec:prelim}
@@ -642,45 +640,6 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
       \label{fig:msts}
 \end{figure}
 
-% \begin{table}[h]
-% \caption{Example marginals.}
-% \label{tab:marginal-example}
-% \centering
-% \begin{subtable}[t]{0.3\linewidth}
-%   \caption{Fairness measures experiment results of the adult dataset. Average of differences is 0.0431.}
-%   \label{tab:adult_score}
-%   \begin{tabular}{ccccc}
-%   \toprule
-%   \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
-%   \midrule
-%   Demographic Parity  & 0.172 & 0.104 & 0.067 \\
-%   Accuracy Eqaulity   & 0.047 & 0.117 & 0.069 \\
-%   Equalized Odds 1    & 0.057 & 0.079 & 0.021 \\
-%   Equalized Odds 2    & 0.166 & 0.122 & 0.044 \\
-%   Accuracy Equality 1 & 0.100 & 0.132 & 0.031 \\
-%   Accuracy Equality 2 & 0.119 & 0.146 & 0.027 \\
-%   \bottomrule
-%   \end{tabular}
-% \end{subtable}
-% \begin{subtable}[t]{0.3\linewidth}
-%   \centering
-%   \caption{Fairness measures experiment results of the COMPAS dataset. Average of differences is 0.031.}
-%   \label{tab:diabetes_score}
-%   \begin{tabular}{cccc}
-%   \toprule
-%   \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
-%   \midrule
-%   Demographic Parity  & 0.013 & 0.015 & 0.002 \\
-%   Accuracy Eqaulity   & 0.007 & 0.009 & 0.002 \\
-%   Equalized Odds 1    & 0.000 & 0.003 & 0.003 \\
-%   Equalized Odds 2    & 0.008 & 0.106 & 0.097 \\
-%   Accuracy Equality 1 & 0.013 & 0.097 & 0.084 \\
-%   Accuracy Equality 2 & 0.021 & 0.020 & 0.001 \\
-%   \bottomrule
-%   \end{tabular}
-% \end{subtable}
-% \end{table}
-
 \subsection{Adult Income Dataset}
 
 For the adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
@@ -778,11 +737,7 @@ Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
 
 \section{Evaluation}
 
-% TODO: mention model fit time? yes. do experiments!
-
 \subsection{Positive Results}
-
-% %  TODO: rewrite this
 
 % Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
@@ -794,15 +749,13 @@ Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
 
 \subsection{Negative Results}
 
-%  TODO: rewrite this
-
 % The experiments also revealed some limitations of this approach. In particular, the sufficiency measure showed higher errors compared to other measures. For example, in the COMPAS dataset, the sufficiency measure had an error difference as high as 0.141, while other measures had errors below 0.1.
 
 % By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
 
 % Referring back to the definition of the fairness measures, we can see the following: separation is concerned with the form $P[\hat{Y} | S, Y] = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]}$, and sufficiency is concerned with the form $P[Y | S, \hat{Y}] = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]}$.
 
-% TODO: expand all defs and count the nums of avail vars
+% expand all defs and count the nums of avail vars
 
 % This explains why sufficiency measures could have higher errors compared to separation because synthetic data have less information about them. While only one variable is missing in the numerator for separation, one more variable is missing in the denominator for sufficiency.
 
