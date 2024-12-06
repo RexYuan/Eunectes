@@ -329,7 +329,7 @@ Let $P_{\mathbf{X}}$ denote the probability distribution induced by the random v
 \[
 D_\alpha(P_{M(\db_1)} \Vert P_{M(\db_2)}) \leq \gamma
 \]
-where $D_\alpha(P_1 \Vert P_2)$ is the R\'enyi divergence\cite{van2014renyi,van2010renyi,li2016renyi} of order $\alpha$ between probability distributions $P_1,P_2$ over $x$:
+where $D_\alpha(P_1 \Vert P_2)$ is the R\'enyi divergence\cite{van2014renyi,van2010renyi,li2016renyi} of order $\alpha$ between probability distributions $P_1,P_2$ over $x$
 \[
 D_\alpha(P_1 \Vert P_2) := \frac{1}{\alpha - 1} \text{log} \int {P_1(x)}^\alpha {P_2(x)}^{1-\alpha} \text{d}x
 \]
@@ -417,7 +417,7 @@ Underneath the hood, the tool employs a Markov random field. The select step cor
 
 By default, all $1$-way marginals are selected to preserve the quantity of each attribute element. We can further preserve correlations by adding $n$-way marginals. For example, if we want to preserve the relationship between sex and race, we may add the clique (sex,race).
 
-In a perfect world where all correlation information is to be preserved, we may wish to make a completely connected graph. However, this is intractable as the complexity of the problem would skyrocket. Furthermore, algorithms for Markov random field favor graphs with specific shapes, such as trees.
+In a perfect world where all correlation information is to be preserved, we may wish to make a complete graph. However, this is intractable as the complexity of the problem would skyrocket. Furthermore, algorithms for Markov random field favor graphs with specific shapes, such as trees.
 
 To circumvent this complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree is identified with edge weights being the mutual information to obtain a skeleton tree-shaped Markov random field.
 
@@ -425,22 +425,22 @@ For the competition, \cite{mckenna2021winning} further manually added certain cl
 
 We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
-\begin{algorithm}
-\caption{something something}
-\label{alg:heuristic}
-\begin{algorithmic}[1]
-\STATE Initialize $x \gets 0$
-\STATE Initialize $y \gets 1$
-\FOR{$i \gets 1$ to $n$}
-    \IF{$i$ is even}
-        \STATE $x \gets x + i$
-    \ELSE
-        \STATE $y \gets y \times i$
-    \ENDIF
-\ENDFOR
-\RETURN $x + y$
-\end{algorithmic}
-\end{algorithm}
+% \begin{algorithm}
+% \caption{something something}
+% \label{alg:heuristic}
+% \begin{algorithmic}[1]
+% \STATE Initialize $x \gets 0$
+% \STATE Initialize $y \gets 1$
+% \FOR{$i \gets 1$ to $n$}
+%     \IF{$i$ is even}
+%         \STATE $x \gets x + i$
+%     \ELSE
+%         \STATE $y \gets y \times i$
+%     \ENDIF
+% \ENDFOR
+% \RETURN $x + y$
+% \end{algorithmic}
+% \end{algorithm}
 
 For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
