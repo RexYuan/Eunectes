@@ -1,4 +1,6 @@
 \documentclass[manuscript,screen,review,anonymous]{acmart}
+\usepackage{xcolor}
+\usepackage{mathtools}
 % \documentclass[acmsmall,sigconf]{acmart}
 
 % %% Rights management information.  This information is sent to you
@@ -296,7 +298,7 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 & & $\abs{P[Y = 0 | S = 1, \hat{Y} = 0] - P[Y = 0 | S \neq 1, \hat{Y} = 0]} \leq \epsilon$ \\
 & Predictive Parity & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
 & Equal Calibration & $\abs{P[Y = 1 | S = 1, \hat{V} = v] - P[Y = 1 | S \neq 1, \hat{V} = v]} \leq \epsilon$ \\
-\multirow{3}{*}{N/A} & Overall Accuracy Equality & $\abs{P[Y = \hat{Y} | S = 1] - P[Y = \hat{Y} | S \neq 1]} \leq \epsilon$ \\
+\multirow{3}{*}{N/A} & Accuracy Equality & $\abs{P[Y = \hat{Y} | S = 1] - P[Y = \hat{Y} | S \neq 1]} \leq \epsilon$ \\
 & Positive Balance & $\abs{E[\hat{V} | Y = 1, S = 1] - E[\hat{V} | Y = 1, S \neq 1]} \leq \epsilon$ \\
 & Negative Balance & $\abs{E[\hat{V} | Y = 0, S = 1] - E[\hat{V} | Y = 0, S \neq 1]} \leq \epsilon$ \\
 \bottomrule
@@ -652,23 +654,35 @@ Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
 
 % Therefore, it is harder to approximate sufficiency measures on synthetic data. This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses.
 
-% independence
-% \[
-% P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
-% = \frac{P[\hat{Y} \cap S]}{P[{S}]} - \frac{P[\hat{Y} \cap \overline{S}]}{P[\overline{S}]}
-% \]
+\definecolor{lightgreen}{rgb}{0.6, 1.0, 0.6}
+\definecolor{lightred}{rgb}{1.0, 0.6, 0.6}
+\newcommand{\mathhighlight}[2]{\colorbox{#1}{$\displaystyle #2$}}
+\newcommand{\y}[1]{\mathhighlight{lightgreen}{#1}}
+\newcommand{\n}[1]{\mathhighlight{lightred}{#1}}
 
-% separation
-% \[
-% P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
-% = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]} - \frac{P[\hat{Y} \cap \overline{S} \cap Y]}{P[\overline{S} \cap Y]}
-% \]
+independence
+\[
+P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
+= \frac{P[\n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
+\]
 
-% sufficiency
-% \[
-% P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
-% = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]} - \frac{P[Y \cap \overline{S} \cap \hat{Y}]}{P[\overline{S} \cap \hat{Y}]}
-% \]
+separation
+\[
+P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
+= \frac{P[\n{\hat{Y}} \cap \y{S} \cap \y{Y}]}{P[\y{S} \cap \y{Y}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}} \cap \y{Y}]}{P[\y{\overline{S}} \cap \y{Y}]}
+\]
+
+sufficiency
+\[
+P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
+= \frac{P[\y{Y} \cap \y{S} \cap \n{\hat{Y}}]}{P[\y{S} \cap \n{\hat{Y}}]} - \frac{P[\y{Y} \cap \y{\overline{S}} \cap \n{\hat{Y}}]}{P[\y{\overline{S}} \cap \n{\hat{Y}}]}
+\]
+
+accuracy equality
+\[
+P[Y = \hat{Y} | {S} ] - P[Y = \hat{Y} | \overline{S}]
+= \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
+\]
 
 \section{Conclusion}
 
