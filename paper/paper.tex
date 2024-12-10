@@ -166,11 +166,21 @@ Ensuring fairness in AI systems is crucial, but auditing these systems often req
 
 \section{Introduction}
 
+% TODO: add more to intro
+
+% TODO: lowercase Diff
+
+% fairness
+
 Fairness in machine learning has become an important topic as AI systems become widely used. Biased AI systems could result in amplified unfairness. Ensuring fairness in AI systems is crucial to prevent these biases from being exacerbated by AI systems. One approach is to audit the fairness of existing AI systems. Quantitative fairness auditing is a process of evaluating the fairness of AI systems with a range of fairness metrics. Many metrics have been proposed to help evaluate the fairness of AI systems.
+
+% TODO: ai woulld be found to be unfair by 3rd party. example: compas
 
 % data privacy
 
 To conduct audits, auditors may rely on access to real datasets containing sensitive information, raising significant security and privacy concerns. This reliance invites data security attacks on auditors, making them targets of unauthorized access. Analysis on real data runs the risk of data inference attacks, where confidential information may be deduced from seemingly harmless or aggregated data. Various technologies have been developed to mitigate these risks, such as Differential Privacy, where the idea is that whether or not any individual is in a dataset has a limited impact.
+
+% TODO: to mitigate use synthetic data. principals of this
 
 % differentially private synthetic data for fairness auditing
 
@@ -279,6 +289,10 @@ which is also the definition of a fairness measure called equalized odds.
 
 We consider in this work various fairness measures listed in Table~\ref{tab:measures}.
 
+% TODO: remove unconsidered
+
+% TODO: rename equalized odds 1,2
+
 \begin{table*}[h]
 \caption{Fairness measures.}
 \label{tab:measures}
@@ -286,21 +300,25 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 \toprule
 \textbf{Category} & \textbf{Fairness Measure} & \textbf{Definition} \\
 \midrule
-\multirow{4}{*}{Independence} & Disparate Impact & $\frac{P[\hat{Y} = 1 | S \neq 1]}{P[\hat{Y} = 1 | S = 1]} \geq 1 - \epsilon$ \\
+\multirow{1}{*}{Independence}
+% & Disparate Impact & $\frac{P[\hat{Y} = 1 | S \neq 1]}{P[\hat{Y} = 1 | S = 1]} \geq 1 - \epsilon$ \\
 & Demographic Parity & $\abs{P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]} \leq \epsilon$ \\
-& Conditional Statistical Parity & $\abs{P[\hat{Y} = 1 | S = 1, L = l] - P[\hat{Y} = 1 | S \neq 1, L = l]} \leq \epsilon$ \\
-& Mean Difference & $\abs{E[\hat{Y}|S = 1] - E[\hat{Y}|S \neq 1]} \leq \epsilon$ \\
-\multirow{4}{*}{Separation} & \multirow{2}{*}{Equalized Odds} & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
+% & Conditional Statistical Parity & $\abs{P[\hat{Y} = 1 | S = 1, L = l] - P[\hat{Y} = 1 | S \neq 1, L = l]} \leq \epsilon$ \\
+% & Mean Difference & $\abs{E[\hat{Y}|S = 1] - E[\hat{Y}|S \neq 1]} \leq \epsilon$ \\
+\multirow{2}{*}{Separation}
+& \multirow{2}{*}{Equalized Odds} & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
 & & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
-& Equal Opportunity & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
-& Predictive Equality & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
-\multirow{4}{*}{Sufficiency} & \multirow{2}{*}{Conditional Use Accuracy Equality} & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
+% & Equal Opportunity & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
+% & Predictive Equality & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
+\multirow{2}{*}{Sufficiency}
+& \multirow{2}{*}{Conditional Use Accuracy Equality} & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
 & & $\abs{P[Y = 0 | S = 1, \hat{Y} = 0] - P[Y = 0 | S \neq 1, \hat{Y} = 0]} \leq \epsilon$ \\
-& Predictive Parity & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
-& Equal Calibration & $\abs{P[Y = 1 | S = 1, \hat{V} = v] - P[Y = 1 | S \neq 1, \hat{V} = v]} \leq \epsilon$ \\
-\multirow{3}{*}{N/A} & Accuracy Equality & $\abs{P[Y = \hat{Y} | S = 1] - P[Y = \hat{Y} | S \neq 1]} \leq \epsilon$ \\
-& Positive Balance & $\abs{E[\hat{V} | Y = 1, S = 1] - E[\hat{V} | Y = 1, S \neq 1]} \leq \epsilon$ \\
-& Negative Balance & $\abs{E[\hat{V} | Y = 0, S = 1] - E[\hat{V} | Y = 0, S \neq 1]} \leq \epsilon$ \\
+% & Predictive Parity & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
+% & Equal Calibration & $\abs{P[Y = 1 | S = 1, \hat{V} = v] - P[Y = 1 | S \neq 1, \hat{V} = v]} \leq \epsilon$ \\
+\multirow{1}{*}{N/A}
+& Overall Accuracy Equality & $\abs{P[Y = \hat{Y} | S = 1] - P[Y = \hat{Y} | S \neq 1]} \leq \epsilon$ \\
+% & Positive Balance & $\abs{E[\hat{V} | Y = 1, S = 1] - E[\hat{V} | Y = 1, S \neq 1]} \leq \epsilon$ \\
+% & Negative Balance & $\abs{E[\hat{V} | Y = 0, S = 1] - E[\hat{V} | Y = 0, S \neq 1]} \leq \epsilon$ \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -327,7 +345,7 @@ where $\mathcal{N}$ is a multivariate normal distribution with mean vector $0_p$
 \end{definition}
 
 \begin{definition}[R\'enyi Differential Privacy (RDP)]\label{def:rdp}
-Let $P_{\mathbf{X}}$ denote the probability distribution induced by the random vector $\mathbf{X}$. A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ and $\gamma \geq 1$ if, for all databases $\db_1 \sim \db_2$, we have
+Let $P_{\mathbf{X}}$ denote the probability distribution associated with the random vector $\mathbf{X}$. A randomized mechanism $M$ satisfies $(\alpha,\gamma)$-RDP for $\alpha \geq 1$ and $\gamma \geq 1$ if, for all databases $\db_1 \sim \db_2$, we have
 \[
 D_\alpha(P_{M(\db_1)} \Vert P_{M(\db_2)}) \leq \gamma
 \]
@@ -388,7 +406,13 @@ Female,Black & 46 \\
 
 \section{Motivation}
 
+% TODO: reiterate intro
+
+% TODO: goal of this framework
+
 Our auditing framework is tripartite. It consists of three parties: the data provider, the model maker, and the third-party auditor.
+
+% TODO: write more about these paragraphs
 
 The data provider is responsible for supplying the raw datasets which should originate from trustworthy sources, such as government agencies like a census bureau.
 
@@ -406,6 +430,8 @@ Thus, we introduce a new framework where the auditor generates synthetic data ba
 
 \section{Methodology}
 \label{sec:method}
+
+% TODO: add a overarching example for methodologies
 
 We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{nist_ryan_2018,McKenna_Private-PGM_2021,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
@@ -425,24 +451,15 @@ To circumvent this complexity explosion, instead, \cite{mckenna2021winning} devi
 
 For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
 
-We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
+% We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
-% \begin{algorithm}
-% \caption{something something}
-% \label{alg:heuristic}
-% \begin{algorithmic}[1]
-% \STATE Initialize $x \gets 0$
-% \STATE Initialize $y \gets 1$
-% \FOR{$i \gets 1$ to $n$}
-%     \IF{$i$ is even}
-%         \STATE $x \gets x + i$
-%     \ELSE
-%         \STATE $y \gets y \times i$
-%     \ENDIF
-% \ENDFOR
-% \RETURN $x + y$
-% \end{algorithmic}
-% \end{algorithm}
+% TODO:
+% for synth to good : depend on domain knowledge, tractibility
+% synth algos use dependencies
+% we DO NOT use this. we do vanilla
+% experiment didnt developed heuristics:
+% 1. lack of domain knowledge
+% 2. different prediction target. cannot tailor a priori
 
 For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
@@ -465,6 +482,10 @@ The interpretation of the resulting fairness measure values is dependent on the 
 \section{Experiments}
 
 To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset. We used various datasets with fairness concerns mentioned in \cite{pessach2022review}.
+
+% TODO: move this to their respective subsection
+
+% TODO: reiterate methodologies
 
 We looked at several publicly available datasets, such as Adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The Adult dataset comes from the 1994 census in the United States and contains about 30000 individuals. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The Diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. Since these datasets all have binary outcomes, we did not consider the case of non-binary outcomes in the experiments.
 
@@ -504,36 +525,38 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
 %   \Description{Markov random field for marginals of the COMPAS dataset.}
 % \end{figure}
 
-\begin{figure}
-  \centering
-  \begin{subfigure}[b]{0.3\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{adult_mst}
-      \caption{Markov random field for marginals of the Adult dataset.}
-      \label{fig:adult_mst}
-      \Description{Markov random field for marginals of the Adult dataset.}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.3\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{compas_mst}
-      \caption{Markov random field for marginals of the COMPAS dataset.}
-      \label{fig:compas_mst}
-      \Description{Markov random field for marginals of the COMPAS dataset.}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.3\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{diabetes_mst}
-      \caption{Markov random field for marginals of the Diabetes dataset.}
-      \label{fig:diabetes_mst}
-      \Description{Markov random field for marginals of the COMPAS dataset.}
-  \end{subfigure}
-      \caption{Markov random field for marginals of the experimented datasets.}
-      \label{fig:msts}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \begin{subfigure}[b]{0.3\textwidth}
+%       \centering
+%       \includegraphics[width=\textwidth]{adult_mst}
+%       \caption{Markov random field for marginals of the Adult dataset.}
+%       \label{fig:adult_mst}
+%       \Description{Markov random field for marginals of the Adult dataset.}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}[b]{0.3\textwidth}
+%       \centering
+%       \includegraphics[width=\textwidth]{compas_mst}
+%       \caption{Markov random field for marginals of the COMPAS dataset.}
+%       \label{fig:compas_mst}
+%       \Description{Markov random field for marginals of the COMPAS dataset.}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}[b]{0.3\textwidth}
+%       \centering
+%       \includegraphics[width=\textwidth]{diabetes_mst}
+%       \caption{Markov random field for marginals of the Diabetes dataset.}
+%       \label{fig:diabetes_mst}
+%       \Description{Markov random field for marginals of the COMPAS dataset.}
+%   \end{subfigure}
+%       \caption{Markov random field for marginals of the experimented datasets.}
+%       \label{fig:msts}
+% \end{figure}
 
 \subsection{Adult Income Dataset}
+
+% TODO: dont mention shape of graph
 
 For the Adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
 
@@ -630,7 +653,25 @@ Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
 
 \section{Evaluation}
 
+% TODO:
+first list formulas
+
+count vars
+
+theyre not part of marginals
+
+they cant be computed
+
+we can say less about fairness with these with less info
+
+auditor need to know theyre aproxing scores
+
+auditor need to keep in mind that these scores are for datasets and we preserve these scores thats it. scores may not be accurate. it doesnt mean its less easy to test fairness
+
 \subsection{Positive Results}
+
+% TODO:
+it works!
 
 % Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
@@ -653,6 +694,8 @@ Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
 % This explains why sufficiency measures could have higher errors compared to separation because synthetic data have less information about them. While only one variable is missing in the numerator for separation, one more variable is missing in the denominator for sufficiency.
 
 % Therefore, it is harder to approximate sufficiency measures on synthetic data. This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses.
+
+% TODO: use = 1
 
 \definecolor{lightgreen}{rgb}{0.6, 1.0, 0.6}
 \definecolor{lightred}{rgb}{1.0, 0.6, 0.6}
