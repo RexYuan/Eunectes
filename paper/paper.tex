@@ -422,13 +422,11 @@ The third-party auditor acts as an evaluator, using our tool to audit the AI mod
   \Description{Roles of each party in the COMPAS example.}
 \end{figure}
 
-% TODO: add compas example in the following
-
 In the framework of our previous work\cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits. However, this practice raises both security and privacy concerns.
 
-For security, it creates a point of vulnerability of unauthorized access, and the auditor is now a target of data security attacks. The auditor may not have the necessary resources to defend against these threats. A breach at the auditor's end could result in compromises of individuals' sensitive information.
+For security, it creates a point of vulnerability to unauthorized access, and the auditor is now a target of data security attacks. The auditor may not have the necessary resources to defend against these threats. A breach at the auditor's end could result in compromises of individuals' sensitive information. In the COMPAS example, had the data not been public already, ProPublica may be targeted by hackers to access the sensitive criminal justice data.
 
-As for privacy, on the other hand, it introduces risks of information leakage. Releasings of analyses on real data may inadvertently reveal sensitive information by data inference attacks. Attackers can exploit data patterns in outputs or combine outputs with external data to infer sensitive information.
+As for privacy, on the other hand, it introduces risks of information leakage. Releasing analyses of real data may inadvertently reveal sensitive information through data inference attacks. Attackers can exploit data patterns in outputs or combine outputs with external data to infer sensitive information. In the COMPAS example, had the data not been public already, their analyses may inadvertently reveal the identities of individuals in the criminal justice system.
 
 Thus, we introduce a new framework where the auditor generates synthetic data based on real data upon retrieval of the real data, and then holds onto the synthetic data and discards the real data, preventing all further security and privacy violations. The third-party still retains the ability to audit all incoming future models as needed.
 
