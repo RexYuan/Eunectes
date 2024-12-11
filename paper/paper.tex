@@ -166,8 +166,6 @@ Ensuring fairness in AI systems is crucial, but auditing these systems often req
 
 \section{Introduction}
 
-% TODO: add more to intro
-
 % fairness
 
 Fairness in machine learning has become an important topic as AI systems become widely used. Biased AI systems could result in amplified unfairness. Ensuring fairness in AI systems is crucial to prevent these biases from being exacerbated by AI systems. One approach is to audit the fairness of existing AI systems. Quantitative fairness auditing is a process of evaluating the fairness of AI systems with a range of fairness metrics. Many metrics have been proposed to help evaluate the fairness of AI systems.
@@ -247,9 +245,12 @@ and $r_\db(A) \in \sigma_\db(A)$
 for all $A \in \mathcal{A}_\db$.
 The set of all databases is $\dbs$.
 
-Let $X \in \mathcal{X}$ be a discrete random variable and $p(x) := \prob{X = x}$. Its \emph{marginal Shannon entropy} is $\entropy{X} := -\sum_{x \in \mathcal{X}} p(x) \text{log} p(x)$. It quantifies the level of uncertainty of $X$. Let $Y \in \mathcal{Y}$ be another discrete random variable. Their \emph{joint Shannon entropy} is $\entropy{X,Y} := -\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p(x, y) \text{log} p(x, y)$.
-
-Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$.
+Let $X \in \mathcal{X},Y \in \mathcal{Y}$ be discrete random variables. Their \emph{mutual information} $\mi{X}{Y}$ is
+\[
+\mi{X}{Y} = \sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} P_{(X,Y)}(x,y) \text{log} \frac{P_{(X,Y)}(x,y)}{P_X(x)P_Y(y)}
+\]
+where $P_{(X,Y)}$ is the joint probability distribution of $X,Y$ and $P_X,P_Y$ are the marginal probability distributions of $X,Y$ respectively.
+It quantifies the level of dependency between $X$ and $Y$.
 % By definition\cite{427884}, the joint entropy is greater than or equal to the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
 
 Let $\set{X_i}$ be a set of discrete random variables indexed by a graph $G = (V,E)$, where $V$ represents the random variables $X_i$s and $E$ represents dependencies between these random variables. A \emph{Markov random field} is a probability distribution over $X_i$s, such that each random variable $X_i$, given its neighborhood in $G$, is conditionally independent of all other variables. Since edges represent dependencies, cliques in a Markov random field represent groups of variables that are all mutually dependent. As a machine learning model, there has been much development in the estimation and inference of Markov random fields\cite{koller2009probabilistic,murphy2023probabilistic}.
@@ -401,19 +402,27 @@ Female,Black & 46 \\
 
 \section{Motivation}
 
-% TODO: reiterate intro
+AI systems are widely used in various aspects in our society. However, these systems may be biased against certain demographic groups. For example, COMPAS, the AI system used in American criminal justice system to predict recidivism, has been found to be biased by ProPublica, a third party media.
 
-% TODO: goal of this framework
+To ensure the fairness of AIs, third-party audits such as this is crucial. Auditing can reveal instances of unfairness in AI systems, allowing for corrective actions to be taken. We hence advocate for a framework that centers around third-party audits.
 
-Our auditing framework is tripartite. It consists of three parties: the data provider, the model maker, and the third-party auditor.
+Our auditing framework is tripartite. It consists of three parties: the data provider, the model maker, and the third-party auditor. The COMPAS investigation could fit in with this framework.
 
-% TODO: write more about these paragraphs
+The data provider is responsible for supplying the raw datasets which should originate from trustworthy sources, such as government agencies like a census bureau. In the COMPAS example, the data provider is the government agencies that provide criminal justice data, such as the Broward County Sheriff's Office in Florida.
 
-The data provider is responsible for supplying the raw datasets which should originate from trustworthy sources, such as government agencies like a census bureau.
+The model maker develops AI models. These are AI companies or research labs specialized in training and optimizing AI models. The model maker in the COMPAS example is Northpointe, Inc., the company that developed the COMPAS system.
 
-The model maker develops AI models. These are AI companies or research labs specialized in training and optimizing AI models.
+The third-party auditor acts as an evaluator, using our tool to audit the AI models for fairness issues by combining both the datasets and the models. These may be investigative journalists or regulatory bodies. ProPublica is the third-party auditor in the COMPAS example, using quantitative methods to evaluate the fairness of the COMPAS system using Florida's data.
 
-The third-party auditor acts as an evaluator, using our tool to audit the AI models for fairness issues by combining both the datasets and the models. These may be investigative journalists or regulatory bodies.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{compas}
+  \caption{Roles of each party in the COMPAS example.}
+  \label{fig:compas}
+  \Description{Roles of each party in the COMPAS example.}
+\end{figure}
+
+% TODO: add compas example in the following
 
 In the framework of our previous work\cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits. However, this practice raises both security and privacy concerns.
 
@@ -444,19 +453,15 @@ In a perfect world where all correlation information is to be preserved, we may 
 
 To circumvent this complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree is identified with edge weights being the mutual information to obtain a skeleton tree-shaped Markov random field. The marginals are then selected based on the edges of this tree.
 
-In the COMPAS example, we may select the marginal (sex,race).
+For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. We do not consider these additional heuristics for the generality of our approach. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
 
-For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset.
-
-We do not consider these additional heuristics for the generality of our approach. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
-
-While synthetic data generation methods often leverage domain knowledge to improve accuracy, we chose to employ a vanilla approach with only the maximum spanning tree method without incorporating additional heuristics. This decision was made due to two main factors: first, the need for more specific domain knowledge about the dataset makes it difficult to identify meaningful dependencies; second, prediction targets may differ from dataset to dataset, which means that tailored heuristics could not be effectively generalized. By avoiding dataset-specific adjustments, our method remains general and applicable to a wide range of datasets. Furthermore, the bare tree structure makes the method more tractable and computationally efficient.
+While synthetic data generation methods often leverage domain knowledge to improve accuracy, we chose to employ a vanilla approach with only the maximum spanning tree method without incorporating additional heuristics. This decision was made due to two main factors: first, the need for more specific domain knowledge about the dataset makes it difficult to identify meaningful dependencies; second, prediction targets may differ from dataset to dataset, which means that tailored heuristics could not be effectively generalized. By avoiding dataset-specific adjustments, our method remains general and applicable to a wide range of datasets, in addition to being more computatioanlly efficient.
 
 % We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
 For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget $\epsilon = 1$ is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
-In the COMPAS example, the selected the marginals are perturbed by Gaussian noise, as shown in Table~\ref{tab:marginal-perturbed}.
+In the COMPAS example, we may select the marginal (sex,race). This marginal is then perturbed by Gaussian noise, as shown in Table~\ref{tab:marginal-perturbed}.
 
 \begin{table}[h]
 \caption{Example marginals.}
@@ -520,9 +525,9 @@ The checker simply iterates through the given database $\db$ and computes the re
 
 Protected groups $S$, predicted outcomes $\hat{Y}$, and ground truths $Y$ are all formulated as these predicates. These are straightforward logical boolean expressions. Specifically, they are given as Python functions that output boolean values.
 
-In the COMPAS example, if the sensitive attribute is sex and the protected group is female, the protected group predicate would be $S := r(sex) = Female$. This can be easily implemented in Python as a comparison function.
-
 The interpretation of the resulting fairness measure values is dependent on the third-party auditors. The auditors may have different thresholds $\epsilon$ for different fairness measures or different AI models.
+
+In the COMPAS example, the sensitive attribute is sex and the protected group is female, the protected group predicate would be $S := r(sex) = Female$; prediction is if a person will re-offend $\hat{Y} := \mathcal{M}_{recid}(r)$ where $M$ is the model's prediction of row $r$; ground truth is whether a person does re-offend $Y := r(recid)$. These can be easily implemented in Python as a comparison function.
 
 \section{Experiments}
 
@@ -697,25 +702,25 @@ Condtional Use Accuracy Equality (True Negative) & 0.0216 & 0.0019 & 0.0197 \\
 
 \section{Evaluation}
 
-% TODO:
-first list formulas
+% % TODO:
+% first list formulas
 
-count vars
+% count vars
 
-theyre not part of marginals
+% theyre not part of marginals
 
-they cant be computed
+% they cant be computed
 
-we can say less about fairness with these with less info
+% we can say less about fairness with these with less info
 
-auditor need to know theyre aproxing scores
+% auditor need to know theyre aproxing scores
 
-auditor need to keep in mind that these scores are for datasets and we preserve these scores thats it. scores may not be accurate. it doesnt mean its less easy to test fairness
+% auditor need to keep in mind that these scores are for datasets and we preserve these scores thats it. scores may not be accurate. it doesnt mean its less easy to test fairness
 
 \subsection{Positive Results}
 
-% TODO:
-it works!
+% % TODO:
+% it works!
 
 % Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
@@ -747,29 +752,29 @@ it works!
 \newcommand{\y}[1]{\mathhighlight{lightgreen}{#1}}
 \newcommand{\n}[1]{\mathhighlight{lightred}{#1}}
 
-independence
-\[
-P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
-= \frac{P[\n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
-\]
+% independence
+% \[
+% P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
+% = \frac{P[\n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
+% \]
 
-separation
-\[
-P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
-= \frac{P[\n{\hat{Y}} \cap \y{S} \cap \y{Y}]}{P[\y{S} \cap \y{Y}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}} \cap \y{Y}]}{P[\y{\overline{S}} \cap \y{Y}]}
-\]
+% separation
+% \[
+% P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
+% = \frac{P[\n{\hat{Y}} \cap \y{S} \cap \y{Y}]}{P[\y{S} \cap \y{Y}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}} \cap \y{Y}]}{P[\y{\overline{S}} \cap \y{Y}]}
+% \]
 
-sufficiency
-\[
-P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
-= \frac{P[\y{Y} \cap \y{S} \cap \n{\hat{Y}}]}{P[\y{S} \cap \n{\hat{Y}}]} - \frac{P[\y{Y} \cap \y{\overline{S}} \cap \n{\hat{Y}}]}{P[\y{\overline{S}} \cap \n{\hat{Y}}]}
-\]
+% sufficiency
+% \[
+% P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
+% = \frac{P[\y{Y} \cap \y{S} \cap \n{\hat{Y}}]}{P[\y{S} \cap \n{\hat{Y}}]} - \frac{P[\y{Y} \cap \y{\overline{S}} \cap \n{\hat{Y}}]}{P[\y{\overline{S}} \cap \n{\hat{Y}}]}
+% \]
 
-accuracy equality
-\[
-P[Y = \hat{Y} | {S} ] - P[Y = \hat{Y} | \overline{S}]
-= \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
-\]
+% accuracy equality
+% \[
+% P[Y = \hat{Y} | {S} ] - P[Y = \hat{Y} | \overline{S}]
+% = \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
+% \]
 
 \section{Conclusion}
 
