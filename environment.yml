@@ -8,11 +8,10 @@ dependencies:
   - pandas
   - matplotlib
   - scikit-learn
-  - xgboost
   - jupyter
   - pip
   - pip:
     - fairness-checker
-    - git+https://github.com/ryan112358/private-pgm.git
+    - git+https://github.com/ryan112358/private-pgm.git@4152cc591f30560ce994870318ee4801b016bf94
     - jax
     - jaxlib
