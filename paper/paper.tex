@@ -60,7 +60,7 @@
 %%
 %% The "title" command has an optional parameter,
 %% allowing the author to define a "short title" to be used in page headers.
-\title{Quantitative Auditing of AI Fairness with Differentially Private Synthetic Data}
+\title{Quantitative Auditing of AI Fairness with differentially private Synthetic Data}
 
 %%
 %% The "author" command and its associated commands are used to define
@@ -96,7 +96,7 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-Ensuring fairness in AI systems is crucial, but auditing these systems often requires sensitive data, which raises security and privacy concerns. To address this, we introduce a framework that utilizes Differentially Private synthetic data for fairness evaluations. This approach allows auditors to assess AI systems without exposing sensitive information. Through experiments on datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. Our results ... (to be continued)
+Ensuring fairness in AI systems is crucial, but auditing these systems often requires sensitive data, which raises security and privacy concerns. To address this, we introduce a framework that utilizes differentially private synthetic data for fairness evaluations. This approach allows auditors to assess AI systems without exposing sensitive information. Through experiments on datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. Our results ... (to be continued)
 \end{abstract}
 
 % %%
@@ -131,7 +131,7 @@ Ensuring fairness in AI systems is crucial, but auditing these systems often req
          </concept>
      <concept>
          <concept_id>10002978.10002991.10002995</concept_id>
-         <concept_desc>Security and privacy~Privacy-preserving protocols</concept_desc>
+         <concept_desc>Security and privacy~privacy-preserving protocols</concept_desc>
          <concept_significance>300</concept_significance>
          </concept>
      <concept>
@@ -152,7 +152,7 @@ Ensuring fairness in AI systems is crucial, but auditing these systems often req
 \ccsdesc[300]{Information systems~Data mining}
 \ccsdesc[300]{Computing methodologies~Machine learning}
 \ccsdesc[300]{Computing methodologies~Artificial intelligence}
-\ccsdesc[300]{Security and privacy~Privacy-preserving protocols}
+\ccsdesc[300]{Security and privacy~privacy-preserving protocols}
 \ccsdesc[300]{Information systems~Information systems applications}
 \ccsdesc[300]{Mathematics of computing~Contingency table analysis}
 
@@ -168,27 +168,25 @@ Ensuring fairness in AI systems is crucial, but auditing these systems often req
 
 % TODO: add more to intro
 
-% TODO: lowercase Diff
-
 % fairness
 
 Fairness in machine learning has become an important topic as AI systems become widely used. Biased AI systems could result in amplified unfairness. Ensuring fairness in AI systems is crucial to prevent these biases from being exacerbated by AI systems. One approach is to audit the fairness of existing AI systems. Quantitative fairness auditing is a process of evaluating the fairness of AI systems with a range of fairness metrics. Many metrics have been proposed to help evaluate the fairness of AI systems.
 
-% TODO: ai woulld be found to be unfair by 3rd party. example: compas
+Auditing can evaluate the fairness of AI systems, sometimes revealing cases of unfairness in them. For example, investigative journalists at ProPublica found that the COMPAS system, which is used to predict recidivism in the criminal justice system in the United States, is biased against certain demographic groups. This highlights the need for fairness auditing conducted by third parties.
 
 % data privacy
 
-To conduct audits, auditors may rely on access to real datasets containing sensitive information, raising significant security and privacy concerns. This reliance invites data security attacks on auditors, making them targets of unauthorized access. Analysis on real data runs the risk of data inference attacks, where confidential information may be deduced from seemingly harmless or aggregated data. Various technologies have been developed to mitigate these risks, such as Differential Privacy, where the idea is that whether or not any individual is in a dataset has a limited impact.
+To conduct audits, auditors may rely on access to real datasets containing sensitive information, raising significant security and privacy concerns. This reliance invites data security attacks on auditors, making them targets of unauthorized access. Analysis on real data runs the risk of data inference attacks, where confidential information may be deduced from seemingly harmless or aggregated data. Various technologies have been developed to mitigate these risks, such as differential privacy, where the idea is that whether or not any individual is in a dataset has a limited impact.
 
-% TODO: to mitigate use synthetic data. principals of this
+To mitigate these risks, the use of synthetic data has been proposed. Synthetic data are fake data that is artificially generated from real data. The principle of this technology is to preserve some statistical properties of the real data while protecting the privacy of the individuals in the real data. Among the generation techniques, differentially private synthetic data offers a way to investigate the data properties under differential privacy guarantees.
 
 % differentially private synthetic data for fairness auditing
 
-We propose a novel auditing framework that leverages Differentially Private synthetic data to evaluate the fairness of AI systems. Our framework lets the auditors assess the fairness of AI systems without exposing sensitive information. Differentially Private synthetic data is a technique that generates synthetic data from real data that preserves some statistical properties of the real data while ensuring Differential Privacy. This technology enables auditing without exposing sensitive information. However, synthetic data also introduces new challenges. Whether or not it accurately preserves the fairness properties of the real data is a critical question.
+We propose a novel auditing framework that leverages differentially private synthetic data to evaluate the fairness of AI systems. Our framework lets the auditors assess the fairness of AI systems without exposing sensitive information. Differentially private synthetic data is a technique that generates synthetic data from real data that preserves some statistical properties of the real data while ensuring differential privacy. This technology enables auditing without exposing sensitive information. However, synthetic data also introduces new challenges. Whether or not it accurately preserves the fairness properties of the real data is a critical question.
 
 % contribution
 
-Our work examines the capabilities of existing Differentially Private synthetic data generation technologies in preserving fairness properties. Through empirical experiments on multiple real datasets, we aim to determine the effectiveness of Differentially Private synthetic data in this respect.
+Our work examines the capabilities of existing differentially private synthetic data generation technologies in preserving fairness properties. Through empirical experiments on multiple real datasets, we aim to determine the effectiveness of differentially private synthetic data in this respect.
 
 \section{Related Work}
 
@@ -200,13 +198,13 @@ Auditing of AI models is an important step in ensuring that these models are fai
 
 % differential privacy
 
-Differential Privacy has risen to become the standard of privacy protection in many data analyses\cite{jiang2021applications}. It offers a formal framework for quantifying privacy guarantees when releasing information derived from sensitive data\cite{dwork2006calibrating,dwork2014algorithmic}. We use Differential Privacy in this work to protect the privacy of individuals in the data in our auditing framework.
+Differential privacy has risen to become the standard of privacy protection in many data analyses\cite{jiang2021applications}. It offers a formal framework for quantifying privacy guarantees when releasing information derived from sensitive data\cite{dwork2006calibrating,dwork2014algorithmic}. We use differential privacy in this work to protect the privacy of individuals in the data in our auditing framework.
 
-Different flavors of Differential Privacy have been proposed over the years\cite{desfontaines2019sok}, such as Gaussian Differential Privacy\cite{dong2022gaussian}, Pufferfish Differential Privacy\cite{kifer2012rigorous}, Bayesian Differential Privacy\cite{triastcyn2020bayesian}, and R\'enyi Differential Privacy\cite{mironov2017renyi}. We consider R\'enyi Differential Privacy specifically in this work.
+Different flavors of differential privacy have been proposed over the years\cite{desfontaines2019sok}, such as Gaussian differential privacy\cite{dong2022gaussian}, Pufferfish differential privacy\cite{kifer2012rigorous}, Bayesian differential privacy\cite{triastcyn2020bayesian}, and R\'enyi differential privacy\cite{mironov2017renyi}. We consider R\'enyi differential privacy specifically in this work.
 
 % synthetic data
 
-The generation of synthetic data\cite{raghunathan2021synthetic,lu2023machine} under Differential Privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for Differentially Private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years. We use the technique that won the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{mckenna2021winning}.
+The generation of synthetic data\cite{raghunathan2021synthetic,lu2023machine} under differential privacy constraints allows for data sharing without compromising privacy\cite{tao2021benchmarking}. There have been several techniques developed for differentially private synthetic data generation\cite{rosenblatt2020differentially,fan2020relational,bowen2019comparative,bowen2020comparative,arnold2020really,xu2019modeling} in recent years. We use the technique that won the 2018 NIST differential privacy Synthetic Data Challenge competition\cite{mckenna2021winning}.
 
 There have also been some works that aim to alter the properties of synthetic data, such as introducing bias to them\cite{jiang2024synthetic,baumann2023bias}. In this work, we aim to preserve the properties of the original data. Thus, we do not consider these works.
 
@@ -251,13 +249,14 @@ The set of all databases is $\dbs$.
 
 Let $X \in \mathcal{X}$ be a discrete random variable and $p(x) := \prob{X = x}$. Its \emph{marginal Shannon entropy} is $\entropy{X} := -\sum_{x \in \mathcal{X}} p(x) \text{log} p(x)$. It quantifies the level of uncertainty of $X$. Let $Y \in \mathcal{Y}$ be another discrete random variable. Their \emph{joint Shannon entropy} is $\entropy{X,Y} := -\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p(x, y) \text{log} p(x, y)$.
 
-Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$. By definition\cite{427884}, the joint entropy is greater than or equal to the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
+Let $X,Y$ be discrete random variables. Their \emph{mutual information} is $\mi{X}{Y} := \entropy{X} + \entropy{Y} - \entropy{X,Y}$. It quantifies the level of dependence between $X$ and $Y$.
+% By definition\cite{427884}, the joint entropy is greater than or equal to the marginal entropies $\entropy{X,Y} \geq \text{max}(\entropy{X},\entropy{Y})$. Hence, we have an upper bound of mutual information $\mi{X}{Y} \leq \text{min}(\entropy{X}, \entropy{Y})$.
 
 Let $\set{X_i}$ be a set of discrete random variables indexed by a graph $G = (V,E)$, where $V$ represents the random variables $X_i$s and $E$ represents dependencies between these random variables. A \emph{Markov random field} is a probability distribution over $X_i$s, such that each random variable $X_i$, given its neighborhood in $G$, is conditionally independent of all other variables. Since edges represent dependencies, cliques in a Markov random field represent groups of variables that are all mutually dependent. As a machine learning model, there has been much development in the estimation and inference of Markov random fields\cite{koller2009probabilistic,murphy2023probabilistic}.
 
 \subsection{Fairness Measures}
 
-For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ denote the ground truth of an outcome, let $\hat{Y}$ denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. $Y, \hat{Y}, S$ are binary. For non-binary prediction, such as a score, we use $\hat{V}$.
+For fairness measures\cite{yuan2024ensuring,pessach2022review}, let $Y$ denote the ground truth of an outcome, let $\hat{Y}$ denote the predicated result of an outcome, let $S$ denote the protected attribute, and let $\epsilon$ denote some threshold. $Y, \hat{Y}, S$ are binary.
 
 Fairness measures can be broadly categorized into independence, separation, and sufficiency, which are defined by conditional independence in Table~\ref{tab:categories}. $X \bot Y | Z$ denotes the conditional independence between $X$ and $Y$ conditioning on $Z$.
 
@@ -289,14 +288,10 @@ which is also the definition of a fairness measure called equalized odds.
 
 We consider in this work various fairness measures listed in Table~\ref{tab:measures}.
 
-% TODO: remove unconsidered
-
-% TODO: rename equalized odds 1,2
-
 \begin{table*}[h]
 \caption{Fairness measures.}
 \label{tab:measures}
-\begin{tabular}{llc}
+\begin{tabular}{lll}
 \toprule
 \textbf{Category} & \textbf{Fairness Measure} & \textbf{Definition} \\
 \midrule
@@ -304,15 +299,15 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 % & Disparate Impact & $\frac{P[\hat{Y} = 1 | S \neq 1]}{P[\hat{Y} = 1 | S = 1]} \geq 1 - \epsilon$ \\
 & Demographic Parity & $\abs{P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]} \leq \epsilon$ \\
 % & Conditional Statistical Parity & $\abs{P[\hat{Y} = 1 | S = 1, L = l] - P[\hat{Y} = 1 | S \neq 1, L = l]} \leq \epsilon$ \\
-% & Mean Difference & $\abs{E[\hat{Y}|S = 1] - E[\hat{Y}|S \neq 1]} \leq \epsilon$ \\
+% & Mean difference & $\abs{E[\hat{Y}|S = 1] - E[\hat{Y}|S \neq 1]} \leq \epsilon$ \\
 \multirow{2}{*}{Separation}
-& \multirow{2}{*}{Equalized Odds} & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
-& & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
+& \multirow{1}{*}{Equalized Odds (False Positive)} & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
+& \multirow{1}{*}{Equalized Odds (True Positive)} & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
 % & Equal Opportunity & $\abs{P[\hat{Y} = 1 | S = 1, Y = 1] - P[\hat{Y} = 1 | S \neq 1, Y = 1]} \leq \epsilon$ \\
 % & Predictive Equality & $\abs{P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]} \leq \epsilon$ \\
 \multirow{2}{*}{Sufficiency}
-& \multirow{2}{*}{Conditional Use Accuracy Equality} & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
-& & $\abs{P[Y = 0 | S = 1, \hat{Y} = 0] - P[Y = 0 | S \neq 1, \hat{Y} = 0]} \leq \epsilon$ \\
+& \multirow{1}{*}{Conditional Use Accuracy Equality (True Positive)} & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
+& \multirow{1}{*}{Conditional Use Accuracy Equality (True Negative)} & $\abs{P[Y = 0 | S = 1, \hat{Y} = 0] - P[Y = 0 | S \neq 1, \hat{Y} = 0]} \leq \epsilon$ \\
 % & Predictive Parity & $\abs{P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]} \leq \epsilon$ \\
 % & Equal Calibration & $\abs{P[Y = 1 | S = 1, \hat{V} = v] - P[Y = 1 | S \neq 1, \hat{V} = v]} \leq \epsilon$ \\
 \multirow{1}{*}{N/A}
@@ -323,9 +318,9 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 \end{tabular}
 \end{table*}
 
-\subsection{R\'enyi Differential Privacy}
+\subsection{R\'enyi differential privacy}
 
-% \begin{definition}[Differential Privacy (DP) \cite{dwork2006calibrating,dwork2014algorithmic,mckenna2021winning}]\label{def:rdp}
+% \begin{definition}[differential privacy (DP) \cite{dwork2006calibrating,dwork2014algorithmic,mckenna2021winning}]\label{def:rdp}
 % A randomized mechanism $M$ satisfies $(\epsilon,\delta)$-DP if, for all databases $\db_1,\db_2$ that differ in exactly one row and for all subsets $S$ of $R$, we have
 % \[
 % \prob{M(\db_1) \in S} \leq e^\epsilon \prob{M(\db_2) \in S} + \delta
@@ -334,7 +329,7 @@ We consider in this work various fairness measures listed in Table~\ref{tab:meas
 
 A \emph{randomized mechanism} is a randomized algorithm $M : \dbs \implies \mathbb{R}^p$ that takes a database and, after introducing noise, outputs some results.
 
-Let $\db_1,\db_2$ be two databases. They are \emph{neighbors}, denoted $\db_1 \sim \db_2$, if $\abs{\mathcal{R}_{\db_1} \Delta \mathcal{R}_{\db_2}} \in \set{1,2}$ where $\Delta$ denotes symmetric difference; that is, either one database contains an extra row, or both databases have all but one row in common. In other words, they differ in exactly one row.
+Let $\db_1,\db_2$ be two databases. They are \emph{neighbors}, denoted $\db_1 \sim \db_2$, if $\abs{\mathcal{R}_{\db_1} \Delta \mathcal{R}_{\db_2}} = 1$ where $\Delta$ denotes symmetric difference; that is, one database contains an extra row than the other. In other words, they differ in exactly one row.
 
 \begin{definition}[Gaussian Mechanism\cite{dwork2014algorithmic}]\label{def:gm}
 Let $f : \dbs \implies \mathbb{R}^p$ be a function. The Gaussian Mechanism $M$ adds independent and identically distributed Gaussian noise with mean $0$ and standard deviation $\sigma$ to each component of the $p$-dimensional vector output of $f(\db)$
@@ -366,7 +361,7 @@ The Gaussian Mechanism satisfies $(\alpha, \alpha \frac{\Delta^2_f}{2 \sigma^2})
 
 Let $C \subseteq \mathcal{A}$ be a subset of attributes. Let $\Omega_C = \prod_{i \in C} \Omega_i$. Let $x$ be a row and $x_C$ denote the restriction of $x$ to $C$. A \emph{marginal}\cite{barak2007privacy,mckenna2021winning} of $C$ on database $\db$ is a function $\mu_{\db} : \Omega_C \implies \mathbb{N}_0$ such that $\mu_{\db}(t) = \Sigma_{x \in \mathcal{\db}} \delta_{t,{x_C}}$ where $\delta$ is the Kronecker function; that is, it is a lookup table of the counts of each possible combination of attribute values. We call marginals of $|C| = n$ attributes $n$-way marginals.
 
-The task of Differentially Private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some Differential Privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
+The task of differentially private synthetic data\cite{Ullman2022,McKenna2022,NIST_Differentially_Private_Synthetic_Data,YouTube_Differentially_Private_Synthetic_Data} is, given a database $\db$, adding some noise to marginals of $\db$ such that it satisfies some differential privacy guarantees and outputting another database $\db'$, such that the $L^1$-norm errors between marginals of $\db$ and $\db'$ is small; that is, their marginals $\mu_{\db},\mu_{\db'}$ are similar.
 
 For example, suppose we have a database with attributes sex and race. The 2-way marginals of the original database and the synthetic database are shown in Table~\ref{tab:marginal-example}. The marginals of the synthetic data is supposed to be similar to that of the original database.
 
@@ -377,7 +372,7 @@ For example, suppose we have a database with attributes sex and race. The 2-way 
 \begin{subtable}[t]{0.45\linewidth}
 \centering
 \caption{Marginal of original data.}
-\begin{tabular}{cc}
+\begin{tabular}{lr}
 \toprule
 Attributes & Count \\
 \midrule
@@ -391,7 +386,7 @@ Female,Black & 47 \\
 \begin{subtable}[t]{0.45\linewidth}
 \centering
 \caption{Marginal of synthetic data.}
-\begin{tabular}{cc}
+\begin{tabular}{lr}
 \toprule
 Attributes & Count \\
 \midrule
@@ -431,15 +426,15 @@ Thus, we introduce a new framework where the auditor generates synthetic data ba
 \section{Methodology}
 \label{sec:method}
 
-% TODO: add a overarching example for methodologies
-
-We employed the tools of the winner of the 2018 NIST Differential Privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{nist_ryan_2018,McKenna_Private-PGM_2021,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
+We employed the tools of the winner of the 2018 NIST differential privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{nist_ryan_2018,McKenna_private-PGM_2021,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
 
 This research is conducted in Python Jupyter notebooks and is publicly available.
 
+We shall illustrate the workflow of our methodology with an example of the COMPAS dataset, which contains attributes such as sex and race with the prediction target attribute being recidivism.
+
 \subsection{Data Synthesis}
 
-The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022,YouTube_Differentially_Private_Synthetic_Data}. We first select the important marginals to preserve, measure them by adding Differential Privacy noise, and then generate synthetic data.
+The synthesis framework is three-fold, namely, select-measure-generate\cite{McKenna2022,YouTube_Differentially_Private_Synthetic_Data}. We first select the important marginals to preserve, measure them by adding differential privacy noise, and then generate synthetic data.
 
 Underneath the hood, the tool employs a Markov random field. The select step corresponds to marking cliques in a Markov random field, and the generate step corresponds to sampling from the fitted Markov random field.
 
@@ -447,21 +442,71 @@ By default, all $1$-way marginals are selected to preserve the quantity of each 
 
 In a perfect world where all correlation information is to be preserved, we may wish to make a complete graph. However, this is intractable as the complexity of the problem would skyrocket. Furthermore, algorithms for Markov random field favor graphs with specific shapes, such as trees.
 
-To circumvent this complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree is identified with edge weights being the mutual information to obtain a skeleton tree-shaped Markov random field.
+To circumvent this complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree is identified with edge weights being the mutual information to obtain a skeleton tree-shaped Markov random field. The marginals are then selected based on the edges of this tree.
 
-For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
+In the COMPAS example, we may select the marginal (sex,race).
+
+For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they manually added the clique (sex,city,income). In addition, they would add some edges based on some sophisticated heuristics tailored to that particular dataset.
+
+We do not consider these additional heuristics for the generality of our approach. Meanwhile, his other apporach where the auditor does access the real dataset does not fit our framework.
+
+While synthetic data generation methods often leverage domain knowledge to improve accuracy, we chose to employ a vanilla approach with only the maximum spanning tree method without incorporating additional heuristics. This decision was made due to two main factors: first, the need for more specific domain knowledge about the dataset makes it difficult to identify meaningful dependencies; second, prediction targets may differ from dataset to dataset, which means that tailored heuristics could not be effectively generalized. By avoiding dataset-specific adjustments, our method remains general and applicable to a wide range of datasets. Furthermore, the bare tree structure makes the method more tractable and computationally efficient.
 
 % We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
-% TODO:
-% for synth to good : depend on domain knowledge, tractibility
-% synth algos use dependencies
-% we DO NOT use this. we do vanilla
-% experiment didnt developed heuristics:
-% 1. lack of domain knowledge
-% 2. different prediction target. cannot tailor a priori
+For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget $\epsilon = 1$ is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
 
-For the measure step, we followed the examples provided in the tool's repository. Gaussian noises are added to the selected marginals. Half of the privacy budget is spent on all 1-way marginals and the other half on the selected cliques. These marginals are then fed to the tool to fit the Markov random field. By \cite{mckenna2021winning}, this procedure satisfies $(\alpha,\frac{\alpha}{2 \sigma^2})$-RDP for all $\alpha \geq 1$.
+In the COMPAS example, the selected the marginals are perturbed by Gaussian noise, as shown in Table~\ref{tab:marginal-perturbed}.
+
+\begin{table}[h]
+\caption{Example marginals.}
+\label{tab:marginal-perturbed}
+\centering
+\begin{subtable}[t]{0.45\linewidth}
+\centering
+\caption{Original marginal.}
+\begin{tabular}{lr}
+\toprule
+Attributes & Count \\
+\midrule
+Female,African-American & 1537 \\
+Female,Asian & 8 \\
+Female,Caucasian & 1465 \\
+Female,Hispanic & 215 \\
+Female,Native American & 15 \\
+Female,Other & 143 \\
+Male,African-American & 8254 \\
+Male,Asian & 63 \\
+Male,Caucasian & 4621 \\
+Male,Hispanic & 1236 \\
+Male,Native American & 42 \\
+Male,Other & 717 \\
+\bottomrule
+\end{tabular}
+\end{subtable}
+\begin{subtable}[t]{0.45\linewidth}
+\centering
+\caption{Perturbed marginal.}
+\begin{tabular}{lr}
+\toprule
+Attributes & Count \\
+\midrule
+Female,African-American & 1545.7885 \\
+Female,Asian & 4.3236 \\
+Female,Caucasian & 1444.7303 \\
+Female,Hispanic & 208.2250 \\
+Female,Native American & 26.7479 \\
+Female,Other & 150.8175 \\
+Male,African-American & 8296.6274 \\
+Male,Asian & 92.1107 \\
+Male,Caucasian & 4643.0108 \\
+Male,Hispanic & 1274.0831 \\
+Male,Native American & 28.9542 \\
+Male,Other & 710.3473 \\
+\bottomrule
+\end{tabular}
+\end{subtable}
+\end{table}
 
 \subsection{Fairness Checking}
 
@@ -475,7 +520,7 @@ The checker simply iterates through the given database $\db$ and computes the re
 
 Protected groups $S$, predicted outcomes $\hat{Y}$, and ground truths $Y$ are all formulated as these predicates. These are straightforward logical boolean expressions. Specifically, they are given as Python functions that output boolean values.
 
-For example, if the sensitive attribute is sex and the protected group is female, the protected group predicate would be $S := r(sex) = Female$. This can be easily implemented in Python as a comparison function.
+In the COMPAS example, if the sensitive attribute is sex and the protected group is female, the protected group predicate would be $S := r(sex) = Female$. This can be easily implemented in Python as a comparison function.
 
 The interpretation of the resulting fairness measure values is dependent on the third-party auditors. The auditors may have different thresholds $\epsilon$ for different fairness measures or different AI models.
 
@@ -483,23 +528,15 @@ The interpretation of the resulting fairness measure values is dependent on the 
 
 To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset. We used various datasets with fairness concerns mentioned in \cite{pessach2022review}.
 
-% TODO: move this to their respective subsection
+We looked at several publicly available datasets, such as Adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. These datasets are known to have fairness issues\cite{pessach2022review}.
 
-% TODO: reiterate methodologies
+The fairness checker evaluates datasets based on multiple fairness metrics, such as demographic parity and equalized odds. By comparing these measures between the synthetic and original datasets, we aim to ensure that the synthetic data preserves the fairness properties of the original data. The comparison process is three-fold. It goes as follows.
 
-We looked at several publicly available datasets, such as Adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. The Adult dataset comes from the 1994 census in the United States and contains about 30000 individuals. The COMPAS dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The Diabetes dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. Since these datasets all have binary outcomes, we did not consider the case of non-binary outcomes in the experiments.
-
-The fairness checker evaluates datasets based on multiple fairness metrics, such as demographic parity and equalized odds. These metrics are computed on some sensitive attributes, predicted outcomes, and ground truths. Examples of sensitive attributes are race and sex. Examples of predicted outcomes and ground truths are loan approval and criminal recidivism.
-
-By comparing these measures between the synthetic and original datasets, we aim to ensure that the synthetic data preserves the fairness properties of the original data. The comparison process is three-fold. It goes as follows.
-
-The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected as described in the Section~\ref{sec:method}, and the synthetic data generator model is fitted to the original data according to the marginals. Then the generator is run multiple times to obtain multiple sets of synthetic data.
+The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected according to their mutual information, as described in the Section~\ref{sec:method}, and the synthetic data generator model is fitted to the original data according to the selected marginals. Then the generator is run 100 times to obtain 100 sets of synthetic data.
 
 Next, several AI models are extracted from various real-life authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. Another random forest model is finetuned with over-sampling methods\cite{Jawat2024}. Also, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
-Several AI models and both the original dataset and the rounds of synthetic datasets are fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, all applicable fairness measures are computed using the checker for both the original and the synthetic.
-
-Finally, we analyze the discrepancies between the fairness properties of the original and the synthetic by calculating the difference of their perspective fairness measure values. The average of the differences serves as a summary of the analysis.
+The AI models and both the original dataset and synthetic datasets are then fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, applicable fairness measures are computed using the checker for both the original and the synthetic.
 
 % \begin{figure}[h]
 %   \centering
@@ -556,75 +593,82 @@ Finally, we analyze the discrepancies between the fairness properties of the ori
 
 \subsection{Adult Income Dataset}
 
-% TODO: dont mention shape of graph
+The Adult\cite{adult_2,Kaggle_Adult_Census_Income} dataset comes from the 1994 census in the United States and contains about 30000 individuals. The dataset has 14 attributes, such as sex, age, and education. The task is to predict whether an individual earns more than \$50,000 a year. We set the sensitive attribute as sex and the protected group as female. The results are shown in Table~\ref{tab:adult_score}.
 
-For the Adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
-
-Marginals based on this graph are then passed to the synthetic data generator for model fitting.
-
-After generating ten rounds of synthetic data and passing them to the checker, their fairness measure values are averaged. Then, we compare them against the values of the original data. The results are shown in Table~\ref{tab:adult_score}.
+% For the Adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
 
 % We observed that across all examined fairness measures, their difference all fall below 0.1. The average of their differences is 0.0431, which we consider quite satisfactory.
 
 \begin{table}[h]
 \caption{
     Fairness measures experiment results of the Adult dataset.
-    With heuristic, average difference is $0.0787$, and fit time is 924m15s.
-    Without heuristic, average difference is $0.0775$, and fit time is 17m1s.
+    % With heuristic, average difference is $0.0787$, and fit time is 924m15s.
+    Average difference is $0.0775$, and fit time is 17m1s.
 }
+% \label{tab:adult_score}
+% \begin{tabular}{ccccccc}
+% \toprule
+% \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{difference} & \textbf{Synthetic(No Heuristic)} & \textbf{difference(No Heuristic)} \\
+% \midrule
+% Demographic Parity  & 0.1933 & 0.1079 & 0.0853 & 0.0114 & 0.1818 \\
+% Overall Accuracy Eqaulity   & 0.0250 & 0.1399 & 0.1149 & 0.0169 & 0.0080 \\
+% Equalized Odds (False Positive)    & 0.0175 & 0.0870 & 0.0695 & 0.0060 & 0.0115 \\
+% Equalized Odds (True Positive)    & 0.0114 & 0.0622 & 0.0508 & 0.0303 & 0.0189 \\
+% CU Accuracy Equality (True Positive) & 0.1941 & 0.1466 & 0.0474 & 0.0315 & 0.1626 \\
+% CU Accuracy Equality (True Negative) & 0.1102 & 0.1450 & 0.0348 & 0.0299 & 0.0803 \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
 \label{tab:adult_score}
-\begin{tabular}{ccccccc}
+\begin{tabular}{llll}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Synthetic(No Heuristic)} & \textbf{Difference(No Heuristic)} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
-Demographic Parity  & 0.1933 & 0.1079 & 0.0853 & 0.0114 & 0.1818 \\
-Accuracy Eqaulity   & 0.0250 & 0.1399 & 0.1149 & 0.0169 & 0.0080 \\
-Equalized Odds 1    & 0.0175 & 0.0870 & 0.0695 & 0.0060 & 0.0115 \\
-Equalized Odds 2    & 0.0114 & 0.0622 & 0.0508 & 0.0303 & 0.0189 \\
-Accuracy Equality 1 & 0.1941 & 0.1466 & 0.0474 & 0.0315 & 0.1626 \\
-Accuracy Equality 2 & 0.1102 & 0.1450 & 0.0348 & 0.0299 & 0.0803 \\
+Demographic Parity  & 0.1933 & 0.0114 & 0.1818 \\
+Overall Accuracy Eqaulity   & 0.0250 & 0.0169 & 0.0080 \\
+Equalized Odds (False Positive)    & 0.0175 & 0.0060 & 0.0115 \\
+Equalized Odds (True Positive)    & 0.0114 & 0.0303 & 0.0189 \\
+Conditional Use Accuracy Equality (True Positive) & 0.1941 & 0.0315 & 0.1626 \\
+Conditional Use Accuracy Equality (True Negative) & 0.1102 & 0.0299 & 0.0803 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{COMPAS Dataset}
 
+The COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset} dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The dataset has 10 applicable attributes, such sex, age, and priors count. The task is to predict whether an individual will re-offend. We set the sensitive attribute as sex and the protected group as female. The results are shown in Table~\ref{tab:compas_score}.
+
 % For the COMPAS dataset, the initial spanning tree has a long tail, which is not surprising because, upon closer inspection, they all are related to the original COMPAS risk scores. The heuristic edge addition did not change the graph significantly. It only introduced one 3-clique triangle. The resulting graph is shown in Figure~\ref{fig:compas_mst}.
-
-% Marginals of this graph are then too passed to the synthetic data generator for fitting.
-
-% We ran the same workflow as adult dataset for the COMPAS dataset. The comparison results are shown in Table~\ref{tab:compas_score}.
 
 % The results showed an increase in error on the sufficiency measure values. In particular, one of the measures has an error difference as high as 0.141. The average of their differences is 0.069, which is worse than the adult dataset.
 
 \begin{table}[h]
 \caption{
     Fairness measures experiment results of the COMPAS dataset.
-    With heuristic, average difference is $0.0750$, and fit time is 27m33s.
-    Without heuristic, average difference is $0.0727$, and fit time is 33s.
+    % With heuristic, average difference is $0.0750$, and fit time is 27m33s.
+    Average difference is $0.0727$, and fit time is 33s.
 }
 \label{tab:compas_score}
-\begin{tabular}{cccccc}
+\begin{tabular}{llll}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Synthetic(No Heuristic)} & \textbf{Difference(No Heuristic)} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
-Demographic Parity  & 0.1310 & 0.0980 & 0.0330 & 0.0809 & 0.0501 \\
-Accuracy Eqaulity   & 0.0079 & 0.0129 & 0.0050 & 0.0146 & 0.0067 \\
-Equalized Odds 1    & 0.0249 & 0.0936 & 0.0687 & 0.0802 & 0.0553 \\
-Equalized Odds 2    & 0.0177 & 0.1016 & 0.0838 & 0.0825 & 0.0648 \\
-Accuracy Equality 1 & 0.1709 & 0.0505 & 0.1203 & 0.0551 & 0.1157 \\
-Accuracy Equality 2 & 0.1695 & 0.0303 & 0.1392 & 0.0256 & 0.1439 \\
+Demographic Parity  & 0.1310 & 0.0809 & 0.0501 \\
+Overall Accuracy Eqaulity   & 0.0079 & 0.0146 & 0.0067 \\
+Equalized Odds (False Positive)    & 0.0249 & 0.0802 & 0.0553 \\
+Equalized Odds (True Positive)    & 0.0177 & 0.0825 & 0.0648 \\
+Conditional Use Accuracy Equality (True Positive) & 0.1709 & 0.0551 & 0.1157 \\
+Conditional Use Accuracy Equality (True Negative) & 0.1695 & 0.0256 & 0.1439 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Diabetes Dataset}
 
+The Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction} dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. The dataset has 8 attributes, such as gender, age, and smoking history. The task is to predict whether an individual will be readmitted. We set the sensitive attribute as gender and the protected group as female. The results are shown in Table~\ref{tab:diabetes_score}.
+
 % The tree grown from the diabetes dataset did not appear to have any particular characteristics. The root of the tree is placed in the BMI value, which reasonably captures most information. The heuristic edge addition process introduced some 3-clique triangles. The resulting graph is shown in Figure~\ref{fig:diabetes_mst}.
-
-% The same process is conducted to fit the synthetic data generator model.
-
-% The same workflow was done as on previous datasets. The comparison results are shown in Table~\ref{tab:diabetes_score}.
 
 % The results showed that the synthetic data generally preserves the fairness properties of the original data.
 
@@ -633,20 +677,20 @@ Accuracy Equality 2 & 0.1695 & 0.0303 & 0.1392 & 0.0256 & 0.1439 \\
 \begin{table}[h]
 \caption{
     Fairness measures experiment results of the Diabetes dataset.
-    With heuristic, average difference is $0.0067$, and fit time is 1m44s.
-    Without heuristic, average difference is $0.0078$, and fit time is 1m24s.
+    % With heuristic, average difference is $0.0067$, and fit time is 1m44s.
+    Average difference is $0.0078$, and fit time is 1m24s.
 }
 \label{tab:diabetes_score}
-\begin{tabular}{cccccc}
+\begin{tabular}{llll}
 \toprule
-\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} & \textbf{Synthetic(No Heuristic)} & \textbf{Difference(No Heuristic)} \\
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
-Demographic Parity  & 0.0135 & 0.0038 & 0.0096 & 0.0015 & 0.0119 \\
-Accuracy Eqaulity   & 0.0077 & 0.0011 & 0.0065 & 0.0011 & 0.0065 \\
-Equalized Odds 1    & 0.0000 & 0.0006 & 0.0006 & 0.0010 & 0.0010 \\
-Equalized Odds 2    & 0.0086 & 0.0106 & 0.0020 & 0.0094 & 0.0008 \\
-Accuracy Equality 1 & 0.0133 & 0.0090 & 0.0042 & 0.0059 & 0.0074 \\
-Accuracy Equality 2 & 0.0216 & 0.0041 & 0.0175 & 0.0019 & 0.0197 \\
+Demographic Parity  & 0.0135 & 0.0015 & 0.0119 \\
+Overall Accuracy Eqaulity   & 0.0077 & 0.0011 & 0.0065 \\
+Equalized Odds (False Positive)    & 0.0000 & 0.0010 & 0.0010 \\
+Equalized Odds (True Positive)    & 0.0086 & 0.0094 & 0.0008 \\
+Condtional Use Accuracy Equality (True Positive) & 0.0133 & 0.0059 & 0.0074 \\
+Condtional Use Accuracy Equality (True Negative) & 0.0216 & 0.0019 & 0.0197 \\
 \bottomrule
 \end{tabular}
 \end{table}
