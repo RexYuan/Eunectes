@@ -1,6 +1,4 @@
 \documentclass[manuscript,screen,review,anonymous]{acmart}
-\usepackage{xcolor}
-\usepackage{mathtools}
 % \documentclass[acmsmall,sigconf]{acmart}
 
 % %% Rights management information.  This information is sent to you
@@ -25,6 +23,7 @@
 % %%  June 03--05, 2018, Woodstock, NY}
 % \acmISBN{978-1-4503-XXXX-X/18/06}
 
+\usepackage{xcolor}
 \usepackage{mathtools}
 \usepackage{multirow}
 \usepackage{subcaption}
@@ -624,7 +623,7 @@ The Adult\cite{adult_2,Kaggle_Adult_Census_Income} dataset comes from the 1994 c
 % \end{table}
 
 \label{tab:adult_score}
-\begin{tabular}{llll}
+\begin{tabular}{lccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
@@ -653,7 +652,7 @@ The COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset} dataset comes from a
     Average difference is $0.0727$, and fit time is 33s.
 }
 \label{tab:compas_score}
-\begin{tabular}{llll}
+\begin{tabular}{lccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
@@ -684,7 +683,7 @@ The Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction} dataset comes from the
     Average difference is $0.0078$, and fit time is 1m24s.
 }
 \label{tab:diabetes_score}
-\begin{tabular}{llll}
+\begin{tabular}{lccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
@@ -700,49 +699,11 @@ Condtional Use Accuracy Equality (True Negative) & 0.0216 & 0.0019 & 0.0197 \\
 
 \section{Evaluation}
 
-% % TODO:
-% first list formulas
+Before we delve into the results, we must first understand the nature of the fairness measures. The fairness measures are defined assuming all the information is readily available. This, however, might cause trouble for synthetic data, as they can only work with the information at hand.
 
-% count vars
+By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
 
-% theyre not part of marginals
-
-% they cant be computed
-
-% we can say less about fairness with these with less info
-
-% auditor need to know theyre aproxing scores
-
-% auditor need to keep in mind that these scores are for datasets and we preserve these scores thats it. scores may not be accurate. it doesnt mean its less easy to test fairness
-
-\subsection{Positive Results}
-
-% % TODO:
-% it works!
-
-% Our experiments showed that synthetic data generally preserves the fairness properties with a reasonable degree of accuracy. The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
-
-% For the adult dataset, the average difference was 0.0431, suggesting a close match between the synthetic and the original data in terms of fairness measures. For the diabetes dataset, the average difference was 0.031, which is even lower. Even in the case of the COMPAS dataset, which had a higher value, it was still within an acceptable range at 0.069.
-
-% In particular, both the independence and separation measures showed low errors across all datasets, with the differences of all of them below 0.1. On the other hand, results of accuracy equality also showed low errors, with the differences of one of them as low as 0.005.
-
-% This demonstrated that synthetic data can accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results consistent with those on the original data.
-
-\subsection{Negative Results}
-
-% The experiments also revealed some limitations of this approach. In particular, the sufficiency measure showed higher errors compared to other measures. For example, in the COMPAS dataset, the sufficiency measure had an error difference as high as 0.141, while other measures had errors below 0.1.
-
-% By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
-
-% Referring back to the definition of the fairness measures, we can see the following: separation is concerned with the form $P[\hat{Y} | S, Y] = \frac{P[\hat{Y} \cap S \cap Y]}{P[{S} \cap Y]}$, and sufficiency is concerned with the form $P[Y | S, \hat{Y}] = \frac{P[Y \cap S \cap \hat{Y}]}{P[{S} \cap \hat{Y}]}$.
-
-% expand all defs and count the nums of avail vars
-
-% This explains why sufficiency measures could have higher errors compared to separation because synthetic data have less information about them. While only one variable is missing in the numerator for separation, one more variable is missing in the denominator for sufficiency.
-
-% Therefore, it is harder to approximate sufficiency measures on synthetic data. This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses.
-
-% TODO: use = 1
+Let us inspect the definitions of the fairness measures one by one by expanding them by the definition of conditional probability and coloring them according to whether they are in the original data or not; we will color the variables that are in the original data green and those not red.
 
 \definecolor{lightgreen}{rgb}{0.6, 1.0, 0.6}
 \definecolor{lightred}{rgb}{1.0, 0.6, 0.6}
@@ -750,29 +711,49 @@ Condtional Use Accuracy Equality (True Negative) & 0.0216 & 0.0019 & 0.0197 \\
 \newcommand{\y}[1]{\mathhighlight{lightgreen}{#1}}
 \newcommand{\n}[1]{\mathhighlight{lightred}{#1}}
 
-% independence
-% \[
-% P[\hat{Y} | S] - P[\hat{Y} | \overline{S}]
-% = \frac{P[\n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
-% \]
+For Demographic Parity, we have
+\[
+P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]
+= \frac{P[\n{\hat{Y}} = 1 \cap \y{S} = 1]}{P[\y{S} = 1]} - \frac{P[\n{\hat{Y}} = 1 \cap \y{S} \neq 1]}{P[\y{S} \neq 1]}
+\]
 
-% separation
-% \[
-% P[\hat{Y} | S, Y] - P[\hat{Y} | \overline{S}, Y]
-% = \frac{P[\n{\hat{Y}} \cap \y{S} \cap \y{Y}]}{P[\y{S} \cap \y{Y}]} - \frac{P[\n{\hat{Y}} \cap \y{\overline{S}} \cap \y{Y}]}{P[\y{\overline{S}} \cap \y{Y}]}
-% \]
+For Overall Accuracy Equality, we have
+\[
+P[Y = \hat{Y} | {S} = 1 ] - P[Y = \hat{Y} | {S} \neq 1]
+= \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{S} = 1]}{P[\y{S} = 1]} - \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{{S}} \neq 1]}{P[\y{{S}} \neq 1]}
+\]
 
-% sufficiency
-% \[
-% P[Y | S, \hat{Y}] - P[Y | \overline{S}, \hat{Y}]
-% = \frac{P[\y{Y} \cap \y{S} \cap \n{\hat{Y}}]}{P[\y{S} \cap \n{\hat{Y}}]} - \frac{P[\y{Y} \cap \y{\overline{S}} \cap \n{\hat{Y}}]}{P[\y{\overline{S}} \cap \n{\hat{Y}}]}
-% \]
+For Equalized Odds (False Positive), we have
+\[
+P[\hat{Y} = 1 | S = 1, Y = 0] - P[\hat{Y} = 1 | S \neq 1, Y = 0]
+= \frac{P[\n{\hat{Y}} = 1 \cap \y{S} = 1 \cap \y{Y} = 0]}{P[\y{S} = 1 \cap \y{Y} = 0]} - \frac{P[\n{\hat{Y}} = 1 \cap \y{S} \neq 1 \cap \y{Y} = 0]}{P[\y{S} \neq 1 \cap \y{Y} = 0]}
+\]
+Equalized Odds (True Positive) follows the same form as Equalized Odds (False Positive).
 
-% accuracy equality
-% \[
-% P[Y = \hat{Y} | {S} ] - P[Y = \hat{Y} | \overline{S}]
-% = \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{S}]}{P[\y{S}]} - \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{\overline{S}}]}{P[\y{\overline{S}}]}
-% \]
+For Conditional Use Accuracy Equality (True Positive), we have
+\[
+P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]
+= \frac{P[\y{Y} = 1 \cap \y{S} = 1 \cap \n{\hat{Y}} = 1]}{P[\y{S} = 1 \cap \n{\hat{Y}} = 1]} - \frac{P[\y{Y} = 1 \cap \y{{S}} \neq 1 \cap \n{\hat{Y}} = 1]}{P[\y{{S}} \neq 1 \cap \n{\hat{Y}} = 1]}
+\]
+Conditional Use Accuracy Equality (True Negative) follows the same form as Conditional Use Accuracy Equality (True Positive).
+
+Now we can count the numbers of available variables in the original data for each fairness measure: Demographic Parity has $\frac{6}{8} = 0.75$; Overall Accuracy Equality has $\frac{4}{6} = 0.6\overline{6}$; Equalized Odds has $\frac{8}{10} = 0.8$; and Conditional Use Accuracy Equality has $\frac{6}{10} = 0.6$.
+
+Hence, we can say less about fairness with the measures with less information, and the measures approximated by synthetic data may be less accurate.
+
+\subsection{Negative Results}
+
+Now, looking at the actual experimental results, first and foremost, across all datasets, we observed that Conditional Use Accuracy Equality did indeed show higher errors than other measures. For example, in the COMPAS experiment, both Conditional Use Accuracy Equality measures had an error over 0.1. This corroborates our assumption that it is harder to approximate sufficiency measures on synthetic data.
+
+This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses. The auditor needs to keep in mind that they are approximating scores, and the scores may not be fully accurate. The auditor should be aware that they are approximating fairness.
+
+\subsection{Positive Results}
+
+Although the scores may not be fully accurate, and some measures, due to the nature of their definitions, may be harder to approximate, the results showed that synthetic data generally preserves the fairness properties of the original data with a reasonable degree of accuracy.
+
+The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
+
+This demonstrated that synthetic data can, to an extent, accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results mostly consistent with those on the original data.
 
 \section{Conclusion}
 
