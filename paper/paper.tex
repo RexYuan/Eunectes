@@ -703,24 +703,18 @@ Before we delve into the results, we must first understand the nature of the fai
 
 By close examination of our scenario, we can observe the following: of the three variables, $(\hat{Y},Y,S)$, two of them, namely $(Y,S)$, are both readily available in the original data. In contrast, $\hat{Y}$ is only available in the output of the given AI model, which cannot be captured by the synthetic data at the time of generation.
 
-Let us inspect the definitions of the fairness measures one by one by expanding them by the definition of conditional probability and coloring them according to whether they are in the original data or not; we will color the variables that are in the original data green and those not red.
+Let us inspect the definitions of the fairness measures one by one by expanding them by the definition of conditional probability and marking them according to whether they are in the original data or not; we will box the variables that are not in the original data.
 
 \definecolor{lightgreen}{rgb}{0.6, 1.0, 0.6}
 \definecolor{lightred}{rgb}{1.0, 0.6, 0.6}
 \newcommand{\mathhighlight}[2]{\colorbox{#1}{$\displaystyle #2$}}
-\newcommand{\y}[1]{\mathhighlight{lightgreen}{#1}}
-\newcommand{\n}[1]{\mathhighlight{lightred}{#1}}
+\newcommand{\y}[1]{{#1}}
+\newcommand{\n}[1]{\boxed{#1}}
 
 For Demographic Parity, we have
 \[
 P[\hat{Y} = 1 | S = 1] - P[\hat{Y} = 1 | S \neq 1]
 = \frac{P[\n{\hat{Y}} = 1 \cap \y{S} = 1]}{P[\y{S} = 1]} - \frac{P[\n{\hat{Y}} = 1 \cap \y{S} \neq 1]}{P[\y{S} \neq 1]}
-\]
-
-For Overall Accuracy Equality, we have
-\[
-P[Y = \hat{Y} | {S} = 1 ] - P[Y = \hat{Y} | {S} \neq 1]
-= \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{S} = 1]}{P[\y{S} = 1]} - \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{{S}} \neq 1]}{P[\y{{S}} \neq 1]}
 \]
 
 For Equalized Odds (False Positive), we have
@@ -737,15 +731,15 @@ P[Y = 1 | S = 1, \hat{Y} = 1] - P[Y = 1 | S \neq 1, \hat{Y} = 1]
 \]
 Conditional Use Accuracy Equality (True Negative) follows the same form as Conditional Use Accuracy Equality (True Positive).
 
-Now we can count the numbers of available variables in the original data for each fairness measure: Demographic Parity has $\frac{6}{8} = 0.75$; Overall Accuracy Equality has $\frac{4}{6} = 0.6\overline{6}$; Equalized Odds has $\frac{8}{10} = 0.8$; and Conditional Use Accuracy Equality has $\frac{6}{10} = 0.6$.
+For Overall Accuracy Equality, we have
+\[
+P[Y = \hat{Y} | {S} = 1 ] - P[Y = \hat{Y} | {S} \neq 1]
+= \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{S} = 1]}{P[\y{S} = 1]} - \frac{P[\y{Y} = \n{\hat{Y}} \cap \y{{S}} \neq 1]}{P[\y{{S}} \neq 1]}
+\]
 
-Hence, we can say less about fairness with the measures with less information, and the measures approximated by synthetic data may be less accurate.
+Here we observed that, of the measures considered, only Conditional Use Accuracy Equality has boxed variables that are in both the numerator and the denominator. This is in contrast to the other measures, which only have one boxed variable in the numerator.
 
-\subsection{Negative Results}
-
-Now, looking at the actual experimental results, first and foremost, across all datasets, we observed that Conditional Use Accuracy Equality did indeed show higher errors than other measures. For example, in the COMPAS experiment, both Conditional Use Accuracy Equality measures had an error over 0.1. This corroborates our assumption that it is harder to approximate sufficiency measures on synthetic data.
-
-This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses. The auditor needs to keep in mind that they are approximating scores, and the scores may not be fully accurate. The auditor should be aware that they are approximating fairness.
+We can say less about fairness with the measures with less information, and thus the measures approximated by synthetic data may be less accurate for Conditional Use Accuracy Equality.
 
 \subsection{Positive Results}
 
@@ -753,7 +747,23 @@ Although the scores may not be fully accurate, and some measures, due to the nat
 
 The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
+In addition, further experiments showed that, in an alternative assumption where the auditor has knowledge of $(S,Y)$ and can add the edge $(S,Y)$ to the Markov random field before fitting, the synthesized data would have been more accurate, even lowering the error of Conditional Use Accuracy Equality in the COMPAS example.
+
 This demonstrated that synthetic data can, to an extent, accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results mostly consistent with those on the original data.
+
+Auditors hence gained an approach to auditing AI fairness alternative to the traditional method of using real data. When using synthetic data derived from real data, the fairness properties remain meaningful and can still be enough for auditing purposes.
+
+\subsection{Negative Results}
+
+Looking at the actual experimental results, first and foremost, across all datasets, we observed that Conditional Use Accuracy Equality did indeed show higher errors than other measures.
+
+In the Adult experiment, Conditional Use Accuracy Equality (True Positive) has an error of around 0.16. In the COMPAS experiment, both Conditional Use Accuracy Equality measures had an error over 0.1. In the Diabetes experiment, Conditional Use Accuracy Equality (True Negative) has an error much higher than other measures.
+
+This corroborates our assumption that it is harder to approximate sufficiency measures on synthetic data. As there is less information available for the synthesis process, the measures that require more information will be harder to approximate.
+
+Although further experiments showed that linking $(S,Y)$ before fitting can somewhat alleviate this problem, the auditor may not always have the background knowledge to identify them; moreover, this improvement is not always guaranteed.
+
+This is a fundamental limitation of this approach, and it is important to be aware of this when interpreting the results of fairness analyses. The auditor needs to keep in mind that they are approximating scores, and the scores may not be fully accurate.
 
 \section{Conclusion}
 
