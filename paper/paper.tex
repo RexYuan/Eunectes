@@ -95,8 +95,6 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 
-% TODO: add to abstract
-
 \begin{abstract}
 Auditing AI systems often requires sensitive data, raising security and privacy concerns. To address this, we propose a framework that leverages differentially private synthetic data for fairness evaluations. This approach enables auditors to assess AI systems without exposing sensitive information. Through experiments on real datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. Our results show that synthetic data accurately reflect the fairness properties of real data to a reasonable extent.
 \end{abstract}
@@ -455,9 +453,7 @@ In a perfect world where all correlation information is to be preserved, we may 
 
 To circumvent this complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree is identified with edge weights being the mutual information to obtain a skeleton tree-shaped Markov random field. The marginals are then selected based on the edges of this tree.
 
-% TODO: reverse order
-
-For the competition, \cite{mckenna2021winning} further manually added certain cliques based on his investigation of the competition dataset. For example, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. In addition, they manually added the clique (sex,city,income) for the prediction target of income. We do not consider these additional ___ for the generality of our approach. Meanwhile, his other apporach where the auditor does not access the real dataset does not fit our framework.
+For the competition, \cite{mckenna2021winning} further manually added certain cliques based on their investigation of the competition dataset. For example, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. In addition, they manually added some particular cliques like (sex,city,income) for the prediction target of income. We do not consider these additional optimizations for the generality of our approach. Meanwhile, their other apporach where the auditor does not access the real dataset does not fit our framework.
 
 While synthetic data generation methods often leverage domain knowledge to improve accuracy, we chose to employ a vanilla approach with only the maximum spanning tree method without incorporating additional heuristics. This decision was made due to two main factors: first, the specific domain knowledge about the dataset may not be always readily obvious; second, prediction targets may differ from dataset to dataset, which means that tailored heuristics could not be effectively generalized. By avoiding dataset-specific adjustments, our method remains general and applicable to a wide range of datasets, in addition to being more computatioanlly efficient.
 
@@ -545,9 +541,7 @@ The dataset is first processed so it can be fed into the synthetic data generato
 
 Next, several AI models are extracted from various authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. Another random forest model is finetuned with over-sampling methods\cite{Jawat2024}. Also, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
 
-% TODO: avg of 100 runs
-
-The AI models and both the original dataset and synthetic datasets are then fed to the fairness checker. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, applicable fairness measures are computed using the checker for both the original and the synthetic.
+The AI models and both the original dataset and synthetic datasets are then fed to the fairness checker. The synthetic datasets were generated 100 times and the fairness scores averaged across the 100 runs. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, applicable fairness measures are computed using the checker for both the original and the synthetic.
 
 % \begin{figure}[h]
 %   \centering
@@ -756,9 +750,7 @@ Although the scores may not be fully accurate, and some measures, due to the nat
 
 The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
-% TODO: clarify "by common sense"
-
-In addition, further experiments showed that, in an alternative assumption where the auditor has knowledge of $(S,Y)$ and can add the edge $(S,Y)$ to the Markov random field before fitting, the synthesized data would have been more accurate, even lowering the error of Conditional Use Accuracy Equality in the COMPAS example.
+In addition, further experiments showed that, by common sense or in an alternative assumption where the auditor has knowledge of $(S,Y)$ and can add the edge $(S,Y)$ to the Markov random field before fitting, the synthesized data would have been more accurate, even lowering the error of Conditional Use Accuracy Equality in the COMPAS example.
 
 This demonstrated that synthetic data can, to an extent, accurately reflect the fairness properties of the original data. Therefore, fairness analyses performed on synthetic data will yield results mostly consistent with those on the original data.
 
