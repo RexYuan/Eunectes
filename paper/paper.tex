@@ -96,7 +96,22 @@
 %% article.
 
 \begin{abstract}
-Auditing AI systems often requires sensitive data, raising security and privacy concerns. To address this, we propose a framework that leverages differentially private synthetic data for fairness evaluations. This approach enables auditors to assess AI systems without exposing sensitive information. Through experiments on real datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. Our results show that synthetic data accurately reflect the fairness properties of real data to a reasonable extent.
+% fairness auditing
+Fairness auditing of AI systems is essential to prevent inequities.
+By conducting thorough fairness audits, these biases can be identified and quantified.
+% traditional auditing
+Traditional auditing using real-world data raises significant security and privacy risks due to the sensitive nature of the datasets involved.
+It exposes auditors to security risks, as they become custodians of sensitive information and targets for cyberattacks.
+Privacy risks arise even without direct breaches, as analysis of real-world data, even when anonymized or aggregated, can inadvertently expose confidential information.
+% proposed auditing framework
+We propose a framework that employs differentially private synthetic data to audit the fairness of AI systems.
+By applying formal privacy-preserving mechanisms, it generates synthetic data that mirrors key statistical properties of the original dataset while ensuring individual-level privacy.
+This method balances the goal of rigorous fairness auditing and the need of strong privacy protections.
+% contributions
+Through experiments on real datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data.
+By analyzing the alignment and discrepancies between these metrics, we assess the capacity of synthetic data to preserve key fairness properties of real data.
+Our results demonstrate the framework's ability to enable meaningful fairness evaluations while safeguarding sensitive information, proving its applicability across various critical and sensitive domains.
+% Auditing AI systems often requires sensitive data, raising security and privacy concerns. To address this, we propose a framework that leverages differentially private synthetic data for fairness evaluations. This approach enables auditors to assess AI systems without exposing sensitive information. Through experiments on real datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. Our results show that synthetic data accurately reflect the fairness properties of real data to a reasonable extent.
 \end{abstract}
 
 % %%
