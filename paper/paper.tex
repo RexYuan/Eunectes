@@ -96,7 +96,7 @@
 %% article.
 
 \begin{abstract}
-Fairness auditing of AI systems can identify and quantify biases. However, traditional auditing using real-world data raises security and privacy concerns. It exposes auditors to security risks as they become custodians of sensitive information and targets for cyberattacks. Privacy risks arise even without direct breaches, as data analyses can inadvertently expose confidential information. To address these, we propose a framework that leverages differentially private synthetic data to audit the fairness of AI systems. By applying privacy-preserving mechanisms, it generates synthetic data that mirrors the statistical properties of the original dataset while ensuring individual privacy. This method balances the goal of rigorous fairness auditing and the need for strong privacy protections. Through experiments on real datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. By analyzing the alignment and discrepancies between these metrics, we assess the capacity of synthetic data to preserve the fairness properties of real data. Our results demonstrate the framework's ability to enable meaningful fairness evaluations while safeguarding sensitive information, proving its applicability across critical and sensitive domains.
+Fairness auditing of AI systems can identify and quantify biases. However, traditional auditing using real-world data raises security and privacy concerns. It exposes auditors to security risks as they become custodians of sensitive information and targets for cyberattacks. Privacy risks arise even without direct breaches, as data analyses can inadvertently expose confidential information. To address these, we propose a framework that leverages differentially private synthetic data to audit the fairness of AI systems. By applying privacy-preserving mechanisms, it generates synthetic data that mirrors the statistical properties of the original dataset while ensuring privacy. This method balances the goal of rigorous fairness auditing and the need for strong privacy protections. Through experiments on real datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. By analyzing the alignment and discrepancies between these metrics, we assess the capacity of synthetic data to preserve the fairness properties of real data. Our results demonstrate the framework's ability to enable meaningful fairness evaluations while safeguarding sensitive information, proving its applicability across critical and sensitive domains.
 % Auditing AI systems often requires sensitive data, raising security and privacy concerns. To address this, we propose a framework that leverages differentially private synthetic data for fairness evaluations. This approach enables auditors to assess AI systems without exposing sensitive information. Through experiments on real datasets like Adult, COMPAS, and Diabetes, we compare fairness metrics of synthetic and real data. Our results show that synthetic data accurately reflect the fairness properties of real data to a reasonable extent.
 \end{abstract}
 
@@ -207,7 +207,7 @@ The key idea is that no matter how much background knowledge an attacker has abo
 
 \subsection{Synthetic Data}
 
-Synthetic data are fake data that is generated from real data. Synthetic data is artificially generated to replicate the statistical properties of real data while protecting individual privacy. The principle of this technology is to preserve some statistical properties of the real data while protecting the privacy of the individuals in the real data. Unlike anonymized data, synthetic data breaks the link to the original data, reducing the risk of re-identification.
+Synthetic data are fake data that is generated from real data. Synthetic data is artificially generated to replicate the statistical properties of real data while protecting privacy. The principle of this technology is to preserve some statistical properties of the real data while protecting the privacy of the individuals in the real data. Unlike anonymized data, synthetic data breaks the link to the original data, reducing the risk of re-identification.
 
 Among the generation techniques, differentially private synthetic data offers a way to investigate the data properties under differential privacy guarantees. It stands out for it strong differential privacy guarantees when generating synthetic data. This method combines data synthesis with the principles of differential privacy, ensuring that no single individual's information significantly influences the synthetic dataset. By introducing controlled randomness during generation, it provides strong privacy guarantees while preserving the overall utility of the data.
 
@@ -238,8 +238,6 @@ Through our experiments, we evaluate the extent to which synthetic data can appr
 \subsection{Structure}
 
 The rest of this paper is organized as follows. Section 2 provides the background of related work. Section 3 provides the preliminary knowledge. Section 4 outlines the motivation behind our proposed framework. Section 5 describes our methodology for generating differentially private synthetic data and evaluating fairness metrics. Section 6 presents our experimental setup and results. Section 7 discusses the implications of our findings. Section 8 concludes the paper and outlines future work.
-
-% TODO: future work?
 
 \section{Related Work}
 
@@ -506,9 +504,9 @@ In a perfect world where all correlation information is to be preserved, we may 
 
 To circumvent this complexity explosion, instead, \cite{mckenna2021winning} devised a technique where the mutual information of all the database attribute pairs is calculated, and then a maximum spanning tree is identified with edge weights being the mutual information to obtain a skeleton tree-shaped Markov random field. The marginals are then selected based on the edges of this tree.
 
-For the competition, \cite{mckenna2021winning} further manually added certain cliques based on their investigation of the competition dataset. For example, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. In addition, they manually added some particular cliques like (sex,city,income) for the prediction target of income. We do not consider these additional optimizations for the generality of our approach. Meanwhile, their other apporach where the auditor does not access the real dataset does not fit our framework.
+For the competition, \cite{mckenna2021winning} further manually added certain cliques based on their investigation of the competition dataset. For example, they would add some edges based on some sophisticated heuristics tailored to that particular dataset. In addition, they manually added some particular cliques like (sex,city,income) for the prediction target of income. We do not consider these additional optimizations for the generality of our approach. Meanwhile, their other approach where the auditor does not access the real dataset does not fit our framework.
 
-While synthetic data generation methods often leverage domain knowledge to improve accuracy, we chose to employ a vanilla approach with only the maximum spanning tree method without incorporating additional heuristics. This decision was made due to two main factors: first, the specific domain knowledge about the dataset may not be always readily obvious; second, prediction targets may differ from dataset to dataset, which means that tailored heuristics could not be effectively generalized. By avoiding dataset-specific adjustments, our method remains general and applicable to a wide range of datasets, in addition to being more computatioanlly efficient.
+While synthetic data generation methods often leverage domain knowledge to improve accuracy, we chose to employ a vanilla approach with only the maximum spanning tree method without incorporating additional heuristics. This decision was made due to two main factors: first, the specific domain knowledge about the dataset may not be always readily obvious; second, prediction targets may differ from dataset to dataset, which means that tailored heuristics could not be effectively generalized. By avoiding dataset-specific adjustments, our method remains general and applicable to a wide range of datasets, in addition to being more computationally efficient.
 
 % We hence developed an alternative heuristic for the general-purpose workflow. As mentioned in Section~\ref{sec:prelim}, the mutual information of two random variables is bounded by the pair's respective Shannon entropy. Using this property, we add additional edges with weights exceeding a fraction of the minimum of these upper bounds. As a rule of thumb, we have found setting the fraction to be $0.1$ to be effective.
 
@@ -669,7 +667,7 @@ The Adult\cite{adult_2,Kaggle_Adult_Census_Income} dataset comes from the 1994 c
 % \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{difference} & \textbf{Synthetic(No Heuristic)} & \textbf{difference(No Heuristic)} \\
 % \midrule
 % Demographic Parity  & 0.1933 & 0.1079 & 0.0853 & 0.0114 & 0.1818 \\
-% Overall Accuracy Eqaulity   & 0.0250 & 0.1399 & 0.1149 & 0.0169 & 0.0080 \\
+% Overall Accuracy Equality   & 0.0250 & 0.1399 & 0.1149 & 0.0169 & 0.0080 \\
 % Equalized Odds (False Positive)    & 0.0175 & 0.0870 & 0.0695 & 0.0060 & 0.0115 \\
 % Equalized Odds (True Positive)    & 0.0114 & 0.0622 & 0.0508 & 0.0303 & 0.0189 \\
 % CU Accuracy Equality (True Positive) & 0.1941 & 0.1466 & 0.0474 & 0.0315 & 0.1626 \\
@@ -684,7 +682,7 @@ The Adult\cite{adult_2,Kaggle_Adult_Census_Income} dataset comes from the 1994 c
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
 Demographic Parity  & 0.1933 & 0.0114 & 0.1818 \\
-Overall Accuracy Eqaulity   & 0.0250 & 0.0169 & 0.0080 \\
+Overall Accuracy Equality   & 0.0250 & 0.0169 & 0.0080 \\
 Equalized Odds (False Positive)    & 0.0175 & 0.0060 & 0.0115 \\
 Equalized Odds (True Positive)    & 0.0114 & 0.0303 & 0.0189 \\
 Conditional Use Accuracy Equality (True Positive) & 0.1941 & 0.0315 & 0.1626 \\
@@ -713,7 +711,7 @@ The COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset} dataset comes from a
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
 Demographic Parity  & 0.1310 & 0.0809 & 0.0501 \\
-Overall Accuracy Eqaulity   & 0.0079 & 0.0146 & 0.0067 \\
+Overall Accuracy Equality   & 0.0079 & 0.0146 & 0.0067 \\
 Equalized Odds (False Positive)    & 0.0249 & 0.0802 & 0.0553 \\
 Equalized Odds (True Positive)    & 0.0177 & 0.0825 & 0.0648 \\
 Conditional Use Accuracy Equality (True Positive) & 0.1709 & 0.0551 & 0.1157 \\
@@ -744,11 +742,11 @@ The Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction} dataset comes from the
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
 \midrule
 Demographic Parity  & 0.0135 & 0.0015 & 0.0119 \\
-Overall Accuracy Eqaulity   & 0.0077 & 0.0011 & 0.0065 \\
+Overall Accuracy Equality   & 0.0077 & 0.0011 & 0.0065 \\
 Equalized Odds (False Positive)    & 0.0000 & 0.0010 & 0.0010 \\
 Equalized Odds (True Positive)    & 0.0086 & 0.0094 & 0.0008 \\
-Condtional Use Accuracy Equality (True Positive) & 0.0133 & 0.0059 & 0.0074 \\
-Condtional Use Accuracy Equality (True Negative) & 0.0216 & 0.0019 & 0.0197 \\
+Conditional Use Accuracy Equality (True Positive) & 0.0133 & 0.0059 & 0.0074 \\
+Conditional Use Accuracy Equality (True Negative) & 0.0216 & 0.0019 & 0.0197 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -823,11 +821,17 @@ This is a fundamental limitation of this approach, and it is important to be awa
 
 \section{Conclusion}
 
-Auditing AI systems with real data can be dangerous. We propose a new approach that leverages differentially private synthetic data. The proposed framework, with its strong privacy guarantees, provides a safe alternative to the risks of using real data.
+Auditing AI systems with real data can be dangerous due to the potential risks to privacy and the possibility of exposing sensitive information. When evaluating an AI system with personal data, there is a real danger of inadvertently leaking private details about individuals involved in the dataset.
 
-Despite the inherent imperfection of synthetic data for some measures, the metrics results remain generally consistent with the original data. Experiments on multiple real-world datasets and real-world models reveal that synthetic data derived from real data maintains fairness properties.
+To mitigate this risk, we propose a framework that leverages differentially private synthetic data for fairness audits. Instead of using real data, it generates synthetic data that preserves key patterns of real data but, at the same time, protects individuals' privacy.
 
-While synthetic data is not perfect, it serves as a practical tool for auditing AI fairness. Our framework provides an effective way to audit AI systems without compromising privacy. Future work includes applications on larger datasets to validate scalability and explorations of other means of privacy preservation in AI auditing.
+The proposed framework, backed by strong privacy guarantees, offers a secure alternative to directly using real data. By applying differential privacy methods, the synthetic data shields individual information from exposure while still enabling thorough fairness evaluations.
+
+Experiments conducted on multiple real-world datasets and models show that synthetic data derived from real data retains essential fairness properties. This ensures that any biases present in the original data are captured and reflected in the synthetic counterpart.
+
+While synthetic data is not a flawless substitute for real-world data, it serves as a practical and pragmatic tool for auditing AI fairness in a privacy-preserving manner. Our framework offers an effective means of testing AI systems for fairness while mitigating the privacy concerns surrounding using real data in sensitive applications. Auditors can perform thorough fairness evaluations by generating and using synthetic data while under strong privacy protections.
+
+Future work could focus on applying this framework to larger, more complex datasets, which would help validate the framework's scalability. Furthermore, other privacy-preserving techniques could be explored to complement synthetic data and expand the scope of AI fairness auditing while maintaining privacy. Finally, translating these technical advancements into real-world applications requires policy, legal, and industry collaborations. Research on the legal, ethical, and societal implications of differential privacy and synthetic data will be crucial for broad adoption.
 
 %%
 %% The acknowledgments section is defined using the "acks" environment
