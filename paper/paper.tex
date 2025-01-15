@@ -175,15 +175,15 @@ Fairness in machine learning has become an increasingly important topic as AI sy
 
 However, AI systems can exhibit bias, which may lead to increased unfairness. Biased AI systems have the potential to reinforce historical injustices, erode trust in technology, and exacerbate inequality. Therefore, ensuring fairness in AI systems is crucial to prevent the perpetuation of these biases.
 
-For instance, investigative journalists at ProPublica uncovered bias in the COMPAS system, which is used in the United States criminal justice system to predict recidivism. Their analysis revealed that the COMPAS system disproportionately affects certain demographic groups.
+For instance, investigative journalists at ProPublica uncovered bias in the COMPAS system, which is used in the United States criminal justice system to predict recidivism. Their analysis revealed that the COMPAS system disproportionately discriminated against certain demographic groups.
 
 These findings have raised significant concerns about the fairness and ethical implications of using such AI systems in critical decision-making processes. Addressing these biases is essential to ensure that AI systems do not perpetuate existing inequalities and instead contribute to a fairer and more just society.
 
 \subsection{Fairness Auditing}
 
-One effective approach to achieving fairness in AI systems is to conduct audits. Quantitative fairness auditing involves evaluating these systems using various fairness metrics to identify potential biases and inequalities. Some commonly proposed metrics for assessing AI system fairness include demographic parity, equalized odds, and accuracy equality. These metrics provide a quantitative foundation for addressing fairness concerns in AI models.
+One effective approach to achieving fairness in AI systems is to conduct audits. Quantitative fairness auditing involves evaluating these systems using various fairness metrics to identify potential biases and inequalities. Some commonly proposed metrics for assessing AI system fairness include demographic parity, equalized odds, and accuracy equality. These metrics provide a quantitative basis for addressing fairness concerns in AI models.
 
-A well-documented example of fairness auditing is the investigation of the COMPAS system. Journalists from ProPublica revealed that COMPAS exhibited bias against certain demographic groups, particularly African Americans. The system was more likely to falsely classify African American defendants as high risk for reoffending compared to their white counterparts. This finding not only underscored the necessity of fairness auditing but also highlighted the potential harm of deploying biased AI systems in critical areas.
+A well-documented example of fairness auditing is the investigation of the COMPAS system. Journalists from ProPublica revealed that COMPAS exhibited bias against certain demographic groups, particularly African Americans. The system was more likely to falsely classify African American defendants as high risk compared to their Caucasian counterparts. This finding not only underscored the necessity of fairness auditing but also highlighted the potential harm of deploying biased AI systems in critical areas.
 
 This case emphasizes the importance of independent audits in ensuring fairness. Evaluations conducted by third parties, such as those performed by ProPublica, are vital because they operate free from the influence of those who develop or deploy the systems. By offering an objective perspective, third-party audits can identify and address biases that internal evaluations might overlook. Without such oversight, AI systems risk perpetuating systemic inequalities, making independent auditing a crucial aspect of accountability in AI development.
 
@@ -191,17 +191,17 @@ This case emphasizes the importance of independent audits in ensuring fairness. 
 
 \subsection{Challenges in Auditing}
 
-While fairness auditing is essential, it presents significant challenges, particularly when it involves sensitive data. To conduct audits, auditors may rely on access to real datasets containing sensitive information, raising significant security and privacy concerns. Auditors often require access to real-world datasets containing sensitive attributes, such as race, gender, or income, to evaluate an AI system's fairness. However, this reliance on sensitive data raises concerns about data privacy and security.
+While fairness auditing is essential, it presents significant challenges, particularly when it involves sensitive data. To conduct audits, auditors may rely on access to real datasets containing sensitive information. Auditors often require access to real-world datasets containing sensitive attributes, such as race, gender, or income, to evaluate an AI system's fairness. However, this reliance on sensitive data raises concerns about data security and privacy.
 
 This reliance invites data security attacks on auditors, making them targets of unauthorized access. The use of real datasets for fairness auditing creates a point of vulnerability, making auditors potential targets for data breaches and unauthorized access. If sensitive data falls into the wrong hands, it could lead to severe consequences, including identity theft, discrimination, and reputational damage.
 
-Moreover, analyses on real data runs the risk of data inference attacks, where confidential information may be deduced from seemingly harmless or aggregated data. Even if the real data is not directly exposed, the results of fairness analyses can sometimes reveal sensitive information through inference attacks. For example, attackers could combine publicly available audit results with external datasets to infer private details about individuals in the original dataset.
+Moreover, analyses of real data run the risk of data inference attacks, where confidential information may be deduced from seemingly harmless or aggregated data. Even if the real data is not directly exposed, the results of analyses can sometimes reveal sensitive information through inference attacks. For example, attackers could combine publicly available audit results with external datasets to infer private details about individuals in the original dataset.
 
 \subsection{Differentially Privacy}
 
-Various technologies have been developed to mitigate these risks, such as differential privacy. Differential privacy is a mathematical framework that ensures the inclusion or exclusion of any individual in a dataset has a minimal and quantifiable impact on the overall results of data analysis. This is achieved by introducing carefully calibrated random noise into the computations derived from the data, ensuring that individual records remain indistinguishable while preserving aggregate patterns and trends.
+Various technologies have been developed to mitigate privacy risks, such as differential privacy. Differential privacy is a mathematical framework that ensures the inclusion or exclusion of any individual in a dataset has a minimal and quantifiable impact on the overall results of data analysis. This is achieved by introducing carefully calibrated random noise into the computations derived from the data, ensuring that individual records remain indistinguishable while preserving aggregate patterns and trends.
 
-The concept of differential privacy is particularly valuable in scenarios where sensitive information, such as health records or financial data, is involved. For example, a differential privacy mechanism could allow researchers to analyze patterns in patient health outcomes without exposing any single patient's medical history. This approach strikes a balance between data utility and privacy, enabling meaningful analysis while safeguarding individuals against privacy breaches or inference attacks.
+The concept of differential privacy is particularly valuable in scenarios where sensitive information, such as health records or financial data, is involved. For example, a differential privacy mechanism could allow researchers to analyze patterns in patient health data without exposing any single patient's medical history. This approach strikes a balance between data utility and privacy, enabling meaningful analysis while safeguarding individuals against privacy breaches or inference attacks.
 
 The key idea is that no matter how much background knowledge an attacker has about the data, they cannot determine with high confidence whether a specific individual is included in the dataset. This is quantified by some parameters which control the amount of noise introduced. Smaller parameters provide stronger privacy but can reduce the accuracy of the analysis, while larger parameters allow for more precise results but with weaker privacy guarantees. The challenge is to carefully calibrate the parameters to ensure that privacy is maintained without overly compromising the utility of the data.
 
@@ -209,15 +209,17 @@ The key idea is that no matter how much background knowledge an attacker has abo
 
 Synthetic data are fake data that is generated from real data. Synthetic data is artificially generated to replicate the statistical properties of real data while protecting privacy. The principle of this technology is to preserve some statistical properties of the real data while protecting the privacy of the individuals in the real data. Unlike anonymized data, synthetic data breaks the link to the original data, reducing the risk of re-identification.
 
-Among the generation techniques, differentially private synthetic data offers a way to investigate the data properties under differential privacy guarantees. It stands out for it strong differential privacy guarantees when generating synthetic data. This method combines data synthesis with the principles of differential privacy, ensuring that no single individual's information significantly influences the synthetic dataset. By introducing controlled randomness during generation, it provides strong privacy guarantees while preserving the overall utility of the data.
+Among the generation techniques, differentially private synthetic data offers a way to investigate the data properties under differential privacy guarantees. It stands out for it strong differential privacy guarantees when generating synthetic data. This method combines data synthesis with the principles of differential privacy, ensuring that individuals' sensitive information cannot be inferred from the synthetic data. By introducing controlled randomness during generation, it provides strong privacy guarantees while preserving the overall utility of the data.
 
-Differentially private synthetic data is particularly valuable in sensitive domains like healthcare and finance, enabling researchers to analyze patterns or train AI models without exposing personal details. It also supports fairness auditing by allowing the examination of datasets and models without revealing sensitive attributes. This dual focus on privacy and utility makes it a valuable tool.
+Differentially private synthetic data is particularly valuable in sensitive domains like healthcare and finance, enabling researchers to analyze patterns or identify trends without exposing personal details. It also supports fairness auditing by allowing the examination of datasets and models without revealing sensitive attributes. This dual focus on privacy and utility makes it a valuable tool.
 
-\subsection{Differentially Private Synthetic Data for Fairness Auditing}
+\subsection{Contribution}
 
 % differentially private synthetic data for fairness auditing
 
 We propose a novel auditing framework that leverages differentially private synthetic data to evaluate the fairness of AI systems. Our framework lets the auditors assess the fairness of AI systems without exposing sensitive information. By using differentially private synthetic data, auditors can conduct fairness analyses without directly exposing sensitive information.
+
+We present an innovative solution to the issue of sensitive data access: auditors generate synthetic data immediately upon receiving the real dataset, which they retain for auditing purposes while discarding the original data.
 
 This method offers a unique solution to reconcile the need for fairness auditing with the imperative to protect privacy. By preserving key statistical properties of the original data, synthetic data allows auditors to assess fairness metrics accurately while mitigating the risks of data breaches and privacy violations.
 
@@ -225,13 +227,9 @@ This technology enables auditing without exposing sensitive information, offerin
 
 Since fairness metrics depend on the relationships between sensitive attributes and outcomes, any discrepancies in how synthetic data mimics these relationships could lead to inaccurate conclusions in fairness audits. Ensuring that synthetic data preserves these properties is critical for reliable auditing.
 
-\subsection{Contribution}
+Our work examines the capabilities of existing differentially private synthetic data generation technologies in preserving fairness properties. Through empirical experiments on multiple real datasets, we aim to determine the effectiveness of differentially private synthetic data in fairness auditing.
 
-% contribution
-
-In this paper, we propose a novel framework for fairness auditing that leverages differentially private synthetic data. Our framework enables auditors to evaluate the fairness of AI systems without exposing sensitive information, addressing both privacy and security concerns.
-
-Our work examines the capabilities of existing differentially private synthetic data generation technologies in preserving fairness properties. Through empirical experiments on multiple real datasets, we aim to determine the effectiveness of differentially private synthetic data in this respect.
+We perform a comparative analysis of fairness metrics computed on real and synthetic data across multiple real-world datasets, including Adult, COMPAS, and Diabetes. By examining the consistency and differences between these metrics, we evaluate how well synthetic data captures the fairness characteristics of real data.
 
 Through our experiments, we evaluate the extent to which synthetic data can approximate fairness metrics computed on original datasets. Our findings contribute to the growing body of research on ethical AI and offer insights for practitioners seeking to ensure fairness in AI systems.
 
