@@ -580,8 +580,6 @@ In the COMPAS example, the sensitive attribute is sex and the protected group is
 
 \section{Experiments}
 
-% TODO: add adult two other models
-% TODO: caption all specify models
 % TODO: add to evaluation
 % TODO: add to conclusion
 
@@ -593,9 +591,9 @@ The fairness checker evaluates datasets based on multiple fairness metrics, such
 
 The dataset is first processed so it can be fed into the synthetic data generator. Some marginals are selected according to their mutual information, as described in the Section~\ref{sec:method}, and the synthetic data generator model is fitted to the original data according to the selected marginals. Then the generator is run 100 times to obtain 100 sets of synthetic data.
 
-Next, several AI models are extracted from various authors from Kaggle. They are finetuned to perform well on the original dataset. For one, a random forest model is finetuned by searching hyperparameters settings\cite{Ipbyrne2023}. Another random forest model is finetuned with over-sampling methods\cite{Jawat2024}. Also, a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}.
+Next, several AI models are extracted from various authors from Kaggle. They are finetuned to perform well on the original dataset. For the Adult dataset, we selected three models to experiment: a random forest model is finetuned by hyperparameter search\cite{Ipbyrne2023}; a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}; and a KNN model is manually finetuned\cite{Kothari2020}. For the COMPAS dataset, we selected a random forest model finetuned by hyperparameter search\cite{Sky2024}. For the Diabetes dataset, we selected a random forest model finetuned by over-sampling and under-sampling techniques\cite{Jawat2024}.
 
-The AI models and both the original dataset and synthetic datasets are then fed to the fairness checker. The synthetic datasets were generated 100 times and the fairness scores averaged across the 100 runs. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, applicable fairness measures are computed using the checker for both the original and the synthetic.
+The AI models and both the original dataset and synthetic datasets are then fed to the fairness checker. The synthetic datasets were generated 100 times for each model and the fairness scores averaged across the 100 runs. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, applicable fairness measures are computed using the checker for both the original and the synthetic.
 
 % \begin{figure}[h]
 %   \centering
@@ -652,7 +650,7 @@ The AI models and both the original dataset and synthetic datasets are then fed 
 
 \subsection{Adult Income Dataset}
 
-The Adult\cite{adult_2,Kaggle_Adult_Census_Income} dataset comes from the 1994 census in the United States and contains about 30000 individuals. The dataset has 14 attributes, such as sex, age, and education. The task is to predict whether an individual earns more than \$50,000 a year. We set the sensitive attribute as sex and the protected group as female. The results are shown in Table~\ref{tab:adult_score}.
+The Adult\cite{adult_2,Kaggle_Adult_Census_Income} dataset comes from the 1994 census in the United States and contains about 30000 individuals. The dataset has 14 attributes, such as sex, age, and education. The task is to predict whether an individual earns more than \$50,000 a year. We set the sensitive attribute as sex and the protected group as female. We tested three models: a random forest model, a logistic regression model, and a KNN model. The results are shown in Table~\ref{tab:adult_score_rf}, \ref{tab:adult_score_lr}, and \ref{tab:adult_score_knn}. The synthetic data generator fit time is 17 minutes and 1 second.
 
 % For the Adult income dataset, the shape of the maximum spanning tree is very shallow, almost resembling a star; it has one internal node and all but one of the leaves have a depth of one. After introducing edges according to our heuristic, we observed an increase in the pairwise edges of the leaves, forming many 3-cliques and two 4-cliques. The resulting graph is shown in Figure~\ref{fig:adult_mst}.
 
@@ -660,26 +658,11 @@ The Adult\cite{adult_2,Kaggle_Adult_Census_Income} dataset comes from the 1994 c
 
 \begin{table}[h]
 \caption{
-    Fairness measures experiment results of the Adult dataset.
+    Fairness measures experiment results of the Adult dataset on a random forest model.
     % With heuristic, average difference is $0.0787$, and fit time is 924m15s.
-    Average difference is $0.0775$, and fit time is 17m1s.
+    Average difference is $0.0775$.
 }
-% \label{tab:adult_score}
-% \begin{tabular}{ccccccc}
-% \toprule
-% \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{difference} & \textbf{Synthetic(No Heuristic)} & \textbf{difference(No Heuristic)} \\
-% \midrule
-% Demographic Parity  & 0.1933 & 0.1079 & 0.0853 & 0.0114 & 0.1818 \\
-% Overall Accuracy Equality   & 0.0250 & 0.1399 & 0.1149 & 0.0169 & 0.0080 \\
-% Equalized Odds (False Positive)    & 0.0175 & 0.0870 & 0.0695 & 0.0060 & 0.0115 \\
-% Equalized Odds (True Positive)    & 0.0114 & 0.0622 & 0.0508 & 0.0303 & 0.0189 \\
-% CU Accuracy Equality (True Positive) & 0.1941 & 0.1466 & 0.0474 & 0.0315 & 0.1626 \\
-% CU Accuracy Equality (True Negative) & 0.1102 & 0.1450 & 0.0348 & 0.0299 & 0.0803 \\
-% \bottomrule
-% \end{tabular}
-% \end{table}
-
-\label{tab:adult_score}
+\label{tab:adult_score_rf}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
@@ -694,9 +677,50 @@ Conditional Use Accuracy Equality (True Negative) & 0.1102 & 0.0299 & 0.0803 \\
 \end{tabular}
 \end{table}
 
+\begin{table}[h]
+\caption{
+    Fairness measures experiment results of the Adult dataset on a logistic regression model.
+    Average difference is $0.0829$.
+}
+\label{tab:adult_score_lr}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
+\midrule
+Demographic Parity  & 0.0139 & 0.0047 & 0.0092 \\
+Overall Accuracy Equality   & 0.0992 & 0.0149 & 0.0843 \\
+Equalized Odds (False Positive)    & 0.0017 & 0.0066 & 0.0049 \\
+Equalized Odds (True Positive)    & 0.0080 & 0.0072 & 0.0008 \\
+Conditional Use Accuracy Equality (True Positive) & 0.3459 & 0.0305 & 0.3154 \\
+Conditional Use Accuracy Equality (True Negative) & 0.1120 & 0.0291 & 0.0829 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[h]
+\caption{
+    Fairness measures experiment results of the Adult dataset on a KNN model.
+    Average difference is $0.0945$.
+}
+\label{tab:adult_score_knn}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Measure} & \textbf{Original} & \textbf{Synthetic} & \textbf{Difference} \\
+\midrule
+Demographic Parity & 0.1721 & 0.0046 & 0.1675 \\
+Overall Accuracy Equality &  0.0473 & 0.0128 & 0.0344 \\
+Equalized Odds (False Positive) &   0.0571 & 0.0072 & 0.0499 \\
+Equalized Odds (True Positive) &   0.1667 & 0.0110 & 0.1557 \\
+Conditional Use Accuracy Equality (True Positive) & 0.1009 & 0.0288 & 0.0720 \\
+Conditional Use Accuracy Equality (True Negative) & 0.1193 & 0.0319 & 0.0874 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{COMPAS Dataset}
 
-The COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset} dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The dataset has 10 applicable attributes, such sex, age, and priors count. The task is to predict whether an individual will re-offend. We set the sensitive attribute as sex and the protected group as female. The results are shown in Table~\ref{tab:compas_score}.
+The COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset} dataset comes from an investigative report by ProPublica of the COMPAS criminal recidivism assessment system and contains about 7000 individuals. The dataset has 10 applicable attributes, such sex, age, and priors count. The task is to predict whether an individual will re-offend. We set the sensitive attribute as sex and the protected group as female. The results are shown in Table~\ref{tab:compas_score}. The synthetic data generator fit time is 33 seconds.
 
 % For the COMPAS dataset, the initial spanning tree has a long tail, which is not surprising because, upon closer inspection, they all are related to the original COMPAS risk scores. The heuristic edge addition did not change the graph significantly. It only introduced one 3-clique triangle. The resulting graph is shown in Figure~\ref{fig:compas_mst}.
 
@@ -704,9 +728,9 @@ The COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset} dataset comes from a
 
 \begin{table}[h]
 \caption{
-    Fairness measures experiment results of the COMPAS dataset.
+    Fairness measures experiment results of the COMPAS dataset on a random forest model.
     % With heuristic, average difference is $0.0750$, and fit time is 27m33s.
-    Average difference is $0.0727$, and fit time is 33s.
+    Average difference is $0.0727$.
 }
 \label{tab:compas_score}
 \begin{tabular}{lccc}
@@ -725,7 +749,7 @@ Conditional Use Accuracy Equality (True Negative) & 0.1695 & 0.0256 & 0.1439 \\
 
 \subsection{Diabetes Dataset}
 
-The Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction} dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. The dataset has 8 attributes, such as gender, age, and smoking history. The task is to predict whether an individual will be readmitted. We set the sensitive attribute as gender and the protected group as female. The results are shown in Table~\ref{tab:diabetes_score}.
+The Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction} dataset comes from the hospital readmission data published in the 1994 AI in Medicine journal and contains about 100000 individuals. The dataset has 8 attributes, such as gender, age, and smoking history. The task is to predict whether an individual will be readmitted. We set the sensitive attribute as gender and the protected group as female. The results are shown in Table~\ref{tab:diabetes_score}. The synthetic data generator fit time is 1 minute and 24 seconds.
 
 % The tree grown from the diabetes dataset did not appear to have any particular characteristics. The root of the tree is placed in the BMI value, which reasonably captures most information. The heuristic edge addition process introduced some 3-clique triangles. The resulting graph is shown in Figure~\ref{fig:diabetes_mst}.
 
@@ -735,9 +759,9 @@ The Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction} dataset comes from the
 
 \begin{table}[h]
 \caption{
-    Fairness measures experiment results of the Diabetes dataset.
+    Fairness measures experiment results of the Diabetes dataset on a random forest model.
     % With heuristic, average difference is $0.0067$, and fit time is 1m44s.
-    Average difference is $0.0078$, and fit time is 1m24s.
+    Average difference is $0.0078$.
 }
 \label{tab:diabetes_score}
 \begin{tabular}{lccc}
