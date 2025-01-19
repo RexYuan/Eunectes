@@ -171,7 +171,7 @@ Fairness auditing of AI systems can identify and quantify biases. However, tradi
 
 % \subsection{Fairness in AI}
 
-Fairness in machine learning has become an increasingly important topic as AI systems are widely used across various sectors, including healthcare and criminal justice. These systems can significantly influence outcomes that impact individuals and communities.
+Fairness in machine learning has become an increasingly important topic as AI systems are widely used across various sectors, including healthcare and criminal justice. These AI systems can significantly influence outcomes that impact individuals and communities.
 
 However, AI systems can exhibit bias, which may lead to increased unfairness. Biased AI systems have the potential to reinforce historical injustices, erode trust in technology, and exacerbate inequality. Therefore, ensuring fairness in AI systems is crucial to prevent the perpetuation of these biases.
 
@@ -203,7 +203,7 @@ Various technologies have been developed to mitigate privacy risks, such as diff
 
 The concept of differential privacy is particularly valuable in scenarios where sensitive information, such as health records or financial data, is involved. For example, a differential privacy mechanism could allow researchers to analyze patterns in patient health data without exposing any single patient's medical history. This approach strikes a balance between data utility and privacy, enabling meaningful analysis while safeguarding individuals against privacy breaches or inference attacks.
 
-The key idea is that no matter how much background knowledge an attacker has about the data, they cannot determine with high confidence whether a specific individual is included in the dataset. This is quantified by some parameters which control the amount of noise introduced. Smaller parameters provide stronger privacy but can reduce the accuracy of the analysis, while larger parameters allow for more precise results but with weaker privacy guarantees. The challenge is to carefully calibrate the parameters to ensure that privacy is maintained without overly compromising the utility of the data.
+The key idea is that no matter how much background knowledge an attacker has about the data, they cannot determine with high confidence whether a specific individual is included in the dataset. This is quantified by some parameters which control the amount of noise introduced; smaller parameters provide stronger privacy but can reduce the accuracy of the analysis, while larger parameters allow for more precise results but with weaker privacy guarantees. The challenge is to carefully calibrate the parameters to ensure that privacy is maintained without overly compromising the utility of the data.
 
 % \subsection{Synthetic Data}
 
@@ -580,9 +580,6 @@ In the COMPAS example, the sensitive attribute is sex and the protected group is
 
 \section{Experiments}
 
-% TODO: add to evaluation
-% TODO: add to conclusion
-
 To test the viability of our method, we compare the metrics computed from the synthetic dataset against those of the original dataset. We used various datasets with fairness concerns mentioned in \cite{pessach2022review}.
 
 We looked at several publicly available datasets, such as Adult\cite{adult_2,Kaggle_Adult_Census_Income}, COMPAS\cite{larson2016propublica,Kaggle_COMPAS_Dataset}, and Diabetes\cite{diabetes_34,Kaggle_Diabetes_Prediction}. These datasets are known to have fairness issues\cite{pessach2022review}.
@@ -826,7 +823,7 @@ We can say less about fairness with the measures with less information, and thus
 
 Although the scores may not be fully accurate, and some measures, due to the nature of their definitions, may be harder to approximate, the results showed that synthetic data generally preserves the fairness properties of the original data with a reasonable degree of accuracy.
 
-The average of the differences between the fairness measure values of the original and synthetic datasets is below 0.1 for all datasets. This indicates that synthetic data is a good approximation of the original data in terms of fairness.
+The average of the differences between the fairness measure values of the original and synthetic datasets is below $0.1$ for all datasets across all models. Judging from different metrics, datasets, and models, this indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
 In addition, further experiments showed that, by common sense or in an alternative assumption where the auditor has knowledge of $(S,Y)$ and can add the edge $(S,Y)$ to the Markov random field before fitting, the synthesized data would have been more accurate, even lowering the error of Conditional Use Accuracy Equality in the COMPAS example.
 
@@ -838,7 +835,7 @@ Auditors hence gained an approach to auditing AI fairness alternative to the tra
 
 Looking at the actual experimental results, first and foremost, across all datasets, we observed that Conditional Use Accuracy Equality did indeed show higher errors than other measures.
 
-In the Adult experiment, Conditional Use Accuracy Equality (True Positive) has an error of around 0.16. In the COMPAS experiment, both Conditional Use Accuracy Equality measures had an error over 0.1. In the Diabetes experiment, Conditional Use Accuracy Equality (True Negative) has an error much higher than other measures.
+In the Adult random forest experiment, Conditional Use Accuracy Equality (True Positive) has an error of around 0.16. In the COMPAS random forest experiment, both Conditional Use Accuracy Equality measures had an error over 0.1. In the Diabetes random forest experiment, Conditional Use Accuracy Equality (True Negative) has an error much higher than other measures.
 
 This corroborates our assumption that it is harder to approximate sufficiency measures on synthetic data. As there is less information available for the synthesis process, the measures that require more information will be harder to approximate.
 
@@ -854,7 +851,7 @@ To mitigate this risk, we propose a framework that leverages differentially priv
 
 The proposed framework, backed by strong privacy guarantees, offers a secure alternative to directly using real data. By applying differential privacy methods, the synthetic data shields individual information from exposure while still enabling thorough fairness evaluations.
 
-Experiments conducted on multiple real-world datasets and models show that synthetic data derived from real data retains essential fairness properties. This ensures that any biases present in the original data are captured and reflected in the synthetic counterpart.
+Experiments conducted on multiple real-world datasets and across different models show that synthetic data derived from real data retains essential fairness properties. This ensures that any biases present in the original data are captured and reflected in the synthetic counterpart.
 
 While synthetic data is not a flawless substitute for real-world data, it serves as a practical and pragmatic tool for auditing AI fairness in a privacy-preserving manner. Our framework offers an effective means of testing AI systems for fairness while mitigating the privacy concerns surrounding using real data in sensitive applications. Auditors can perform thorough fairness evaluations by generating and using synthetic data while under strong privacy protections.
 
