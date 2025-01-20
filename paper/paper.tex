@@ -243,7 +243,7 @@ The rest of this paper is organized as follows. Section 2 provides the backgroun
 
 Fairness in machine learning has become a crucial area of research\cite{barocas2023fairness}. Various fairness measures have been proposed to quantify\cite{yeh2024analyzing} the fairness of AI models\cite{pessach2022review,corbett2017algorithmic,vzliobaite2017measuring,hardt2016equality,corbett2017algorithmic,berk2021fairness,chouldechova2017fair,kleinberg2016inherent}. We consider these fairness measures in this work.
 
-Auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}. We use a tool produced from our previous work\cite{yuan2024ensuring}.
+Auditing of AI models is an important step in ensuring that these models are fair\cite{ferrara2023fairness}. Different tools have been developed to check the fairness of AI models\cite{saleiro2018aequitas,bellamy2019ai,bird2020fairlearn}. We use a tool produced from \cite{yuan2024ensuring}.
 
 % differential privacy
 
@@ -473,7 +473,7 @@ The third-party auditor acts as an evaluator, using our tool to audit the AI mod
   \Description{Roles of each party in the COMPAS example.}
 \end{figure}
 
-In the framework of our previous work\cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits. However, this practice raises both security and privacy concerns.
+In the framework of \cite{yuan2024ensuring}, after obtaining real data from the data provider, the 3rd party auditor holds onto the real data for performing fairness audits, and it supposedly retains it indefinitely for the possibility of any future audits. However, this practice raises both security and privacy concerns.
 
 For security, it creates a point of vulnerability to unauthorized access, and the auditor is now a target of data security attacks. The auditor may not have the necessary resources to defend against these threats. A breach at the auditor's end could result in compromises of individuals' sensitive information. In the COMPAS example, had the data not been public already, ProPublica may be targeted by hackers to access the sensitive criminal justice data.
 
@@ -484,7 +484,7 @@ Thus, we introduce a new framework where the auditor generates synthetic data ba
 \section{Methodology}
 \label{sec:method}
 
-We employed the tools of the winner of the 2018 NIST differential privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{nist_ryan_2018,McKenna_private-PGM_2021,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from our previous research\cite{yuan2024ensuring}.
+We employed the tools of the winner of the 2018 NIST differential privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{nist_ryan_2018,McKenna_private-PGM_2021,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from \cite{yuan2024ensuring}.
 
 This research is conducted in Python Jupyter notebooks and is publicly available.
 
