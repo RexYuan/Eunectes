@@ -177,7 +177,7 @@ However, AI systems can exhibit bias, which may lead to increased unfairness. Bi
 
 For instance, investigative journalists at ProPublica uncovered bias in the COMPAS system, which is used in the United States criminal justice system to predict recidivism. Their analysis revealed that the COMPAS system disproportionately discriminated against certain demographic groups.
 
-These findings have raised significant concerns about the fairness and ethical implications of using such AI systems in critical decision-making processes. Addressing these biases is essential to ensure that AI systems do not perpetuate existing inequalities and instead contribute to a fairer and more just society.
+These findings have raised significant concerns about the fairness and ethical implications of using such AI systems in critical decision-making processes. Addressing these biases is essential to ensure that AI systems do not perpetuate inequalities.
 
 % \subsection{Fairness Auditing}
 
@@ -201,7 +201,7 @@ Moreover, analyses of real data run the risk of data inference attacks, where co
 
 Various technologies have been developed to mitigate privacy risks, such as differential privacy. Differential privacy is a mathematical framework that ensures the inclusion or exclusion of any individual in a dataset has a minimal and quantifiable impact on the overall results of data analysis. This is achieved by introducing carefully calibrated random noise into the computations derived from the data, ensuring that individual records remain indistinguishable while preserving aggregate patterns and trends.
 
-The concept of differential privacy is particularly valuable in scenarios where sensitive information, such as health records or financial data, is involved. For example, a differential privacy mechanism could allow researchers to analyze patterns in patient health data without exposing any single patient's medical history. This approach strikes a balance between data utility and privacy, enabling meaningful analysis while safeguarding individuals against privacy breaches or inference attacks.
+Differential privacy is especially useful in situations that involve sensitive data. For example, a differential privacy mechanism could allow researchers to analyze patterns in patient health data without exposing any single patient's medical history. This approach strikes a balance between data utility and privacy, enabling meaningful analysis while safeguarding individuals against privacy breaches or inference attacks.
 
 The key idea is that no matter how much background knowledge an attacker has about the data, they cannot determine with high confidence whether a specific individual is included in the dataset. This is quantified by some parameters which control the amount of noise introduced; smaller parameters provide stronger privacy but can reduce the accuracy of the analysis, while larger parameters allow for more precise results but with weaker privacy guarantees. The challenge is to carefully calibrate the parameters to ensure that privacy is maintained without overly compromising the utility of the data.
 
@@ -211,7 +211,7 @@ One way of auditing while preserving privacy is to use synthetic data. Synthetic
 
 Among the generation techniques, differentially private synthetic data offers a way to investigate the data properties under differential privacy guarantees. It stands out for it strong differential privacy guarantees when generating synthetic data. This method combines data synthesis with the principles of differential privacy, ensuring that individuals' sensitive information cannot be inferred from the synthetic data. By introducing controlled randomness during generation, it provides strong privacy guarantees while preserving the overall utility of the data.
 
-Differentially private synthetic data is particularly valuable in sensitive domains like healthcare and finance, enabling researchers to analyze patterns or identify trends without exposing personal details. It also supports fairness auditing by allowing the examination of datasets and models without revealing sensitive attributes. This dual focus on privacy and utility makes it a valuable tool.
+Differentially private synthetic data is particularly valuable in sensitive domains like healthcare and criminal justice, enabling researchers to analyze patterns or identify trends without exposing personal details. It also supports fairness auditing by allowing the examination of datasets and models without revealing sensitive attributes. This dual focus on privacy and utility makes it a valuable tool.
 
 % \subsection{Contribution}
 
