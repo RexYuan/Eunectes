@@ -486,8 +486,6 @@ Thus, we introduce a new framework where the auditor generates synthetic data ba
 
 We employed the tools of the winner of the 2018 NIST differential privacy Synthetic Data Challenge competition\cite{NIST2018} by \cite{nist_ryan_2018,McKenna_private-PGM_2021,mckenna2021winning,mckenna2019graphical} and the fairness checker tool from \cite{yuan2024ensuring}.
 
-This research is conducted in Python Jupyter notebooks and is publicly available.
-
 We shall illustrate the workflow of our methodology with an example of the COMPAS dataset, which contains attributes such as sex and race with the prediction target attribute being recidivism.
 
 \subsection{Data Synthesis}
@@ -591,6 +589,8 @@ The dataset is first processed so it can be fed into the synthetic data generato
 Next, several AI models are extracted from various authors from Kaggle. They are finetuned to perform well on the original dataset. For the Adult dataset, we selected three models to experiment: a random forest model is finetuned by hyperparameter search\cite{Ipbyrne2023}; a logistic regression model is finetuned by performing principal component analysis\cite{Prashant1112023}; and a KNN model is manually finetuned\cite{Kothari2020}. For the COMPAS dataset, we selected a random forest model finetuned by hyperparameter search\cite{Sky2024}. For the Diabetes dataset, we selected a random forest model finetuned by over-sampling and under-sampling techniques\cite{Jawat2024}.
 
 The AI models and both the original dataset and synthetic datasets are then fed to the fairness checker. The synthetic datasets were generated 100 times for each model and the fairness scores averaged across the 100 runs. Sensitive attributes are identified based on manual examination with common sense or by referring to \cite{pessach2022review}. Then, applicable fairness measures are computed using the checker for both the original and the synthetic.
+
+This research is conducted in Python Jupyter notebooks and is publicly available. The experiments were conducted on a macOS laptop with an Intel Core i9-9880H CPU (2.3GHz) and 32GB of RAM.
 
 % \begin{figure}[h]
 %   \centering
