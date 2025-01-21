@@ -823,7 +823,7 @@ We can say less about fairness with the measures with less information, and thus
 
 Although the scores may not be fully accurate, and some measures, due to the nature of their definitions, may be harder to approximate, the results showed that synthetic data generally preserves the fairness properties of the original data with a reasonable degree of accuracy.
 
-The average of the differences between the fairness measure values of the original and synthetic datasets is below $0.1$ for all datasets across all models. Judging from different metrics, datasets, and models, this indicates that synthetic data is a good approximation of the original data in terms of fairness.
+The average of the differences between the fairness measure values of the original and synthetic datasets is below $0.1$ for all datasets across all models. Different models applied to the same datasets can yield different results, and judging from different metrics, datasets, and models, this indicates that synthetic data is a good approximation of the original data in terms of fairness.
 
 In addition, further experiments showed that, by common sense or in an alternative assumption where the auditor has knowledge of $(S,Y)$ and can add the edge $(S,Y)$ to the Markov random field before fitting, the synthesized data would have been more accurate, even lowering the error of Conditional Use Accuracy Equality in the COMPAS example.
 
