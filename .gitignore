@@ -10,3 +10,4 @@ experiments/tmp/*
 *.blg
 *.vrb
 *.cut
+_minted
