@@ -11,6 +11,7 @@ all: $(PDF_FILES)
 
 %.pdf: %.tex
 	$(LATEX) $(LATEX_OPTS) $<
+	$(LATEX) $(LATEX_OPTS) $<
 
 clean:
 	rm -f *.aux *.log *.nav *.out *.snm *.toc *.vrb *.pdf
